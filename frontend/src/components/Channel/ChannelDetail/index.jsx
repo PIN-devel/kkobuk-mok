@@ -25,7 +25,8 @@ const ChannelDetail = (props) => {
     <div className={classes.root}>
       <button onClick={exitChannel}>채널 나가기</button>
 
-      <h1>채널 이름 ; {channel.title}</h1>
+      {/* <h1>채널 이름 ; {channel.title}</h1> */}
+      <h1>채널 이름 ; {channel.name}</h1>
       <h2>채널 슬로건? : {channel.description}</h2>
       <Grid container spacing={4}>
         <Grid item lg={4} md={6} xl={3} xs={12}>

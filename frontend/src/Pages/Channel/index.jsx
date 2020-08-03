@@ -72,7 +72,7 @@ const Channel = () => {
   console.log("채널컴포 렌더링");
   const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
   const [searchData, setSearchData] = useState(""); //여기 처음에 axios 보내서 전체 값 보여줘야함
-  const [channels, setChannels] = useState(mockData); //이거 지금은 이건데 나중에는 []로 해야해
+  const [channels, setChannels] = useState([]); //이거 지금은 이건데 나중에는 []로 해야해
 
   // channels axios 가져오기
   const token = Cookies.get("token");
@@ -83,21 +83,25 @@ const Channel = () => {
   };
   const getChannels = (searchData) => {
     // searchData 써서 채널 이름 저거 들어가는거 가지고와
+    // 이거 모델에 만들어야함
+    const handleChannels = (getChannels) => {
+      setChannels(getChannels);
+    };
     axios
       .get(SERVER_URL + "/rooms", config)
       .then((res) => {
         console.log("성공");
-        console.log(res.data.data);
-        setChannels(); // 여기 channels 업데이트 해줘
+        console.log(res);
+        handleChannels(res.data.data);
+        // setChannels(); // 여기 channels 업데이트 해줘
       })
       .catch((err) => {
         console.log("에러!!");
         console.log(err.response);
       });
   };
-
-  useEffect(() => console.log("왔다"), [searchData]);
-  // useEffect(() => getChannels(searchData), [searchData]);
+  // useEffect(() => console.log("왔다"), [searchData]);
+  useEffect(() => getChannels(searchData), [searchData]);
 
   return (
     <Layout>
