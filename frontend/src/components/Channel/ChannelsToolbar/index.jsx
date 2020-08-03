@@ -1,37 +1,80 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
-
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { Button, Typography, TextField } from "@material-ui/core";
+import useStyles from "./styles";
 // import { SearchInput } from "components";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  row: {
-    height: "42px",
-    display: "flex",
-    alignItems: "center",
-    marginTop: theme.spacing(1),
-  },
-  spacer: {
-    flexGrow: 1,
-  },
-  importButton: {
-    marginRight: theme.spacing(1),
-  },
-  exportButton: {
-    marginRight: theme.spacing(1),
-  },
-  searchInput: {
-    marginRight: theme.spacing(1),
-  },
-}));
+import { AuthContext } from "../../../contexts/AuthContext";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const ChannelsToolbar = (props) => {
   const { className, ...rest } = props;
-
   const classes = useStyles();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [open, setOpen] = useState(false);
+
+  const [channelName, setChannelName] = useState("");
+  const [channelGoal, setChannelGoal] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // 채널 생성
+  const token = Cookies.get("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  };
+  const createChannel = (e) => {
+    e.preventDefault();
+    const url = `${SERVER_URL}/rooms/`;
+    const handleSetChannelIn = (channel) => {
+      setChannelIn(channel);
+    };
+    const channelData = { name: channelName, password };
+    axios
+      .post(url, channelData, config)
+      .then((res) => {
+        console.log("성공");
+        console.log(res.data.data);
+        // handleSetChannelIn(res.data.data);
+        // 여기 지금 roomlist 가 오는데 이거 room serializer 받아야함
+      })
+      .catch((err) => {
+        console.log("에러!!");
+        console.log(err.response);
+      });
+  };
+
+  const handleSetChannelName = (e) => {
+    setChannelName(e.target.value);
+  };
+  const handleSetChannelGoal = (e) => {
+    setChannelGoal(e.target.value);
+  };
+  const handleSetPassword = (e) => {
+    setPassword(e.target.value);
+  };
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
@@ -39,16 +82,81 @@ const ChannelsToolbar = (props) => {
         <span className={classes.spacer} />
         {/* <Button className={classes.importButton}>Import</Button>
         <Button className={classes.exportButton}>Export</Button> */}
-        <Button color="primary" variant="contained">
+        <Button color="primary" variant="contained" onClick={handleClickOpen}>
           채널 생성
         </Button>
       </div>
-      <div className={classes.row}>
-        {/* <SearchInput
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+          <Typography className={classes.title} variant="h4">
+            채널 생성
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <form className={classes.form} onSubmit={createChannel}>
+              <TextField
+                className={classes.textField}
+                fullWidth
+                label="channel name"
+                name="channelName"
+                onChange={handleSetChannelName}
+                type="text"
+                value={channelName}
+                variant="outlined"
+              />
+              {/* <TextField
+                className={classes.textField}
+                fullWidth
+                label="채널 설명?"
+                name="channelGoal"
+                onChange={handleSetChannelGoal}
+                type="text"
+                value={channelGoal}
+                variant="outlined"
+              /> */}
+              <TextField
+                className={classes.textField}
+                fullWidth
+                label="Password"
+                name="password"
+                onChange={handleSetPassword}
+                type="password"
+                value={password}
+                variant="outlined"
+              />
+
+              <Button
+                className={classes.signUpButton}
+                color="primary"
+                // disabled={!formState.isValid}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+              >
+                채널 생성
+              </Button>
+            </form>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            취소
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* <div className={classes.row}>
+      <SearchInput
           className={classes.searchInput}
           placeholder="Search channel"
-        /> */}
-      </div>
+        />
+      </div> */}
     </div>
   );
 };
