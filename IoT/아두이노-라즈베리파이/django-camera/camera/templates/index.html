@@ -24,7 +24,7 @@
 			</div>
 		</div>
 		<div class="file-upload-content">
-			<img class="file-upload-image" id="face-image" src="{% static 'image.png' %}" alt="your image" />
+			<img class="file-upload-image" id="face-image" src="{% static 'image/image.png' %}" alt="your image" />
 			<div class="image-title-wrap">
 				<button type="button" onclick="removeUpload()" class="remove-image">Remove
 					<span class="image-title">Uploaded Image</span>
@@ -40,7 +40,7 @@
 		// More API functions here:
 		// https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 		// the link to your model provided by Teachable Machine export panel
-		const URL = "https://teachablemachine.withgoogle.com/models/loVFZUvDd/";
+		const URL = "{% static 'tf_model/' %}";
 		let model, labelContainer, maxPredictions;
 		// Load the image model and setup the webcam
 		async function init() {
