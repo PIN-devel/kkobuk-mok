@@ -182,3 +182,4 @@ def email_find(request, product_key):
         return Response({"status": "OK", "data": res})
     else:
         return Response({"status": "FAIL", "msg": "해당 제품키를 등록한 유저가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+

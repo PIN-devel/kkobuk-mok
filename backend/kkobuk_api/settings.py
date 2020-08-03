@@ -119,7 +119,10 @@ DATABASES = {
         'PASSWORD' : get_secret('DB_PASSWORD'), # root password
         'HOST' : 'i3b109.p.ssafy.io',
         'POST' : '3306',
-    }
+    },
+	'OPTIONS': {
+        'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+    },
 }
 
 
@@ -172,7 +175,8 @@ SITE_ID = 3
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'EXCEPTION_HANDLER': 'accounts.utils.custom_exception_handler'
 }
 OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
