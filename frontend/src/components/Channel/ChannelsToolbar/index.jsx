@@ -35,20 +35,19 @@ const ChannelsToolbar = (props) => {
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
-      {/* <div className={classes.row}>
+      <div className={classes.row}>
         <span className={classes.spacer} />
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
+        {/* <Button className={classes.importButton}>Import</Button>
+        <Button className={classes.exportButton}>Export</Button> */}
         <Button color="primary" variant="contained">
-          Add channel
+          채널 생성
         </Button>
-      </div> */}
+      </div>
       <div className={classes.row}>
         {/* <SearchInput
           className={classes.searchInput}
           placeholder="Search channel"
         /> */}
-        <h2>여기는 검색 컴포넌트 만들거임</h2>
       </div>
     </div>
   );

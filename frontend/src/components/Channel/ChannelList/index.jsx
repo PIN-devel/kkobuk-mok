@@ -1,22 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { IconButton, Grid, Typography } from "@material-ui/core";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 import ChannelsToolbar from "../ChannelsToolbar";
 import ChannelCard from "../ChannelCard";
-
-// import { SearchContext } from "../../../contexts/SearchContext";
-
-// import { createMuiTheme } from "@material-ui/core";
-
-// const theme = createMuiTheme({
-//   zIndex: {
-//     appBar: 1200,
-//     drawer: 1100,
-//   },
-// });
+import useStyles from "./styles";
 
 // ------------------------이거 나중에 참고해서 axios 보내---------------------
 
@@ -41,23 +30,8 @@ import ChannelCard from "../ChannelCard";
 //         console.log(res);
 //       });
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(3),
-  },
-  content: {
-    marginTop: theme.spacing(2),
-  },
-  pagination: {
-    marginTop: theme.spacing(3),
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-}));
-
 const ChannelList = (props) => {
-  console.log("채널리스트 컴포 렌더");
+  // console.log("채널리스트 컴포 렌더");
   // const { searchData, setSearchData } = useContext(SearchContext);
   const { channels } = props;
 
