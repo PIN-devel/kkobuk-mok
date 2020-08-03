@@ -60,7 +60,8 @@ const ChannelCard = (props) => {
           <img alt="channel" className={classes.image} src={channel.imageUrl} />
         </div>
         <Typography align="center" gutterBottom variant="h4">
-          {channel.title}
+          {/* {channel.title} */}
+          {channel.name}
         </Typography>
         <Typography align="center" variant="body1">
           {channel.description}
