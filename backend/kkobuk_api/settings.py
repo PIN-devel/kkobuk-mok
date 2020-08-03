@@ -115,10 +115,10 @@ DATABASES = {
     'default': {
         'ENGINE' : 'django.db.backends.mysql',
         'NAME' : 'test', # database name
-        'USER' : 'root', # root
-        'PASSWORD' : get_secret('DB_PASSWORD') # root password
-        #'HOST' : '####' default localhost
-        #'POST' : '####' defautl 3306
+        'USER' : 'b109', # root
+        'PASSWORD' : get_secret('DB_PASSWORD'), # root password
+        'HOST' : 'i3b109.p.ssafy.io',
+        'POST' : '3306',
     }
 }
 
