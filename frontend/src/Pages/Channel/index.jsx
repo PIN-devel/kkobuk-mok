@@ -76,13 +76,15 @@ const Channel = () => {
   const [searchData, setSearchData] = useState("");
   // 채널 리스트
   const [channels, setChannels] = useState([]);
+  // 채널 페이지
+  const [page, setPage] = useState(1);
 
   // 검색 채널 리스트 (channels) 가져오기
   const token = Cookies.get("token");
   const config = {
     params: {
-      _page: 1,
-      keyword: "",
+      _page: page,
+      keyword: searchData,
     },
     headers: {
       Authorization: `jwt ${token}`,
@@ -97,17 +99,16 @@ const Channel = () => {
     axios
       .get(SERVER_URL + "/rooms", config)
       .then((res) => {
-        console.log("성공");
-        console.log(res);
+        console.log("채널들 가져옴");
+        // console.log(res);
         handleSetChannels(res.data.data);
-        // setChannels(); // 여기 channels 업데이트 해줘
       })
       .catch((err) => {
-        console.log("에러!!");
+        console.log("Channel 에러!!");
         console.log(err.response);
       });
   };
-  useEffect(() => getChannels(searchData), [searchData]);
+  useEffect(() => getChannels(searchData), [searchData, page]);
   //
 
   // 채널 출입 다시 렌더링 해줘야할 듯
@@ -125,7 +126,7 @@ const Channel = () => {
             searchData={searchData}
             setSearchData={setSearchData}
           />
-          <ChannelList channels={channels} />
+          <ChannelList channels={channels} page={page} setPage={setPage} />
         </div>
       ) : (
         <ChannelDetail channel={channelIn} />

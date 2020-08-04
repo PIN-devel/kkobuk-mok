@@ -48,35 +48,10 @@ const ChannelCard = (props) => {
         handleSetChannelIn(res.data.data);
       })
       .catch((err) => {
-        console.log("채널 입장 에러");
+        // console.log("채널 입장 에러");
         console.log(err.response);
       });
   };
-
-  // 처음 마운트될 때 디테일 정보 가져오기
-  // props로 받아온 channel 은 channellist 로 받아온 정보라서 id, name 이런것만있음
-  // 여기서 get 요청으로 보내는게 user 정보도 받아옴
-  const getChannel = () => {
-    const url = `${SERVER_URL}/rooms/${channel.id}/`;
-    const handleSetChannelData = (channelData) => {
-      setChannelData(channelData);
-    };
-    axios
-      .get(url, config)
-      .then((res) => {
-        console.log("채널 정보 가져옴");
-        console.log(res.data.data);
-        // handleSetChannelData(res.data.data);
-      })
-      .catch((err) => {
-        console.log("채널 입장 에러");
-        console.log(err.response);
-      });
-  };
-  useEffect(() => {
-    getChannel();
-  }, []);
-  //
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -92,12 +67,12 @@ const ChannelCard = (props) => {
         </div>
         <Typography align="center" gutterBottom variant="h4">
           {/* {channel.title} */}
-          이름 : {/* {channelData.name} */}
+          채널이름 : {/* {channelData.name} */}
           {channel.name}
         </Typography>
         <Typography align="center" variant="body1">
           {/* {channelData.description} */}
-          슬로건 : {channel.description}
+          채널 : {channel.description}
         </Typography>
       </CardContent>
       <Divider />
@@ -112,9 +87,7 @@ const ChannelCard = (props) => {
           <Grid className={classes.statsItem} item>
             {/* <GetAppIcon className={classes.statsIcon} /> */}
             <Typography display="inline" variant="body2">
-              {/* {channelData.members.length} Member */}
-              이거 디테일 정보 가져오는거 참여자 아니어도 가져오게 해주면 여기
-              채널 평균 점수랑 멤버수 나오게 가능
+              {channel.member_num} members
             </Typography>
           </Grid>
         </Grid>

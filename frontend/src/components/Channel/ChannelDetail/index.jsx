@@ -29,7 +29,7 @@ const ChannelDetail = (props) => {
       .post(url, {}, config)
       .then((res) => {
         console.log("채널 나가기 성공");
-        console.log(res.data.data);
+        // console.log(res.data.data);
         handleSetChannelIn();
       })
       .catch((err) => {
