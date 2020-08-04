@@ -75,10 +75,16 @@ export default function SignIn() {
     setPassword(password);
   };
 
-  const { auth, setAuth, SERVER_URL } = useContext(AuthContext);
+  const { auth, setAuth, SERVER_URL, myUserId, setMyUserId } = useContext(
+    AuthContext
+  );
   const history = useHistory();
   const login = (loginData) => {
     const url = `${SERVER_URL}/rest-auth/login/`;
+    const handleSetAuth = (auth) => {
+      setAuth(auth);
+      // setMyUserId()
+    };
     axios
       .post(url, loginData)
       .then((res) => {
@@ -89,7 +95,7 @@ export default function SignIn() {
         //setAuth가 푸쉬보다 앞에 있으면 auth가 바뀌면서 다시 렌더됨
         // 즉 저기 밑에 렌더가 먼저임
         // 이건 비동기 요청이므로 뒤에 나오는 콘솔들이 실행되기는함
-        setAuth(true);
+        handleSetAuth(true);
         console.log("이거 뒤에거는 안먹히나봐");
         console.log(auth);
       })
