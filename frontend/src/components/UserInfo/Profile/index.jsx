@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import Bono from "../../../assets/bono1.jpg";
 import { Wrapper, Image } from "./styles";
 import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import CircleProgressBar from "../Today";
 import ChangeInfo from "../../Auth/ChangeInfo";
-import Axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const useStyles = makeStyles({
   buttonStyle: {
@@ -17,9 +18,28 @@ const useStyles = makeStyles({
 
 const Profile = () => {
   const classes = useStyles();
+  const { SERVER_URL } = useContext(AuthContext);
   const isMe = true;
   const isFriend = true;
   const [user, setUser] = useState();
+
+  const token = Cookies.get("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  };
+
+  const test = () => {
+    axios
+      .get(`${SERVER_URL}/${config}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // 유저 정보 받아오기
   const { myLast, myFirst, myEmail, myKey, myFriends } = {
@@ -42,6 +62,7 @@ const Profile = () => {
               {myFirst}
             </h3>
             <h3>이메일: {myEmail}</h3>
+            <button onClick={test}>실험</button>
             <h3>제품키: {myKey}</h3>
             <h3>현재 {myFriends.length}명의 친구들과 교류하고 있습니다</h3>
             <div className="profileButton">

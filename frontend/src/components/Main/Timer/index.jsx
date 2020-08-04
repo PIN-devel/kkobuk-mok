@@ -1,8 +1,7 @@
-import React, { useContext, useRef } from "react";
+import React, { useState, useRef } from "react";
 import DisplayComponent from "./DisplayComponent";
 import BtnComponent from "./BtnComponent";
 import { Grid } from "@material-ui/core";
-import { BaseContext } from "../../../contexts/BaseContext";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -21,19 +20,24 @@ const useStyles = makeStyles((theme) => ({
 
 const Timer = () => {
   const classes = useStyles();
-
-  const {
-    status,
-    setStatus,
-    scoreData,
-    setScoreData,
-    time,
-    setTime,
-    interv,
-    setInterv,
-    stopwatch,
-    setStopwatch,
-  } = useContext(BaseContext);
+  const [status, setStatus] = useState(0);
+  // Not started = 0
+  // started = 1
+  // stopped = 2
+  const [scoreData, setScoreData] = useState([]);
+  const [time, setTime] = useState({ s: 0, m: 0, h: 0 });
+  const [interv, setInterv] = useState();
+  const [stopwatch, setStopwatch] = useState({
+    m: 0,
+    h: 0,
+    work: 0,
+    break: 0,
+    inf: false,
+  });
+  const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
+  const [channelIn, setChannelIn] = useState(null);
+  const [curScore, setCurScore] = useState(58);
+  const [curHumid, setCurHumid] = useState(65);
 
   const scoreDataRef = useRef(scoreData);
   scoreDataRef.current = scoreData;

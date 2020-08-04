@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -9,10 +9,9 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { BaseContext } from "../../../contexts/BaseContext";
 
 const Progress = () => {
-  const { scoreData, setScoreData } = useContext(BaseContext);
+  const [scoreData, setScoreData] = useState(58);
   useEffect(() => {}, [scoreData]);
   return (
     <ResponsiveContainer height={260} width="90%">
