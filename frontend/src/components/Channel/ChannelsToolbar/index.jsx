@@ -51,17 +51,20 @@ const ChannelsToolbar = (props) => {
     const handleSetChannelIn = (channel) => {
       setChannelIn(channel);
     };
-    const channelData = { name: channelName, password };
+    const channelData = {
+      name: channelName,
+      password,
+      description: channelGoal,
+    };
     axios
       .post(url, channelData, config)
       .then((res) => {
         console.log("채널 생성 성공");
-        console.log(res.data.data);
-        // handleSetChannelIn(res.data.data);
-        // 여기 지금 roomlist 가 오는데 이거 room serializer 받아야함
+        // console.log(res.data.data);
+        handleSetChannelIn(res.data.data);
       })
       .catch((err) => {
-        console.log("에러!!");
+        console.log("채널 생성 에러!!");
         console.log(err.response);
       });
   };
@@ -103,23 +106,23 @@ const ChannelsToolbar = (props) => {
               <TextField
                 className={classes.textField}
                 fullWidth
-                label="channel name"
+                label="Channel Name"
                 name="channelName"
                 onChange={handleSetChannelName}
                 type="text"
                 value={channelName}
                 variant="outlined"
               />
-              {/* <TextField
+              <TextField
                 className={classes.textField}
                 fullWidth
-                label="채널 설명?"
+                label="Channel Goal"
                 name="channelGoal"
                 onChange={handleSetChannelGoal}
                 type="text"
                 value={channelGoal}
                 variant="outlined"
-              /> */}
+              />
               <TextField
                 className={classes.textField}
                 fullWidth

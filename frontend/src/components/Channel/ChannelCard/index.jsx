@@ -53,31 +53,6 @@ const ChannelCard = (props) => {
       });
   };
 
-  // 처음 마운트될 때 디테일 정보 가져오기
-  // props로 받아온 channel 은 channellist 로 받아온 정보라서 id, name 이런것만있음
-  // 여기서 get 요청으로 보내는게 user 정보도 받아옴
-  const getChannel = () => {
-    const url = `${SERVER_URL}/rooms/${channel.id}/`;
-    const handleSetChannelData = (channelData) => {
-      setChannelData(channelData);
-    };
-    axios
-      .get(url, config)
-      .then((res) => {
-        console.log("채널 정보 가져옴");
-        console.log(res.data.data);
-        // handleSetChannelData(res.data.data);
-      })
-      .catch((err) => {
-        // console.log("채널 입장 에러");
-        console.log(err.response);
-      });
-  };
-  useEffect(() => {
-    getChannel();
-  }, []);
-  //
-
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <Button onClick={entranceChannel}>입장하기</Button>

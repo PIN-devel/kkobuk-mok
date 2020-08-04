@@ -21,7 +21,6 @@ const ChannelList = (props) => {
     right = true;
   }
 
-  console.log("몇번이야");
   const classes = useStyles();
   const handleSetPage = (dir) => {
     if (dir === "right") {

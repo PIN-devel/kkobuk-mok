@@ -99,13 +99,12 @@ const Channel = () => {
     axios
       .get(SERVER_URL + "/rooms", config)
       .then((res) => {
-        console.log("성공");
-        console.log(res);
+        console.log("채널들 가져옴");
+        // console.log(res);
         handleSetChannels(res.data.data);
-        // setChannels(); // 여기 channels 업데이트 해줘
       })
       .catch((err) => {
-        console.log("에러!!");
+        console.log("Channel 에러!!");
         console.log(err.response);
       });
   };
