@@ -1,25 +1,20 @@
 import React from "react";
 import { Wrapper } from "./styles";
-import { Button, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import Progress from "../Progress";
+import Timer from "../Timer";
 
-const ControlPanel = (props) => {
+const ControlPanel = () => {
   return (
     <Wrapper>
-      <form>
-        <Grid container spacing={4} className="">
-          <Grid item xs={4}>
-            <input type="text" placeholder="시간" />
-            시간
-          </Grid>
-          <Grid item xs={4}>
-            <input type="text" placeholder="분" />분
-          </Grid>
-          <Grid item xs={4}>
-            <input type="text" placeholder="" />
-          </Grid>
+      <Grid container>
+        <Grid item xs={12} md={6} className="ProgressChart">
+          <Progress />
         </Grid>
-        <Button>Start</Button>
-      </form>
+        <Grid item xs={12} md={6} className="Panel">
+          <Timer />
+        </Grid>
+      </Grid>
     </Wrapper>
   );
 };
