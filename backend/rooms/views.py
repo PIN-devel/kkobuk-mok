@@ -15,8 +15,9 @@ PER_PAGE = 6
 @permission_classes([IsAuthenticated])
 def list_or_create(request):
     if request.method == 'GET':
+        keyword = request.GET.get('keyword')
         p = request.GET.get('_page', 1)
-        rooms = Paginator(Room.objects.order_by('-pk'), PER_PAGE)
+        rooms = Paginator(Room.objects.filter(name__contains=keyword).order_by('-pk'), PER_PAGE)
         serializer = RoomListSerializer(rooms.page(p), many=True)
         return Response({"status": "OK", "data": serializer.data})
     else:
@@ -56,11 +57,3 @@ def detail_or_in_or_out(request, room_id):
             room.save()
         return Response({"status": "OK", "data": serializer.data})
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def search(request):
-    keyword = request.GET.get('keyword')
-    p = request.GET.get('_page', 1)
-    rooms = Paginator(Room.objects.filter(name__contains=keyword).order_by('-pk'), PER_PAGE)
-    serializer = RoomListSerializer(rooms.page(p), many=True)
-    return Response({"status": "OK", "data": serializer.data})
