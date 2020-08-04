@@ -15,7 +15,7 @@ const ChannelDetail = (props) => {
   const token = Cookies.get("token");
   const config = {
     headers: {
-      Authorization: `Token ${token}`,
+      Authorization: `jwt ${token}`,
     },
   };
 

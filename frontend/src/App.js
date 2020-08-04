@@ -16,7 +16,6 @@ function App() {
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
   const [myUserId, setMyUserId] = useState(false);
   const [channelIn, setChannelIn] = useState(null);
-
   return (
     <div className="App">
       <AuthContext.Provider

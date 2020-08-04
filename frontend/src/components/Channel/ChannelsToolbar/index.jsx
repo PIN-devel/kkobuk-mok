@@ -42,7 +42,7 @@ const ChannelsToolbar = (props) => {
   const token = Cookies.get("token");
   const config = {
     headers: {
-      Authorization: `Token ${token}`,
+      Authorization: `jwt ${token}`,
     },
   };
   const createChannel = (e) => {
@@ -55,7 +55,7 @@ const ChannelsToolbar = (props) => {
     axios
       .post(url, channelData, config)
       .then((res) => {
-        console.log("성공");
+        console.log("채널 생성 성공");
         console.log(res.data.data);
         // handleSetChannelIn(res.data.data);
         // 여기 지금 roomlist 가 오는데 이거 room serializer 받아야함
