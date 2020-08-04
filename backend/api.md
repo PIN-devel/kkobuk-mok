@@ -19,6 +19,7 @@
 | 방 생성          | post         | /rooms/                                              | token,name, (password)                                       | 해당 방 정보 data                                            |
 | 방 상세 조회     | get          | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            |
 | 방 입장, 퇴장    | post         | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            |
+| 방 검색 | get | /rooms/search/ | token, query : _page, keyword | 검색어에 해당하는 방 리스트 data |
 |                  |              |                                                      |                                                              |                                                              |
 | 친구 리스트 조회     | get          | /accounts/friend/                  | token                                                        |                                                              |
 | 친구요청 리스트 조회 | get          | /accounts/friend/request/          | token                                                        |                                                              |

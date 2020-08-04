@@ -9,7 +9,7 @@ class RoomListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'password', )
 
 class RoomSerializer(serializers.ModelSerializer):
-    members = MemberSerializer(many=True)
+    members = MemberSerializer(many=True, required=False)
     class Meta:
         model = Room
         fields = ('id', 'name', 'members', )

@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Room
 from .serializers import RoomSerializer, RoomListSerializer
 
-PER_PAGE = 10
+PER_PAGE = 6
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -23,7 +23,7 @@ def list_or_create(request):
         # 생성 시 참여하고 있는 방 있으면 안됨
         if request.user.room:
             return Response({"status": "FAIL", "error_msg": "참여 중인 방이 있습니다."}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = RoomListSerializer(data=request.data)
+        serializer = RoomSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             room = serializer.save()
             request.user.room = room  # 생성 시 방 참여자에 등록
@@ -51,3 +51,12 @@ def detail_or_in_or_out(request, room_id):
             request.user.room = room
             request.user.save()
         return Response({"status": "OK", "data": serializer.data})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def search(request):
+    keyword = request.GET.get('keyword')
+    p = request.GET.get('_page', 1)
+    rooms = Paginator(Room.objects.filter(name__contains=keyword).order_by('-pk'), PER_PAGE)
+    serializer = RoomListSerializer(rooms.page(p), many=True)
+    return Response({"status": "OK", "data": serializer.data})
