@@ -80,8 +80,12 @@ const Channel = () => {
   // 검색 채널 리스트 (channels) 가져오기
   const token = Cookies.get("token");
   const config = {
+    params: {
+      _page: 1,
+      keyword: "",
+    },
     headers: {
-      Authorization: `Token ${token}`,
+      Authorization: `jwt ${token}`,
     },
   };
   const getChannels = (searchData) => {

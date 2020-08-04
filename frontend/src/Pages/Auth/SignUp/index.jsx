@@ -62,17 +62,17 @@ export default function SignUp() {
   const reqSignUp = (signUpData) => {
     // console.log(signUpData);
     const url = `${SERVER_URL}/rest-auth/signup/`;
-    const handleSetAuth = (auth) => {
+    const handleSetAuth = (auth, userId) => {
       setAuth(auth);
-      // setMyUserId(myUserId);
+      setMyUserId(userId);
     };
     axios
       .post(url, signUpData)
       .then((res) => {
         console.log("회원가입성공");
-        console.log(res);
-        Cookies.set("token", res.data.key, { path: "/" });
-        handleSetAuth(true);
+        // console.log(res);
+        Cookies.set("token", res.data.token, { path: "/" });
+        handleSetAuth(true, res.data.user.pk);
         history.push("user/");
         // 이거 프로필로 갈 때, 유저가 product 키 입력해줬으면 그것도 같이 보내주자 아 그러지는 말까?.... 어쩌지 고민좀
       })

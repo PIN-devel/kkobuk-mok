@@ -81,23 +81,21 @@ export default function SignIn() {
   const history = useHistory();
   const login = (loginData) => {
     const url = `${SERVER_URL}/rest-auth/login/`;
-    const handleSetAuth = (auth) => {
+    const handleSetAuth = (auth, userId) => {
       setAuth(auth);
-      // setMyUserId()
+      setMyUserId(userId);
     };
     axios
       .post(url, loginData)
       .then((res) => {
         // console.log(res);
-        Cookies.set("token", res.data.key, { path: "/" }); // expires:3  넣어주면 3일 지속됨 default는 브라우저 닫을때 사라짐
+        Cookies.set("token", res.data.token, { path: "/" }); // expires:3  넣어주면 3일 지속됨 default는 브라우저 닫을때 사라짐
         // setCookies("token", res.data.key, { path: "Current/" });  //path는 어디서 이 토큰을 쓸수 있는지라는데 잘안먹히는거같은데 몰라
         // history.push("friends/");
         //setAuth가 푸쉬보다 앞에 있으면 auth가 바뀌면서 다시 렌더됨
         // 즉 저기 밑에 렌더가 먼저임
         // 이건 비동기 요청이므로 뒤에 나오는 콘솔들이 실행되기는함
-        handleSetAuth(true);
-        console.log("이거 뒤에거는 안먹히나봐");
-        console.log(auth);
+        handleSetAuth(true, res.data.user.pk);
       })
       .catch((err) => {
         console.log("로그인 에러!!");
