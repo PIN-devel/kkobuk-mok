@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os, json
 from django.core.exceptions import ImproperlyConfigured
 
+# jwt
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -179,9 +181,14 @@ AUTH_USER_MODEL = 'accounts.User'
 SITE_ID = 3
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+    ),
     'EXCEPTION_HANDLER': 'accounts.utils.custom_exception_handler'
 }
 OLD_PASSWORD_FIELD_ENABLED = True
@@ -227,5 +234,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# jwt
+JWT_AUTH = {
+    'JWT_SECRET_KEY': get_secret('SECRET_KEY'),
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': timedelta(days=2),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(seconds=300),
+}
+REST_USE_JWT = True
+ACCOUNT_LOGOUT_ON_GET = True
+
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_CREDENTIALS = True
+
