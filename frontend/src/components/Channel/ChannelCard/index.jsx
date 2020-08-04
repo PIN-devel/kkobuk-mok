@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardContent,
@@ -15,55 +14,90 @@ import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 import { AuthContext } from "../../../contexts/AuthContext";
+import useStyles from "./styles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  imageContainer: {
-    height: 64,
-    width: 64,
-    margin: "0 auto",
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: "5px",
-    overflow: "hidden",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  image: {
-    width: "100%",
-  },
-  statsItem: {
-    display: "flex",
-    alignItems: "center",
-  },
-  statsIcon: {
-    color: theme.palette.icon,
-    marginRight: theme.spacing(1),
-  },
-}));
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const ChannelCard = (props) => {
   const { className, channel, ...rest } = props;
   const classes = useStyles();
 
-  const { channelIn, setChannelIn } = useContext(AuthContext);
-  const entranceChannel = () => {
-    setChannelIn(channel);
-    // 여기 인자로 channel 정보 받고 setChannel에 그 채널 넣어주자
+  const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
+
+  // 채널 디테일 가져오는 것
+  const [channelData, setChannelData] = useState({});
+
+  // 채널 입장
+  const token = Cookies.get("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
   };
+  const entranceChannel = () => {
+    const url = `${SERVER_URL}/rooms/${channel.id}/`;
+    const handleSetChannelIn = (channel) => {
+      setChannelIn(channel);
+    };
+    axios
+      .post(url, {}, config)
+      .then((res) => {
+        // console.log("채널 카드 성공");
+        // console.log(res.data.data);
+        handleSetChannelIn(res.data.data);
+      })
+      .catch((err) => {
+        console.log("채널 입장 에러");
+        console.log(err.response);
+      });
+  };
+
+  // 처음 마운트될 때 디테일 정보 가져오기
+  // props로 받아온 channel 은 channellist 로 받아온 정보라서 id, name 이런것만있음
+  // 여기서 get 요청으로 보내는게 user 정보도 받아옴
+  const getChannel = () => {
+    const url = `${SERVER_URL}/rooms/${channel.id}/`;
+    const handleSetChannelData = (channelData) => {
+      setChannelData(channelData);
+    };
+    axios
+      .get(url, config)
+      .then((res) => {
+        console.log("채널 정보 가져옴");
+        console.log(res.data.data);
+        // handleSetChannelData(res.data.data);
+      })
+      .catch((err) => {
+        console.log("채널 입장 에러");
+        console.log(err.response);
+      });
+  };
+  useEffect(() => {
+    getChannel();
+  }, []);
+  //
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <Button onClick={entranceChannel}>입장하기</Button>
       <CardContent>
         <div className={classes.imageContainer}>
-          <img alt="channel" className={classes.image} src={channel.imageUrl} />
+          <img
+            alt="channel"
+            className={classes.image}
+            // src={channelData.imageUrl}
+            src={channel.imageUrl}
+          />
         </div>
         <Typography align="center" gutterBottom variant="h4">
-          {channel.title}
+          {/* {channel.title} */}
+          이름 : {/* {channelData.name} */}
+          {channel.name}
         </Typography>
         <Typography align="center" variant="body1">
-          {channel.description}
+          {/* {channelData.description} */}
+          슬로건 : {channel.description}
         </Typography>
       </CardContent>
       <Divider />
@@ -78,7 +112,9 @@ const ChannelCard = (props) => {
           <Grid className={classes.statsItem} item>
             {/* <GetAppIcon className={classes.statsIcon} /> */}
             <Typography display="inline" variant="body2">
-              {channel.members} Member
+              {/* {channelData.members.length} Member */}
+              이거 디테일 정보 가져오는거 참여자 아니어도 가져오게 해주면 여기
+              채널 평균 점수랑 멤버수 나오게 가능
             </Typography>
           </Grid>
         </Grid>

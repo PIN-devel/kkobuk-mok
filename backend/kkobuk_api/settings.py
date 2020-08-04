@@ -77,9 +77,15 @@ INSTALLED_APPS = [
     # my app
     'accounts',
     'rooms',
+
+
+    # cors
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -238,3 +244,7 @@ JWT_AUTH = {
 }
 REST_USE_JWT = True
 ACCOUNT_LOGOUT_ON_GET = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
+
