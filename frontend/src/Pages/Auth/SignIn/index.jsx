@@ -67,15 +67,22 @@ export default function SignIn() {
     login({ email, password });
   };
 
-  // const [auth, setAuth] = useState(false); // 이거 나중에 context로 관리해줄거임
+  const handleSetEmail = (email) => {
+    setEmail(email);
+  };
+
+  const handleSetPassword = (password) => {
+    setPassword(password);
+  };
 
   const { auth, setAuth, SERVER_URL } = useContext(AuthContext);
   const history = useHistory();
   const login = (loginData) => {
+    const url = `${SERVER_URL}/rest-auth/login/`;
     axios
-      .post(SERVER_URL + "/rest-auth/login/", loginData)
+      .post(url, loginData)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Cookies.set("token", res.data.key, { path: "/" }); // expires:3  넣어주면 3일 지속됨 default는 브라우저 닫을때 사라짐
         // setCookies("token", res.data.key, { path: "Current/" });  //path는 어디서 이 토큰을 쓸수 있는지라는데 잘안먹히는거같은데 몰라
         // history.push("friends/");
@@ -172,7 +179,7 @@ export default function SignIn() {
               autoFocus
               value={email}
               onChange={(e) => {
-                setEmail(e.target.value);
+                handleSetEmail(e.target.value);
               }}
             />
 
@@ -188,7 +195,7 @@ export default function SignIn() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => {
-                setPassword(e.target.value);
+                handleSetPassword(e.target.value);
               }}
             />
 
