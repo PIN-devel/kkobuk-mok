@@ -16,7 +16,7 @@
 | 제품키 등록      | post         | /registration/<product_key>/                         | token                                                        | 성공 -> 200,  사용 중인 제품 키 -> 400, 해당 제품 키 없을 때 -> 404 |
 |                  |              |                                                      |                                                              |                                                              |
 | 방 리스트        | get          | /rooms/                                              | token, query : _page                                         | 방 리스트 data                                               |
-| 방 생성          | post         | /rooms/                                              | token,name, (password)                                       | 해당 방 정보 data                                            |
+| 방 생성          | post         | /rooms/                                              | token,name, (password), description                       | 해당 방 정보 data                                          |
 | 방 상세 조회     | get          | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            |
 | 방 입장, 퇴장    | post         | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            |
 | 방 검색 | get | /rooms/search/ | token, query : _page, keyword | 검색어에 해당하는 방 리스트 data |

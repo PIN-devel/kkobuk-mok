@@ -44,12 +44,16 @@ def detail_or_in_or_out(request, room_id):
         if room.members.filter(id=request.user.id).exists():
             request.user.room = None
             request.user.save()
+            room.member_num -= 1
+            room.save()
             # 방 참여자 없을 시 방 삭제
-            if room.members.count() == 0:
+            if room.member_num == 0:
                 room.delete()
         else:
             request.user.room = room
             request.user.save()
+            room.member_num += 1
+            room.save()
         return Response({"status": "OK", "data": serializer.data})
 
 @api_view(['GET'])
