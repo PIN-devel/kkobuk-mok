@@ -48,7 +48,7 @@ const ChannelCard = (props) => {
         handleSetChannelIn(res.data.data);
       })
       .catch((err) => {
-        console.log("채널 입장 에러");
+        // console.log("채널 입장 에러");
         console.log(err.response);
       });
   };
@@ -69,7 +69,7 @@ const ChannelCard = (props) => {
         // handleSetChannelData(res.data.data);
       })
       .catch((err) => {
-        console.log("채널 입장 에러");
+        // console.log("채널 입장 에러");
         console.log(err.response);
       });
   };
@@ -92,12 +92,12 @@ const ChannelCard = (props) => {
         </div>
         <Typography align="center" gutterBottom variant="h4">
           {/* {channel.title} */}
-          이름 : {/* {channelData.name} */}
+          채널이름 : {/* {channelData.name} */}
           {channel.name}
         </Typography>
         <Typography align="center" variant="body1">
           {/* {channelData.description} */}
-          슬로건 : {channel.description}
+          채널 : {channel.description}
         </Typography>
       </CardContent>
       <Divider />
@@ -112,9 +112,7 @@ const ChannelCard = (props) => {
           <Grid className={classes.statsItem} item>
             {/* <GetAppIcon className={classes.statsIcon} /> */}
             <Typography display="inline" variant="body2">
-              {/* {channelData.members.length} Member */}
-              이거 디테일 정보 가져오는거 참여자 아니어도 가져오게 해주면 여기
-              채널 평균 점수랑 멤버수 나오게 가능
+              {channel.member_num} members
             </Typography>
           </Grid>
         </Grid>

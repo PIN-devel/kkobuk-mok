@@ -13,9 +13,14 @@ const SearchComponent = (props) => {
 
   console.log("검색 컴포 렌더");
 
-  const implSearch = (e) => {
+  const implSearch = () => {
     setSearchData(searchValue);
     // setSearchData(textData);
+  };
+  const implSearch2 = (e) => {
+    if (e.key === "Enter") {
+      setSearchData(searchValue);
+    }
   };
 
   const onSearchValue = (e) => {
@@ -32,7 +37,12 @@ const SearchComponent = (props) => {
         className="search-component-grid"
       >
         <Grid item>
-          <Grid container spacing={1} alignItems="flex-end">
+          <Grid
+            container
+            spacing={1}
+            alignItems="flex-end"
+            onKeyPress={implSearch2}
+          >
             <Grid item xs={3}>
               <SearchIcon
                 className="search-component-grid-item-se-icon"
