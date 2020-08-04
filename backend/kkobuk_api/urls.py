@@ -20,6 +20,8 @@ from django.conf.urls.static import static
 
 from rest_auth import views
 
+from rest_framework_jwt.views import refresh_jwt_token
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
@@ -30,5 +32,7 @@ urlpatterns = [
     path('rest-auth/password/reset/', views.PasswordResetView.as_view(), name="password_reset"),
     path('rest-auth/password/reset/confirm/', views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path('', include('django.contrib.auth.urls')),
+    #jwt
+    path('api-jwt-auth/refresh/', refresh_jwt_token),
 ]\
 + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
