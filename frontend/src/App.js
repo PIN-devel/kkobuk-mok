@@ -30,27 +30,21 @@ function App() {
     inf: false,
   });
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
+  const [myUserId, setMyUserId] = useState(false);
   const [channelIn, setChannelIn] = useState(null);
   const [curScore, setCurScore] = useState(58);
   const [curHumid, setCurHumid] = useState(65);
   return (
     <div className="App">
-      <BaseContext.Provider
+      <AuthContext.Provider
         value={{
-          status,
-          setStatus,
-          scoreData,
-          setScoreData,
-          time,
-          setTime,
-          interv,
-          setInterv,
-          stopwatch,
-          setStopwatch,
-          curScore,
-          setCurScore,
-          curHumid,
-          setCurHumid,
+          auth,
+          setAuth,
+          SERVER_URL,
+          channelIn,
+          setChannelIn,
+          myUserId,
+          setMyUserId,
         }}
       >
         <AuthContext.Provider

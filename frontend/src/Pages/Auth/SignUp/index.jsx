@@ -28,20 +28,51 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [product, setProduct] = useState("");
+  // const [product, setProduct] = useState("");
   const [gender, setGender] = useState("1");
   const [birthDate, setBirthDate] = useState("2000-01-01");
-  const { auth, setAuth, SERVER_URL } = useContext(AuthContext);
+  const { auth, setAuth, SERVER_URL, myUserId, setMyUserId } = useContext(
+    AuthContext
+  );
 
   const history = useHistory();
 
+  const handleSetFirstName = (first) => {
+    setFirstName(first);
+  };
+  const handleSetLastName = (last) => {
+    setLastName(last);
+  };
+  const handleSetEmail = (email) => {
+    setEmail(email);
+  };
+  const handleSetPassword = (password) => {
+    setPassword(password);
+  };
+  const handelSetPasswordConfirm = (passwordConfirm) => {
+    setPasswordConfirm(passwordConfirm);
+  };
+  const handleSetGender = (gender) => {
+    setGender(gender);
+  };
+  const handleSetBirthDate = (birthdate) => {
+    setBirthDate(birthDate);
+  };
+
   const reqSignUp = (signUpData) => {
-    console.log(signUpData);
+    // console.log(signUpData);
+    const url = `${SERVER_URL}/rest-auth/signup/`;
+    const handleSetAuth = (auth) => {
+      setAuth(auth);
+      // setMyUserId(myUserId);
+    };
     axios
-      .post(SERVER_URL + "/rest-auth/signup/", signUpData)
+      .post(url, signUpData)
       .then((res) => {
+        console.log("회원가입성공");
+        console.log(res);
         Cookies.set("token", res.data.key, { path: "/" });
-        setAuth(true);
+        handleSetAuth(true);
         history.push("user/");
         // 이거 프로필로 갈 때, 유저가 product 키 입력해줬으면 그것도 같이 보내주자 아 그러지는 말까?.... 어쩌지 고민좀
       })
@@ -56,15 +87,19 @@ export default function SignUp() {
 
     // const useBirthDate =
     if (password === passwordConfirm) {
-      reqSignUp({
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        password1: password,
-        password2: password,
-        gender: numGender,
-        birth_date: birthDate,
-      });
+      if (password.length < 8) {
+        alert("비밀번호는 8자리 이상 입력해주세요");
+      } else {
+        reqSignUp({
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          password1: password,
+          password2: password,
+          gender: numGender,
+          birth_date: birthDate,
+        });
+      }
     } else {
       alert("비밀번호가 다릅니다.");
     }
@@ -94,7 +129,7 @@ export default function SignUp() {
                 autoFocus
                 value={firstName}
                 onChange={(e) => {
-                  setFirstName(e.target.value);
+                  handleSetFirstName(e.target.value);
                 }}
               />
             </Grid>
@@ -109,7 +144,7 @@ export default function SignUp() {
                 autoComplete="lname"
                 value={lastName}
                 onChange={(e) => {
-                  setLastName(e.target.value);
+                  handleSetLastName(e.target.value);
                 }}
               />
             </Grid>
@@ -124,7 +159,7 @@ export default function SignUp() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => {
-                  setEmail(e.target.value);
+                  handleSetEmail(e.target.value);
                 }}
               />
             </Grid>
@@ -140,7 +175,7 @@ export default function SignUp() {
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => {
-                  setPassword(e.target.value);
+                  handleSetPassword(e.target.value);
                 }}
               />
             </Grid>
@@ -156,11 +191,11 @@ export default function SignUp() {
                 autoComplete="current-password"
                 value={passwordConfirm}
                 onChange={(e) => {
-                  setPasswordConfirm(e.target.value);
+                  handelSetPasswordConfirm(e.target.value);
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
@@ -174,7 +209,7 @@ export default function SignUp() {
                   setProduct(e.target.value);
                 }}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={3}>
               <FormLabel>Gender</FormLabel>
             </Grid>
@@ -186,7 +221,7 @@ export default function SignUp() {
                   name="gender"
                   value={gender}
                   onChange={(e) => {
-                    setGender(e.target.value === "female" ? "1" : "0");
+                    handleSetGender(e.target.value === "female" ? "1" : "0");
                   }}
                 >
                   <FormControlLabel
@@ -217,7 +252,7 @@ export default function SignUp() {
                     shrink: true,
                   }}
                   onChange={(e) => {
-                    setBirthDate(e.target.value);
+                    handleSetBirthDate(e.target.value);
                   }}
                 />
               </form>
