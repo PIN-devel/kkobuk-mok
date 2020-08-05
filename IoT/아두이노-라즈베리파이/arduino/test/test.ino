@@ -89,6 +89,14 @@ void function(){
       noTone(SPEAKER_PIN);
       Serial.println("알람");      
     }
+    else if(s_data == "RON"){
+      digitalWrite(RELAY_PIN,1);
+      Serial.println("가습기 : on");     
+    }
+    else if(s_data == "ROF"){
+      digitalWrite(RELAY_PIN,0);
+      Serial.println("가습기 : off");      
+    }
 
     b_new_data = false;
   }
