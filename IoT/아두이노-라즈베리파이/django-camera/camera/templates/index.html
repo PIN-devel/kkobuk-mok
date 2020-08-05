@@ -4,11 +4,33 @@
 
 <body>
 	<h1>Temp controller</h1>
-	<button>start</button>
-	<button>stop</button>
+	<button onclick="startTimer()">start</button>
+	<button onclick="stopTimer()">stop</button>
+	<hr/>
+	<img id="image" src="{% static 'image/image.jpg' %}" alt="">
 	
-	<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript">
+		const image = document.querySelector('#image')
+		function startTimer(){
+			timer=setInterval(()=>{
+				// let today = new Date()
+				// console.log(today.toLocaleTimeString())
+				axios.get('/camera/camera/')
+					.then(res=>{
+						console.log(res)
+					})
+					.catch(err=>console.log(err))
+			}
+			,35000)
+		}
 
+		function stopTimer(){
+			if(timer!=null){
+				clearInterval(timer)
+			}
+		}
+	</script>
 
 </body>
 </html>
