@@ -34,7 +34,7 @@ export const Wrapper = styled.div`
       margin-left: 45px;
       margin-top: 30px;
       text-align: center center;
-      font-size: 130px;
+      font-size: 80px;
     }
   }
   @keyframes scaleIn {

@@ -1,6 +1,7 @@
 import React from "react";
 import { Wrapper } from "./styles";
 
+const value = 56;
 const Humidity = (props) => {
   return (
     <Wrapper value={props.humidity}>
