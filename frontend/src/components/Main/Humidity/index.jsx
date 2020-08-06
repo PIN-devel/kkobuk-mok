@@ -1,11 +1,9 @@
 import React from "react";
 import { Wrapper } from "./styles";
 
-const value = 70;
-
 const Humidity = (props) => {
   return (
-    <Wrapper value={value}>
+    <Wrapper value={props.humidity}>
       <div className="container">
         <input type="checkbox" id="humid" />
         <label for="humid" className="mybox">
@@ -13,7 +11,7 @@ const Humidity = (props) => {
         </label>
         <div className="words">
           <span>0%</span>
-          <span className="current">습도: {value}%</span>
+          <span className="current">습도: {props.humidity}%</span>
           <span>100%</span>
         </div>
       </div>
