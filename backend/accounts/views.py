@@ -189,10 +189,18 @@ def email_find(request, product_key):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def main_info(request):
-    info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
-    data = {
-        'posture_level': info.posture_level,
-        'temperature': info.temperature,
-        'humidity': info.humidity,
-    }
-    return Response({"status": "OK", "data": data})
+    if Sensing.objects.filter(user=request.user).order_by('-pk'):
+        info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
+        data = {
+            'posture_level': info.posture_level,
+            'temperature': info.temperature,
+            'humidity': info.humidity,
+        }
+        return Response({"status": "OK", "data": data})
+    else: # 센싱 값 없는 경우
+        data = {
+            'posture_level': 0,
+            'temperature': 0,
+            'humidity': 0,
+        }
+        return Response({"status": "OK", "data": data})
