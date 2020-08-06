@@ -75,15 +75,13 @@ export default function SignIn() {
     setPassword(password);
   };
 
-  const { auth, setAuth, SERVER_URL, myUserId, setMyUserId } = useContext(
-    AuthContext
-  );
+  const { auth, setAuth, SERVER_URL, setUser } = useContext(AuthContext);
   const history = useHistory();
   const login = (loginData) => {
     const url = `${SERVER_URL}/rest-auth/login/`;
     const handleSetAuth = (auth, userId) => {
       setAuth(auth);
-      setMyUserId(userId);
+      Cookies.set("myUserId", userId);
     };
     axios
       .post(url, loginData)

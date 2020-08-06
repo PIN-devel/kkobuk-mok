@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { Wrapper } from "./styles";
-import { Button, CssBaseline } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import Cookies from "js-cookie";
 import axios from "axios";
 
 function getModalStyle() {
@@ -29,62 +29,71 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ChangeInfo = (props) => {
-  const { SERVER_URL } = useContext(AuthContext);
+const token = Cookies.get("token");
+const config = {
+  headers: {
+    Authorization: `Jwt ${token}`,
+  },
+};
+
+const ChangeInfo = () => {
+  const { user, SERVER_URL } = useContext(AuthContext);
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
-  const [curPassword, setCurPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newImage, setNewImage] = useState(null);
+  const [old_password, setOld_Password] = useState("");
+  const [new_password1, setNew_Password1] = useState("");
+  const [new_password2, setNew_Password2] = useState("");
   const [newKey, setNewKey] = useState("");
 
-  const handleCurP = (e) => {
-    setCurPassword(e);
-    console.log(curPassword);
+  const handleOldP = (e) => {
+    setOld_Password(e.target.value);
   };
 
-  const handleNP = (e) => {
-    setNewPassword(e);
-    console.log(newPassword);
+  const handleNP1 = (e) => {
+    setNew_Password1(e.target.value);
   };
 
-  const handleConP = (e) => {
-    setConfirmPassword(e);
-    console.log(confirmPassword);
+  const handleNP2 = (e) => {
+    setNew_Password2(e.target.value);
+  };
+
+  const sendPass = (pw) => {
+    axios
+      .post(SERVER_URL + "/rest-auth/password/change/", pw, config)
+      .then((res) => {
+        console.log(res);
+        alert("비밀번호가 변경되었습니다");
+      })
+      .catch((err) => {
+        console.log(err.response);
+        console.log("비번 변경 실패");
+      });
   };
 
   const ChangePass = (e) => {
     e.preventDefault();
-    if (props.user.password === curPassword) {
-      axios
-        .put(SERVER_URL + `${props.user.id}`, {
-          ...props.user,
-          password: newPassword,
-        })
-        .then(() => {
-          alert("Changed password!");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (new_password1 === new_password2) {
+      sendPass({
+        new_password1,
+        new_password2,
+        old_password,
+      });
     } else {
-      alert("Wrong current password");
+      alert("새 비밀번호를 확인해주세요");
     }
   };
 
   const handleNewKey = (e) => {
-    setNewKey(e);
+    setNewKey(e.target.value);
   };
 
   const ChangeKey = (e) => {
     e.preventDefault();
     axios
-      .put(SERVER_URL + `${props.user.id}`, {
-        ...props.user,
-        product_key: newKey,
-      })
-      .then(() => {
+      .post(SERVER_URL + `/registration/${newKey}/`, newKey, config)
+      .then((res) => {
         alert("changed product key!");
       })
       .catch((err) => {
@@ -100,23 +109,61 @@ const ChangeInfo = (props) => {
     setOpen(false);
   };
 
+  const ImageHandler = (e) => {
+    setNewImage(e.target.files[0]);
+  };
+
+  const EditImage = (e) => {
+    e.preventDefault();
+    axios
+      .put(SERVER_URL + `${user.id}`, {
+        ...user,
+        image: newImage,
+      })
+      .then((res) => {
+        console.log(res);
+        alert("changed image!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const EditForm = (
     <div style={modalStyle} className={classes.paper}>
       <div>
+        <input type="file" onChange={ImageHandler} />
+        <Button
+          className={classes.margin}
+          variant="contained"
+          color="primary"
+          onClick={EditImage}
+        >
+          Edit Image
+        </Button>
+      </div>
+      <div>
         <TextField
+          type="password"
           label="Current Password"
           variant="outlined"
-          onChange={handleCurP}
+          onChange={handleOldP}
         />
         <TextField
+          type="password"
           label="New Password"
           variant="outlined"
-          onChange={handleNP}
+          onChange={handleNP1}
         />
         <TextField
+          error={new_password1 === new_password2 ? false : true}
+          helperText={
+            new_password1 === new_password2 ? "" : "비밀번호를 확인해주세요"
+          }
+          type="password"
           label="Confirm Password"
           variant="outlined"
-          onChange={handleConP}
+          onChange={handleNP2}
         />
         <Button
           className={classes.margin}

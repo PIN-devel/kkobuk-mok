@@ -31,9 +31,7 @@ export default function SignUp() {
   // const [product, setProduct] = useState("");
   const [gender, setGender] = useState("1");
   const [birthDate, setBirthDate] = useState("2000-01-01");
-  const { auth, setAuth, SERVER_URL, myUserId, setMyUserId } = useContext(
-    AuthContext
-  );
+  const { auth, setAuth, SERVER_URL, setUser } = useContext(AuthContext);
 
   const history = useHistory();
 
@@ -64,13 +62,14 @@ export default function SignUp() {
     const url = `${SERVER_URL}/rest-auth/signup/`;
     const handleSetAuth = (auth, userId) => {
       setAuth(auth);
-      setMyUserId(userId);
+      Cookies.set("myUserId", userId);
     };
     axios
       .post(url, signUpData)
       .then((res) => {
         console.log("회원가입성공");
         // console.log(res);
+        console.log(res);
         Cookies.set("token", res.data.token, { path: "/" });
         handleSetAuth(true, res.data.user.pk);
         history.push("user/");
