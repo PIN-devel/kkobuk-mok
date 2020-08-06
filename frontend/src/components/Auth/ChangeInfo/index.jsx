@@ -129,6 +129,20 @@ const ChangeInfo = () => {
       });
   };
 
+  const deleteAccount = (e) => {
+    e.preventDefault();
+    axios
+      .delete(`${SERVER_URL}/accounts/${user.id}`, config)
+      .then((res) => {
+        console.log("회원탈퇴");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        console.log("회원탈퇴 실패");
+      });
+  };
+
   const EditForm = (
     <div style={modalStyle} className={classes.paper}>
       <div>
@@ -171,7 +185,7 @@ const ChangeInfo = () => {
           color="primary"
           onClick={ChangePass}
         >
-          Change Password
+          비밀번호 변경
         </Button>
       </div>
       <div>
@@ -186,7 +200,15 @@ const ChangeInfo = () => {
           color="primary"
           onClick={ChangeKey}
         >
-          Change Product Key
+          제품키 등록/변경
+        </Button>
+        <Button
+          className={classes.margin}
+          variant="contained"
+          color="primary"
+          onClick={deleteAccount}
+        >
+          회원 탈퇴
         </Button>
       </div>
     </div>

@@ -74,6 +74,7 @@ const Timer = (props) => {
   // stopped = 2
 
   const start = () => {
+    axios.post(`${}/`)
     run();
     setStatus(1);
     setInterv(setInterval(run, 1000));
@@ -104,6 +105,15 @@ const Timer = (props) => {
 
   const stop = () => {
     clearInterval(interv);
+    axios
+      .post(`${SERVER_URL}/ 여기 url 아직 미정/`, config)
+      .then((res) => {
+        console.log(res);
+        console.log("멈춤");
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
     setStatus(2);
   };
 

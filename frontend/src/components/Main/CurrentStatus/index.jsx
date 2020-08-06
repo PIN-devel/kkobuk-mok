@@ -3,7 +3,10 @@ import CurrentScore from "../CurrentScore";
 import Room from "../Room";
 import { Grid } from "@material-ui/core";
 import { Wrapper, Image } from "./styles";
-import Bono2 from "../../../assets/bono2.jpg";
+import turtle1 from "../../../assets/turtle1.jpg";
+import turtle2 from "../../../assets/turtle2.jpg";
+import turtle3 from "../../../assets/turtle3.jpg";
+import turtle4 from "../../../assets/turtle4.jpg";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -50,7 +53,18 @@ const CurrentStatus = (props) => {
     <Wrapper>
       <Grid container>
         <Grid item xs={12} md={3}>
-          <Image src={Bono2} alt="gone" />
+          <Image
+            src={
+              myScore === 3
+                ? turtle1
+                : myScore === 2
+                ? turtle2
+                : myScore === 1
+                ? turtle3
+                : turtle4
+            }
+            alt="gone"
+          />
         </Grid>
         <Grid item xs={12} md={6}>
           <CurrentScore myScore={myScore} />
