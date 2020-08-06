@@ -18,4 +18,6 @@ urlpatterns = [
     path('timesetting/', views.timesetting_create_or_delete_or_update),
 
     path('find/<product_key>/', views.email_find),
+
+    path('maininfo/', views.main_info),
 ]
