@@ -24,7 +24,7 @@ const Progress = (props) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" />
-        <YAxis type="number" domain={[0, 100]} />
+        <YAxis type="number" domain={[0, 3]} />
         <Tooltip />
         <Legend />
         <Line
