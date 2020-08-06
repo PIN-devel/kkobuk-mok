@@ -122,8 +122,8 @@ WSGI_APPLICATION = 'kkobuk_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE' : 'django.db.backends.mysql',
-        'NAME' : 'test', # database name
-        'USER' : 'b109', # root
+        'NAME' : 'kkobuk_back', # database name
+        'USER' : 'ssafy', # root
         'PASSWORD' : get_secret('DB_PASSWORD'), # root password
         'HOST' : 'i3b109.p.ssafy.io',
         'POST' : '3306',
