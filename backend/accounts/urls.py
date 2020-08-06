@@ -20,4 +20,7 @@ urlpatterns = [
     path('find/<product_key>/', views.email_find),
 
     path('maininfo/', views.main_info),
+    # 라즈베리파이
+    path('initialinfo/', views.initial_info),
+    path('sensingsave/', views.sensing_save),
 ]

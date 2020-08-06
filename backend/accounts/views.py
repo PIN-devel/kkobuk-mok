@@ -196,11 +196,43 @@ def main_info(request):
             'temperature': info.temperature,
             'humidity': info.humidity,
         }
-        return Response({"status": "OK", "data": data})
     else: # 센싱 값 없는 경우
         data = {
             'posture_level': 0,
             'temperature': 0,
             'humidity': 0,
         }
-        return Response({"status": "OK", "data": data})
+    return Response({"status": "OK", "data": data})
+
+@api_view(['GET'])
+def initial_info(request):
+    product_key = request.GET.get('product_key')
+    p = get_object_or_404(Product, product_key=product_key)
+    if p.user.time_setting:
+        data = {
+            'desired_humidity': p.user.desired_humidity,
+            'auto_setting': p.user.auto_setting,
+            'total_time': p.user.time_setting.total_time,
+            'work_time': p.user.time_setting.work_time,
+            'break_time': p.user.time_setting.break_time,
+        }
+    else:
+        data = {
+            'desired_humidity': p.user.desired_humidity,
+            'auto_setting': p.user.auto_setting,
+            'total_time': None,
+            'work_time': None,
+            'break_time': None,
+        }
+    return Response({"status": "OK", "data": data})
+
+@api_view(['POST'])
+def sensing_save(request):
+    product_key = request.data.get('product_key')
+    posture_level = request.data.get('posture_level')
+    temperature = request.data.get('temperature')
+    humidity = request.data.get('humidity')
+
+    p = get_object_or_404(Product, product_key=product_key)
+    Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
+    return Response({"status": "OK"})
