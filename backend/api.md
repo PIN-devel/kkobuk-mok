@@ -30,3 +30,5 @@
 | 작업 시간 생성 | post | /accounts/timesetting/ | token,total_time,work_time,break_time | |
 | 작업 시간 삭제 | delete       | /accounts/timesetting/ | token | |
 | 작업 시간 수정 | put | /accounts/timesetting/ | token,total_time,work_time,break_time | |
+|  |  |  |  | |
+| 메인페이지 정보 | get | /accounts/maininfo/ | token | 현재 posture_level, temperature, humidity                    |

@@ -122,11 +122,11 @@ WSGI_APPLICATION = 'kkobuk_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE' : 'django.db.backends.mysql',
-        'NAME' : 'test', # database name
-        'USER' : 'b109', # root
-        'PASSWORD' : get_secret('DB_PASSWORD'), # root password
-        'HOST' : 'i3b109.p.ssafy.io',
-        'POST' : '3306',
+        'NAME' : 'test2', # database name
+        'USER' : 'root', # root
+        'PASSWORD' : 'cofflswj5', # root password
+        # 'HOST' : 'i3b109.p.ssafy.io',
+        # 'POST' : '3306',
     },
 	'OPTIONS': {
         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
@@ -239,8 +239,8 @@ JWT_AUTH = {
     'JWT_SECRET_KEY': get_secret('SECRET_KEY'),
     'JWT_ALGORITHM': 'HS256',
     'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': timedelta(days=2),
-    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(seconds=300),
+    'JWT_EXPIRATION_DELTA': timedelta(days=3),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=1),
 }
 REST_USE_JWT = True
 # ACCOUNT_LOGOUT_ON_GET = True
