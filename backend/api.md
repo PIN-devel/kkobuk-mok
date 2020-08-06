@@ -16,7 +16,7 @@
 | 제품키 등록      | post         | /registration/<product_key>/                         | token                                                        | 성공 -> 200,  사용 중인 제품 키 -> 400, 해당 제품 키 없을 때 -> 404 |
 |                  |              |                                                      |                                                              |                                                              |
 | 방 리스트        | get          | /rooms/                                              | token, query : _page, keyword                 | 방 리스트 data                                               |
-| 방 생성          | post         | /rooms/                                              | token,name, (password), description                       | 해당 방 정보 data                                          |
+| 방 생성          | post         | /rooms/                                              | token, name, (password), description                      | 해당 방 정보 data                                          |
 | 방 상세 조회     | get          | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            |
 | 방 입장, 퇴장    | post         | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            |
 |                  |              |                                                      |                                                              |                                                              |
@@ -32,3 +32,7 @@
 | 작업 시간 수정 | put | /accounts/timesetting/ | token,total_time,work_time,break_time | |
 |  |  |  |  | |
 | 메인페이지 정보 | get | /accounts/maininfo/ | token | 현재 posture_level, temperature, humidity                    |
+|  |  |  |  |  |
+| 라즈베리파이 |  |  |  |  |
+| 초기화 설정 값 | get | /accounts/initialinfo/ | query: product_key | desired_humidity, auto_setting, total_time, work_time, break_time |
+| 센싱값 저장 | post | /accounts/sensingsave/ | product_key, posture_level, temperature, humidity |  |

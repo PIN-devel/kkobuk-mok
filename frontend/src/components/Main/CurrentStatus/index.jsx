@@ -28,7 +28,7 @@ const CurrentStatus = (props) => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
       .then((res) => {
-        console.log("성공");
+        console.log(res.data.data);
         setMyScore(res.data.data.posture_level);
         setHumidity(res.data.data.humidity);
         setTemperature(res.data.data.temperature);

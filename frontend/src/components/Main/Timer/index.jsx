@@ -74,10 +74,10 @@ const Timer = (props) => {
   // stopped = 2
 
   const start = () => {
-    axios.post(`${}/`)
-    run();
-    setStatus(1);
-    setInterv(setInterval(run, 1000));
+    // axios.post(`${}/`)
+    // run();
+    // setStatus(1);
+    // setInterv(setInterval(run, 1000));
   };
   var updatedS = time.s,
     updatedM = time.m,
