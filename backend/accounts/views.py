@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 
-from .models import FriendRequest, Product, TimeSetting
+from .models import FriendRequest, Product, TimeSetting, Sensing
 from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer
 from .helper import email_auth_num
 
@@ -135,6 +135,7 @@ def friend_add_or_delete(request, user_id):
         return Response({"status": "OK", "msg": "친구를 삭제하였습니다."})
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def friend_accept(request,user_id):
     receiver = request.user
     sender = get_object_or_404(User,id=user_id)
@@ -144,6 +145,7 @@ def friend_accept(request,user_id):
     return Response({"status": "OK", "msg": "친구 요청을 수락하였습니다."})
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def friend_reject(request,user_id):
     receiver = request.user
     sender = get_object_or_404(User,id=user_id)
@@ -152,6 +154,7 @@ def friend_reject(request,user_id):
     return Response({"status": "OK", "msg": "친구 요청을 거절하였습니다."})
 
 @api_view(['POST','DELETE','PUT'])
+@permission_classes([IsAuthenticated])
 def timesetting_create_or_delete_or_update(request):
     if request.method == 'POST':
         serializer = TimeSettingSerializer(data=request.data)
@@ -183,3 +186,21 @@ def email_find(request, product_key):
     else:
         return Response({"status": "FAIL", "msg": "해당 제품키를 등록한 유저가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def main_info(request):
+    if Sensing.objects.filter(user=request.user).order_by('-pk'):
+        info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
+        data = {
+            'posture_level': info.posture_level,
+            'temperature': info.temperature,
+            'humidity': info.humidity,
+        }
+        return Response({"status": "OK", "data": data})
+    else: # 센싱 값 없는 경우
+        data = {
+            'posture_level': 0,
+            'temperature': 0,
+            'humidity': 0,
+        }
+        return Response({"status": "OK", "data": data})

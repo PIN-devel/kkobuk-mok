@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   LineChart,
   Line,
@@ -10,13 +10,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Progress = () => {
-  const [scoreData, setScoreData] = useState(58);
-  useEffect(() => {}, [scoreData]);
+const Progress = (props) => {
   return (
     <ResponsiveContainer height={260} width="90%">
       <LineChart
-        data={scoreData}
+        data={props.scoreData}
         margin={{
           top: 5,
           right: 30,
@@ -26,7 +24,7 @@ const Progress = () => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" />
-        <YAxis type="number" domain={[0, 100]} />
+        <YAxis type="number" domain={[0, 3]} />
         <Tooltip />
         <Legend />
         <Line

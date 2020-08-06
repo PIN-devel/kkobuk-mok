@@ -59,22 +59,22 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Posture',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('time_level1', models.IntegerField()),
-                ('time_level2', models.IntegerField()),
-                ('time_level3', models.IntegerField()),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
-        migrations.CreateModel(
             name='Product',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('product_key', models.CharField(max_length=200)),
                 ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Sensing',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('created_at', models.DateField(auto_now_add=True)),
+                ('posture_level', models.IntegerField()),
+                ('temperature', models.FloatField()),
+                ('humidity', models.FloatField()),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sensing', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(

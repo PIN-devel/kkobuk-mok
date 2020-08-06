@@ -18,11 +18,19 @@ import Footer from "../Footer";
 import useStyles from "./styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
+import axios from "axios";
+
+const token = Cookies.get("token");
+const config = {
+  headers: {
+    Authorization: `Jwt ${token}`,
+  },
+};
 
 export default function Dashboard(props) {
-  const { setAuth } = useContext(AuthContext);
+  const { SERVER_URL, setAuth } = useContext(AuthContext);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
@@ -46,9 +54,18 @@ export default function Dashboard(props) {
   };
 
   const Logout = () => {
-    setAuth(false);
-    Cookies.remove("token");
-    console.log("Logout Success!!!!!");
+    axios
+      .post(`${SERVER_URL}/rest-auth/logout/`, config)
+      .then((res) => {
+        console.log(res);
+        Cookies.remove("token");
+        Cookies.remove("myUserId");
+        setAuth(false);
+        console.log("Logout success!!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   // 반응형
   // const isTablet = useMediaQuery("(max-width:960px)");

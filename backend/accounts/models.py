@@ -50,12 +50,12 @@ class FriendRequest(models.Model):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sending')
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='receiving')
 
-class Posture(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    time_level1 = models.IntegerField()
-    time_level2 = models.IntegerField()
-    time_level3 = models.IntegerField()
+class Sensing(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sensing')
+    created_at = models.DateField(auto_now_add=True)
+    posture_level = models.IntegerField()
+    temperature = models.FloatField()
+    humidity = models.FloatField()
 
 class Product(models.Model):
     product_key = models.CharField(max_length=200)

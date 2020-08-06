@@ -36,13 +36,13 @@ const Timer = (props) => {
   // started = 1
   // stopped = 2
   const [time, setTime] = useState({ s: 0, m: 0, h: 0 });
-  const [interv, setInterv] = useState("");
+  const [interv, setInterv] = useState();
   const [stopwatch, setStopwatch] = useState({
     m: 0,
     h: 0,
     work: 0,
     break: 0,
-    inf: false,
+    inf: true,
   });
 
   const scoreDataRef = useRef(props.scoreData);
@@ -57,10 +57,7 @@ const Timer = (props) => {
         let minutes = now.getMinutes(); // 분
         props.setScoreData([
           ...scoreDataRef.current,
-          {
-            time: `${hours}:${minutes}`,
-            score: `${res.data.data.posture_level}`,
-          },
+          { time: `${hours}:${minutes}`, score: `${res.value}` },
         ]);
         console.log("성공");
       })
@@ -76,7 +73,24 @@ const Timer = (props) => {
   const start = () => {
     run();
     setStatus(1);
-    setInterv(setInterval(run, 1000));
+    if (stopwatch.inf) {
+      setInterv(setInterval(run, 1000));
+      const tick = setInterval(() => {
+        if (updatedM === 2) {
+          clearInterval(interv);
+          clearInterval(tick);
+        }
+      }, 10);
+    } else {
+      setInterv(
+        setInterval(function () {
+          if (status !== 1) {
+            clearInterval(interv);
+          }
+          run();
+        }, 10)
+      );
+    }
   };
   var updatedS = time.s,
     updatedM = time.m,
@@ -94,6 +108,9 @@ const Timer = (props) => {
     if (updatedM === 60) {
       updatedH++;
       updatedM = 0;
+    }
+    if (updatedM === 3) {
+      stop();
     }
     return setTime({
       s: updatedS,

@@ -1,11 +1,17 @@
 #include <DHT.h>
 #include <DHT_U.h>
+#include <Servo.h>
+
 #define DHT_PIN 7
+#define SERVO_PIN 3
+#define SPEAKER_PIN 8
+#define RELAY_PIN 12
+
 #define DHTTYPE DHT11
 DHT_Unified dht(DHT_PIN, DHTTYPE);
 
-#include <Servo.h>
-#define SERVO_PIN 3
+int Tones[7] = {261, 294, 330, 349, 392, 440, 494};
+
 Servo servo;
 
 
@@ -56,17 +62,42 @@ void function(){
           Serial.print(event.relative_humidity);
           Serial.println(F("%"));
         }
-    }else if(s_data == "MC1"){
+    }
+    
+    else if(s_data == "MC1"){
       servo.write(0);
       Serial.println("자세 : 양호");
-    }else if(s_data == "MC2"){
+    }
+    
+    else if(s_data == "MC2"){
       servo.write(90);
       Serial.println("자세 : 주의");
-    }else if(s_data == "MC3"){
+    }
+    
+    else if(s_data == "MC3"){
       servo.write(180);
       Serial.println("자세 : 심각");      
     }
     
+    else if(s_data == "SP"){
+      tone(SPEAKER_PIN,Tones[5]);
+      delay(200);
+      noTone(SPEAKER_PIN);
+      delay(50);
+      tone(SPEAKER_PIN,Tones[5]);
+      delay(200);
+      noTone(SPEAKER_PIN);
+      Serial.println("알람");      
+    }
+    else if(s_data == "RON"){
+      digitalWrite(RELAY_PIN,1);
+      Serial.println("가습기 : on");     
+    }
+    else if(s_data == "ROF"){
+      digitalWrite(RELAY_PIN,0);
+      Serial.println("가습기 : off");      
+    }
+
     b_new_data = false;
   }
 }

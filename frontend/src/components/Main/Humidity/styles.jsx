@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
       width: 0%;
     }
     to {
-      width: ${(props) => props.value}%;
+      width: ${(props) => props.humidity}%;
     }
   }
   .container {
