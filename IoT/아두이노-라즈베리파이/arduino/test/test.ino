@@ -48,9 +48,9 @@ void function(){
           Serial.println(F("Error reading temperature!"));
         }
         else {
-          Serial.print(F("온도: "));
+          
           Serial.print(event.temperature);
-          Serial.print(F("°C "));
+          Serial.print(",");
         }
         // Get humidity event and print its value.
         dht.humidity().getEvent(&event);
@@ -58,25 +58,23 @@ void function(){
           Serial.println(F("Error reading humidity!"));
         }
         else {
-          Serial.print(F("습도: "));
-          Serial.print(event.relative_humidity);
-          Serial.println(F("%"));
+          Serial.println(event.relative_humidity);
         }
     }
     
     else if(s_data == "MC1"){
       servo.write(0);
-      Serial.println("자세 : 양호");
+      Serial.println("1");
     }
     
     else if(s_data == "MC2"){
       servo.write(90);
-      Serial.println("자세 : 주의");
+      Serial.println("2");
     }
     
     else if(s_data == "MC3"){
       servo.write(180);
-      Serial.println("자세 : 심각");      
+      Serial.println("3");      
     }
     
     else if(s_data == "SP"){
