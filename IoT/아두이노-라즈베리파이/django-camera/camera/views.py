@@ -1,4 +1,5 @@
-import serial,time
+import serial,time,requests
+import time
 
 from django.shortcuts import render
 
@@ -20,6 +21,7 @@ def take_pic(request):
     img_src= 'static/image/image.jpg'
     camera = PiCamera()
     camera.resolution = (224, 224)
+    time.sleep(5)
     camera.capture(img_src)
     camera.close()
     tmpList = outPrint(img_src)[0]
@@ -37,11 +39,12 @@ def take_pic(request):
     if arduino.readable():
         tmp = arduino.readline()
         sensor = tmp.decode('utf-8')[2:len(tmp)-3]
-    context = {
-        "motor":motor,
-        "sensor":sensor
-    }
-    return Response(context)
+    
+    tem,hum=sensor.split(',')
+    # product_key, posture_level, temperature, humidity
+    requests.post('http://3.35.17.150/accounts/sensingsave/',data={"posture_level":int(motor[2:]),"product_key":"1111-1111-1111-1111","temperature":float(tem),"humidity":float(hum)})
+
+    return Response({})
 
 @api_view(['GET'])
 def sensor_read(request):
