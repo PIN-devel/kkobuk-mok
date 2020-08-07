@@ -12,6 +12,9 @@ from .models import FriendRequest, Product, TimeSetting, Sensing
 from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer
 from .helper import email_auth_num
 
+from django.db.models import Count, Sum
+from datetime import date, timedelta
+
 User = get_user_model()
 
 @api_view(['GET'])
@@ -31,7 +34,18 @@ def detail_or_delete_or_update(request, user_id):
 
     # 조회
     if request.method == 'GET':
-        return Response({"status": "OK", "data": serializer.data})
+        if user.sensing:
+            startdate = date.today()
+            posture = {}
+            for i in range(0,8):
+                day = startdate - timedelta(days=i)
+                cnt = Sensing.objects.filter(user=user).filter(created_at=day).count()
+                if cnt:
+                    avg = Sensing.objects.filter(user=user).filter(created_at=day).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
+                    posture[str(day)] = round(avg,2)
+                else:
+                    posture[str(day)] = 0
+        return Response({"status": "OK", "data": {**serializer.data, "posture": posture}})
 
     # 삭제
     if request.method == 'DELETE':
