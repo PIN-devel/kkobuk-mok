@@ -4,6 +4,7 @@
 
 <body>
 	<h1>Temp controller</h1>
+	<button onclick="init()"> init </button>
 	<button onclick="startTimer()">start</button>
 	<button onclick="stopTimer()">stop</button>
 	<hr/>
@@ -11,7 +12,24 @@
 	
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script type="text/javascript">
-		const image = document.querySelector('#image')
+		
+		let humidity, breakTime, totalTime, workTime;
+		function init(){
+			console.log('start')
+// 					break_time: null
+			// desired_humidity: null
+				// total_time: null
+			// work_time: null
+			axios.get('http://3.35.17.150/accounts/initialinfo/?product_key=1111-1111-1111-1111')
+				.then(res=>{
+					console.log(res)
+					humidity = res.data.data.desired_humidity;
+					breakTime = res.data.data.break_time;
+					totalTime = res.data.data.total_time;
+					workTime = res.data.data.work_time;
+				})
+				.catch(res=>console.log(res))
+		}
 		function startTimer(){
 			timer=setInterval(()=>{
 				// let today = new Date()
@@ -22,7 +40,7 @@
 					})
 					.catch(err=>console.log(err))
 			}
-			,35000)
+			,40000)
 		}
 
 		function stopTimer(){
