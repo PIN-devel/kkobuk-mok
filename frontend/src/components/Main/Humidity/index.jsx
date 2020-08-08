@@ -1,21 +1,47 @@
 import React from "react";
 import { Wrapper } from "./styles";
+import Typography from "@material-ui/core/Typography";
+import Slider from "@material-ui/core/Slider";
+import { makeStyles } from "@material-ui/core/styles";
 
-const value = 56;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 300,
+  },
+  margin: {
+    height: theme.spacing(3),
+  },
+}));
+
+const marks = [
+  {
+    value: 0,
+    label: "0%",
+  },
+  {
+    value: 100,
+    label: "100%",
+  },
+];
+
+function valuetext(value) {
+  return `${value}%`;
+}
+
 const Humidity = (props) => {
   return (
-    <Wrapper value={props.humidity}>
-      <div className="container">
-        <input type="checkbox" id="humid" />
-        <label for="humid" className="mybox">
-          <div className="fill"></div>
-        </label>
-        <div className="words">
-          <span>0%</span>
-          <span className="current">습도: {props.humidity}%</span>
-          <span>100%</span>
-        </div>
-      </div>
+    <Wrapper>
+      <Typography id="discrete-slider-always" gutterBottom>
+        습도
+      </Typography>
+      <Slider
+        defaultValue={props.humidity}
+        getAriaValueText={valuetext}
+        aria-labelledby="discrete-slider-always"
+        step={1}
+        marks={marks}
+        valueLabelDisplay="on"
+      />
     </Wrapper>
   );
 };
