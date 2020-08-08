@@ -67,6 +67,7 @@ const ChangeInfo = () => {
         alert("비밀번호가 변경되었습니다");
       })
       .catch((err) => {
+        alert("현재 비밀번호가 틀립니다");
         console.log(err.response);
         console.log("비번 변경 실패");
       });
@@ -92,12 +93,14 @@ const ChangeInfo = () => {
   const ChangeKey = (e) => {
     e.preventDefault();
     axios
-      .post(SERVER_URL + `/registration/${newKey}/`, newKey, config)
+      .post(SERVER_URL + `/registration/${newKey}/`, config)
       .then((res) => {
-        alert("changed product key!");
+        console.log(res);
+        alert("제품키 등록 완료");
       })
       .catch((err) => {
         console.log(err);
+        alert("존재하지 않는 제품키입니다");
       });
   };
 
@@ -122,9 +125,10 @@ const ChangeInfo = () => {
       })
       .then((res) => {
         console.log(res);
-        alert("changed image!");
+        alert("프로필 이미지가 변경되었습니다");
       })
       .catch((err) => {
+        alert("프로필 이미지 변경 실패");
         console.log(err);
       });
   };
@@ -134,10 +138,12 @@ const ChangeInfo = () => {
     axios
       .delete(`${SERVER_URL}/accounts/${user.id}`, config)
       .then((res) => {
+        alert("회원탈퇴 되었습니다");
         console.log("회원탈퇴");
         console.log(res);
       })
       .catch((err) => {
+        alert("회원 탈퇴 실패");
         console.log(err.response);
         console.log("회원탈퇴 실패");
       });
@@ -159,13 +165,15 @@ const ChangeInfo = () => {
       <div>
         <TextField
           type="password"
-          label="Current Password"
+          label="현재 비밀번호"
           variant="outlined"
           onChange={handleOldP}
         />
         <TextField
+          error={new_password1.length >= 8 ? false : true}
+          helperText={new_password1.length >= 8 ? "" : "8자리 이상이어야합니다"}
           type="password"
-          label="New Password"
+          label="새 비밀번호"
           variant="outlined"
           onChange={handleNP1}
         />
@@ -175,7 +183,7 @@ const ChangeInfo = () => {
             new_password1 === new_password2 ? "" : "비밀번호를 확인해주세요"
           }
           type="password"
-          label="Confirm Password"
+          label="비밀번호 확인"
           variant="outlined"
           onChange={handleNP2}
         />

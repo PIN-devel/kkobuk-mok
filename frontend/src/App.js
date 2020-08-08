@@ -14,8 +14,8 @@ import Cookies from "js-cookie";
 import Axios from "axios";
 
 function App() {
-  // const SERVER_URL = "http://i3b109.p.ssafy.io";
-  const SERVER_URL = "http://localhost:8000";
+  const SERVER_URL = "http://3.35.17.150";
+  // const SERVER_URL = "http://localhost:8000";
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
   const [channelIn, setChannelIn] = useState(null);
   const [user, setUser] = useState({});

@@ -13,7 +13,7 @@ const ControlPanel = () => {
           <Progress scoreData={scoreData} />
         </Grid>
         <Grid item xs={12} md={6} className="Panel">
-          {/* <Timer scoreData={scoreData} setScoreData={setScoreData} /> */}
+          <Timer scoreData={scoreData} setScoreData={setScoreData} />
         </Grid>
       </Grid>
     </Wrapper>

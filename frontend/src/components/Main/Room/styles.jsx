@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
+  margin-top: 5%;
+  margin-right: 25%;
 `;
 
 export const Image = styled.img`

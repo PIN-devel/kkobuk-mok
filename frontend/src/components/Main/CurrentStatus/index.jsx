@@ -7,6 +7,7 @@ import turtle1 from "../../../assets/turtle1.jpg";
 import turtle2 from "../../../assets/turtle2.jpg";
 import turtle3 from "../../../assets/turtle3.jpg";
 import turtle4 from "../../../assets/turtle4.jpg";
+import head from "../../../assets/Khead.png";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -22,6 +23,7 @@ const CurrentStatus = (props) => {
   const [myScore, setMyScore] = useState();
   const [humidity, setHumidity] = useState();
   const [temperature, setTemperature] = useState();
+  const [scoreClass, setScoreClass] = useState("whiteCircle");
   const [isLoaded, setIsLoaded] = useState(false);
 
   const getInfo = () => {
@@ -30,6 +32,15 @@ const CurrentStatus = (props) => {
       .then((res) => {
         console.log(res.data.data);
         setMyScore(res.data.data.posture_level);
+        if (myScore === 3) {
+          setScoreClass("blueCircle");
+        } else if (myScore === 2) {
+          setScoreClass("yellowCircle");
+        } else if (myScore === 1) {
+          setScoreClass("redCircle");
+        } else {
+          setScoreClass("whiteCircle");
+        }
         setHumidity(res.data.data.humidity);
         setTemperature(res.data.data.temperature);
         setIsLoaded(true);
@@ -42,7 +53,10 @@ const CurrentStatus = (props) => {
 
   useEffect(() => {
     getInfo();
-    const ticktok = setInterval(getInfo, 10000);
+    const tick = setInterval(getInfo, 1000);
+    return function cleanup() {
+      clearInterval(tick);
+    };
   }, []);
 
   if (!isLoaded) {
@@ -56,20 +70,20 @@ const CurrentStatus = (props) => {
           <Image
             src={
               myScore === 3
-                ? turtle1
+                ? head
                 : myScore === 2
-                ? turtle2
+                ? head
                 : myScore === 1
-                ? turtle3
-                : turtle4
+                ? head
+                : head
             }
             alt="gone"
           />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <CurrentScore myScore={myScore} />
+        <Grid item xs={12} md={5}>
+          <CurrentScore myScore={myScore} scoreClass={scoreClass} />
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={4} className="dodo">
           <Room humidity={humidity} temperature={temperature} />
         </Grid>
       </Grid>

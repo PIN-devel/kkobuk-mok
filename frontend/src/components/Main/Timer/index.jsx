@@ -1,15 +1,16 @@
 import React, { useState, useRef, useContext } from "react";
 import DisplayComponent from "./DisplayComponent";
-import BtnComponent from "./BtnComponent";
-import { Grid } from "@material-ui/core";
+import { Grid, ClickAwayListener } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { Button } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Wrapper } from "./styles";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -75,9 +76,9 @@ const Timer = (props) => {
 
   const start = () => {
     // axios.post(`${}/`)
-    // run();
-    // setStatus(1);
-    // setInterv(setInterval(run, 1000));
+    run();
+    setStatus(1);
+    setInterv(setInterval(run, 1000));
   };
   var updatedS = time.s,
     updatedM = time.m,
@@ -133,147 +134,196 @@ const Timer = (props) => {
 
   const resume = () => start();
   return (
-    <div className="main-section">
-      <div className="clock-holder">
-        <div className="stopwatch">
+    <Wrapper>
+      <Grid container spacing={2}>
+        <Grid item xs={12} className="timer">
           <DisplayComponent time={time} />
-          <form>
-            <Grid container spacing={4} className="">
-              <Grid item xs={3}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel id="Stopwatch-Hour-label">Hour</InputLabel>
-                  <Select
-                    labelId="Stopwatch-Hour-label"
-                    id="Stopwatch-Hour"
-                    value={stopwatch.h}
-                    onChange={(event) => {
-                      setStopwatch({ ...stopwatch, h: event.target.value });
-                    }}
-                    label="Hour"
-                    disabled={status === 0 ? false : true}
-                  >
-                    <MenuItem value={0}>
-                      <em>0</em>
-                    </MenuItem>
-                    <MenuItem value={1}>1</MenuItem>
-                    <MenuItem value={2}>2</MenuItem>
-                    <MenuItem value={3}>3</MenuItem>
-                    <MenuItem value={4}>4</MenuItem>
-                    <MenuItem value={5}>5</MenuItem>
-                    <MenuItem value={6}>6</MenuItem>
-                    <MenuItem value={7}>7</MenuItem>
-                    <MenuItem value={8}>8</MenuItem>
-                    <MenuItem value={9}>9</MenuItem>
-                    <MenuItem value={10}>10</MenuItem>
-                    <MenuItem value={11}>11</MenuItem>
-                    <MenuItem value={12}>12</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={3}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel id="Stopwatch-Minute-label">Minute</InputLabel>
-                  <Select
-                    labelId="Stopwatch-Minute-label"
-                    id="Stopwatch-Minute"
-                    value={stopwatch.m}
-                    onChange={(event) => {
-                      setStopwatch({ ...stopwatch, m: event.target.value });
-                    }}
-                    label="Minute"
-                    disabled={status === 0 ? false : true}
-                  >
-                    <MenuItem value={0}>
-                      <em>0</em>
-                    </MenuItem>
-                    <MenuItem value={5}>5</MenuItem>
-                    <MenuItem value={10}>10</MenuItem>
-                    <MenuItem value={15}>15</MenuItem>
-                    <MenuItem value={20}>20</MenuItem>
-                    <MenuItem value={25}>25</MenuItem>
-                    <MenuItem value={30}>30</MenuItem>
-                    <MenuItem value={35}>35</MenuItem>
-                    <MenuItem value={40}>40</MenuItem>
-                    <MenuItem value={45}>45</MenuItem>
-                    <MenuItem value={50}>50</MenuItem>
-                    <MenuItem value={55}>55</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={3}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel id="Stopwatch-Worktime-label">Work</InputLabel>
-                  <Select
-                    labelId="Stopwatch-Worktime-label"
-                    id="Stopwatch-Worktime"
-                    value={stopwatch.work}
-                    onChange={(event) => {
-                      setStopwatch({ ...stopwatch, work: event.target.value });
-                    }}
-                    label="Work"
-                    disabled={status === 0 ? false : true}
-                  >
-                    <MenuItem value={0}>
-                      <em>0</em>
-                    </MenuItem>
-                    <MenuItem value={5}>5</MenuItem>
-                    <MenuItem value={10}>10</MenuItem>
-                    <MenuItem value={15}>15</MenuItem>
-                    <MenuItem value={20}>20</MenuItem>
-                    <MenuItem value={25}>25</MenuItem>
-                    <MenuItem value={30}>30</MenuItem>
-                    <MenuItem value={35}>35</MenuItem>
-                    <MenuItem value={40}>40</MenuItem>
-                    <MenuItem value={45}>45</MenuItem>
-                    <MenuItem value={50}>50</MenuItem>
-                    <MenuItem value={55}>55</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={3}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel id="Stopwatch-Break-label">Break</InputLabel>
-                  <Select
-                    labelId="Stopwatch-Break-label"
-                    id="Stopwatch-Break"
-                    value={stopwatch.break}
-                    onChange={(event) => {
-                      setStopwatch({ ...stopwatch, break: event.target.value });
-                    }}
-                    label="Break"
-                    disabled={
-                      status === 0 && stopwatch.work !== 0 ? false : true
-                    }
-                  >
-                    <MenuItem value={0}>
-                      <em>0</em>
-                    </MenuItem>
-                    <MenuItem value={5}>5</MenuItem>
-                    <MenuItem value={10}>10</MenuItem>
-                    <MenuItem value={15}>15</MenuItem>
-                    <MenuItem value={20}>20</MenuItem>
-                    <MenuItem value={25}>25</MenuItem>
-                    <MenuItem value={30}>30</MenuItem>
-                    <MenuItem value={35}>35</MenuItem>
-                    <MenuItem value={40}>40</MenuItem>
-                    <MenuItem value={45}>45</MenuItem>
-                    <MenuItem value={50}>50</MenuItem>
-                    <MenuItem value={55}>55</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </form>
-          <BtnComponent
-            status={status}
-            resume={resume}
-            reset={reset}
-            stop={stop}
-            start={start}
-          />
-        </div>
-      </div>
-    </div>
+        </Grid>
+        <Grid item xs={12} container spacing={2} className="">
+          <Grid item xs={12} md={3}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="Stopwatch-Hour-label">Hour</InputLabel>
+              <Select
+                labelId="Stopwatch-Hour-label"
+                id="Stopwatch-Hour"
+                value={stopwatch.h}
+                onChange={(event) => {
+                  setStopwatch({ ...stopwatch, h: event.target.value });
+                }}
+                label="Hour"
+                disabled={status === 0 ? false : true}
+              >
+                <MenuItem value={0}>
+                  <em>0</em>
+                </MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={6}>6</MenuItem>
+                <MenuItem value={7}>7</MenuItem>
+                <MenuItem value={8}>8</MenuItem>
+                <MenuItem value={9}>9</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={11}>11</MenuItem>
+                <MenuItem value={12}>12</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="Stopwatch-Minute-label">Minute</InputLabel>
+              <Select
+                labelId="Stopwatch-Minute-label"
+                id="Stopwatch-Minute"
+                value={stopwatch.m}
+                onChange={(event) => {
+                  setStopwatch({ ...stopwatch, m: event.target.value });
+                }}
+                label="Minute"
+                disabled={status === 0 ? false : true}
+              >
+                <MenuItem value={0}>
+                  <em>0</em>
+                </MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={15}>15</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+                <MenuItem value={30}>30</MenuItem>
+                <MenuItem value={35}>35</MenuItem>
+                <MenuItem value={40}>40</MenuItem>
+                <MenuItem value={45}>45</MenuItem>
+                <MenuItem value={50}>50</MenuItem>
+                <MenuItem value={55}>55</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="Stopwatch-Worktime-label">Work</InputLabel>
+              <Select
+                labelId="Stopwatch-Worktime-label"
+                id="Stopwatch-Worktime"
+                value={stopwatch.work}
+                onChange={(event) => {
+                  setStopwatch({ ...stopwatch, work: event.target.value });
+                }}
+                label="Work"
+                disabled={status === 0 ? false : true}
+              >
+                <MenuItem value={0}>
+                  <em>0</em>
+                </MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={15}>15</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+                <MenuItem value={30}>30</MenuItem>
+                <MenuItem value={35}>35</MenuItem>
+                <MenuItem value={40}>40</MenuItem>
+                <MenuItem value={45}>45</MenuItem>
+                <MenuItem value={50}>50</MenuItem>
+                <MenuItem value={55}>55</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="Stopwatch-Break-label">Break</InputLabel>
+              <Select
+                labelId="Stopwatch-Break-label"
+                id="Stopwatch-Break"
+                value={stopwatch.break}
+                onChange={(event) => {
+                  setStopwatch({ ...stopwatch, break: event.target.value });
+                }}
+                label="Break"
+                disabled={status === 0 && stopwatch.work !== 0 ? false : true}
+              >
+                <MenuItem value={0}>
+                  <em>0</em>
+                </MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={15}>15</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+                <MenuItem value={30}>30</MenuItem>
+                <MenuItem value={35}>35</MenuItem>
+                <MenuItem value={40}>40</MenuItem>
+                <MenuItem value={45}>45</MenuItem>
+                <MenuItem value={50}>50</MenuItem>
+                <MenuItem value={55}>55</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} className="buttons">
+          {status === 0 ? (
+            <Button
+              variant="contained"
+              color="primary"
+              className="start-button"
+              onClick={start}
+            >
+              Start
+            </Button>
+          ) : (
+            ""
+          )}
+
+          {status === 1 ? (
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                className="stop-button"
+                onClick={stop}
+              >
+                Stop
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className="reset-button"
+                onClick={reset}
+              >
+                Reset
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
+
+          {status === 2 ? (
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                className="resume-button"
+                onClick={resume}
+              >
+                Resume
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className="reset-button"
+                onClick={reset}
+              >
+                Reset
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
+        </Grid>
+      </Grid>
+    </Wrapper>
   );
 };
 
