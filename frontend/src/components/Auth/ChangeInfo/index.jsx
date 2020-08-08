@@ -61,7 +61,7 @@ const ChangeInfo = () => {
 
   const sendPass = (pw) => {
     axios
-      .post(SERVER_URL + "/rest-auth/password/change/", pw, config)
+      .post(`${SERVER_URL}/rest-auth/password/change/`, pw, config)
       .then((res) => {
         console.log(res);
         alert("비밀번호가 변경되었습니다");
@@ -93,7 +93,7 @@ const ChangeInfo = () => {
   const ChangeKey = (e) => {
     e.preventDefault();
     axios
-      .post(SERVER_URL + `/registration/${newKey}/`, config)
+      .post(`${SERVER_URL}/registration/${newKey}/`, config)
       .then((res) => {
         console.log(res);
         alert("제품키 등록 완료");
@@ -119,7 +119,7 @@ const ChangeInfo = () => {
   const EditImage = (e) => {
     e.preventDefault();
     axios
-      .put(SERVER_URL + `${user.id}`, {
+      .put(`${SERVER_URL}/accounts/${user.id}`, {
         ...user,
         image: newImage,
       })

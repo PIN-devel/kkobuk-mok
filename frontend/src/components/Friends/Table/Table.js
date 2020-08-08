@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,7 +16,12 @@ const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
   const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor } = props;
+  const { tableHead, tableData, tableHeaderColor, isLooking } = props;
+  const addFriend = (e) => {
+    console.log(e);
+  };
+
+  const deleteFriend = (e) => {};
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -47,9 +52,15 @@ export default function CustomTable(props) {
                     </TableCell>
                   );
                 })}
-                <Button color="primary" round>
-                  친구요청
-                </Button>
+                {!isLooking ? (
+                  <Button color="primary" onClick={deleteFriend(key)}>
+                    친구삭제
+                  </Button>
+                ) : (
+                  <Button color="primary" onClick={addFriend(key)}>
+                    친구요청
+                  </Button>
+                )}
               </TableRow>
             );
           })}

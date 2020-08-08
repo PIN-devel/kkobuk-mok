@@ -9,13 +9,12 @@ import SignUp from "./Pages/Auth/SignUp";
 import ContactUs from "./Pages/About/ContactUs";
 import Page404 from "./Pages/Page404";
 import { AuthContext } from "./contexts/AuthContext";
-import Temp from "./components/UserInfo/Profile/temp";
 import Cookies from "js-cookie";
 import Axios from "axios";
 
 function App() {
-  const SERVER_URL = "http://3.35.17.150";
-  // const SERVER_URL = "http://localhost:8000";
+  // const SERVER_URL = "http://3.35.17.150";
+  const SERVER_URL = "http://localhost:8000";
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
   const [channelIn, setChannelIn] = useState(null);
   const [user, setUser] = useState({});
@@ -70,7 +69,6 @@ function App() {
           <BrowserRouter>
             <Switch>
               <Route exact path="/" component={SignIn} />
-              <Route exact path="/temp" component={Temp} />
               <Route exact path="/SignIn" component={SignIn} />
               <Route exact path="/SignUp" component={SignUp} />
               <Route exact path="/current" component={Main} />
@@ -105,7 +103,6 @@ function App() {
           <BrowserRouter>
             <Switch>
               <Route exact path="/" component={SignIn} />
-              <Route exact path="/temp" component={Temp} />
               <Route exact path="/SignIn" component={SignIn} />
               <Route exact path="/SignUp" component={SignUp} />
               <Route exact path="/current" component={Main} />
