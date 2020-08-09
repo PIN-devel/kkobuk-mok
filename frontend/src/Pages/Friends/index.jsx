@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 // import FriendAppBar from "../../components/Friends/FriendsAppBar/";
 
 // import React from "react";
@@ -13,17 +13,26 @@ import CardBody from "../../components/Friends/Card/CardBody.js";
 import Layout from "../../Layout/MyDash/Dashboard";
 import ResponsiveDialog from "../../components/Friends/Dialog";
 import useStyles from "./styles";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Friends = () => {
+  const { user, SERVER_URL } = useContext(AuthContext);
   const classes = useStyles();
   // const [searchFriendOpen, setSearchFriendOpen] = useState(false);
+  const [friends, setFriends] = useState([
+    ["둘리", "hi@naver.com", 2.2, 1],
+    ["길동이", "hi2@naver.com", 1.4, 2.6],
+  ]);
+  const tableHead = ["이름", "이메일", "오늘의 점수", "일주일 점수"];
 
-  const tableHead = ["이름", "랭크", "오늘의 점수", "일주일 점수"];
-  // const myFriendsList
+  // useEffect(() => {
+  //   const friends = user.myFriends.map((person) => {
+  //     return [person.last_name + person.first_name, person.email, person.todayScore, person.weekScore];
+  //   });
+  //   setFriends(friends);
+  // }, [user]);
 
   return (
-    // <friendsContext.Provider value={(searchFriendOpen,setSearchFriendOpen )}>
-    //         {</friendsContext.Provider>}
     <Layout>
       <Card>
         <CardHeader color="primary">
@@ -35,12 +44,8 @@ const Friends = () => {
           <Table
             tableHeaderColor="primary"
             tableHead={tableHead}
-            tableData={[
-              ["호준", "골드", "3", "1"],
-              ["인남", "골드", "3", "1"],
-              ["주현", "플레", "4", "1"],
-              ["수미", "언랭", "0", "1"],
-            ]}
+            tableData={friends}
+            isLooking={false}
           />
         </CardBody>
       </Card>

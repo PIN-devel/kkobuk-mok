@@ -17,14 +17,14 @@ const useStyles = makeStyles({
 const Profile = () => {
   const { user, SERVER_URL } = useContext(AuthContext);
   const tester = () => {
-    console.log(user.myImage);
-    console.log(typeof user.myImage);
+    console.log(user);
+    console.log(typeof user.myFriends);
   };
   return (
     <Wrapper>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={2}>
-          <Image src={user.myImage} />
+          <Image src={`${SERVER_URL}/${user.myImage}`} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <div className="profileInfo">

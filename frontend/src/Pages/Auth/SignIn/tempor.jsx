@@ -29,8 +29,6 @@ import { AuthContext } from "../../../contexts/AuthContext";
 export default function SignIn() {
   const classes = useStyles();
 
-  const { auth, setAuth, SERVER_URL, setUser } = useContext(AuthContext);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [passwordConfirm, setPasswordConfirm] = useState("");  여기는 로그인
@@ -91,8 +89,8 @@ export default function SignIn() {
     setInputEmail(email);
   };
 
+  const { auth, setAuth, SERVER_URL, setUser } = useContext(AuthContext);
   const history = useHistory();
-
   const login = (loginData) => {
     const url = `${SERVER_URL}/rest-auth/login/`;
     const handleSetAuth = (auth, userId) => {
@@ -117,10 +115,10 @@ export default function SignIn() {
       });
   };
 
-  const findEmail = (e) => {
-    e.preventDefault();
+  const findEmail = (p_key) => {
+    p_key.preventDefault();
     axios
-      .post(`${SERVER_URL}/accounts/find/${productKey}/`)
+      .post(`${SERVER_URL}/accounts/find/${p_key}/`)
       .then((res) => {
         setFoundEmail(res.data.data.email);
         setModalStatus(1);
@@ -133,7 +131,7 @@ export default function SignIn() {
 
   const findPassword = (e) => {
     e.preventDefault();
-    const data = { email: inputEmail };
+    const data = { email: e };
     axios
       .post(`${SERVER_URL}/rest-auth/password/reset/`, data)
       .then((res) => {
@@ -179,9 +177,9 @@ export default function SignIn() {
               className={classes.margin}
               variant="contained"
               color="primary"
-              onClick={findEmail}
+              onClick={findEmail(productKey)}
             >
-              메일 찾기
+              check
             </Button>
           </div>
         )}
@@ -201,9 +199,9 @@ export default function SignIn() {
               className={classes.margin}
               variant="contained"
               color="primary"
-              onClick={findPassword}
+              onClick={findPassword(inputEmail)}
             >
-              비밀번호 찾기
+              Send
             </Button>
           </div>
         )}
@@ -291,7 +289,16 @@ export default function SignIn() {
                   Forgot email or password?
                 </Link>
                 <Modal open={openModal} onClose={handleClose}>
-                  {Forgot}
+                  {modalStatus === 0 ? { Forgot } : ""}
+                  {modalStatus === 1 ? { ShowEmail } : ""}
+                  {modalStatus === 2 ? (
+                    <div>
+                      <h1>고객님의 이메일로 비밀번호가 전송되었습니다</h1>
+                      <Button onClick={backToSearch}>돌아가기</Button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </Modal>
               </Grid>
               <Grid item>
