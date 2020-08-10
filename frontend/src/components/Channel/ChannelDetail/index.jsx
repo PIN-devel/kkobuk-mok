@@ -41,7 +41,13 @@ const ChannelDetail = (props) => {
 
   return (
     <div className={classes.root}>
-      <button onClick={exitChannel}>채널 나가기</button>
+      <button
+        onClick={() => {
+          exitChannel();
+        }}
+      >
+        채널 나가기
+      </button>
 
       {/* <h1>채널 이름 ; {channel.title}</h1> */}
       <h3>

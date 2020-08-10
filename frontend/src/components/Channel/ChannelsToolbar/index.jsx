@@ -85,7 +85,13 @@ const ChannelsToolbar = (props) => {
         <span className={classes.spacer} />
         {/* <Button className={classes.importButton}>Import</Button>
         <Button className={classes.exportButton}>Export</Button> */}
-        <Button color="primary" variant="contained" onClick={handleClickOpen}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            handleClickOpen();
+          }}
+        >
           채널 생성
         </Button>
       </div>
@@ -102,13 +108,20 @@ const ChannelsToolbar = (props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <form className={classes.form} onSubmit={createChannel}>
+            <form
+              className={classes.form}
+              onSubmit={() => {
+                createChannel();
+              }}
+            >
               <TextField
                 className={classes.textField}
                 fullWidth
                 label="Channel Name"
                 name="channelName"
-                onChange={handleSetChannelName}
+                onChange={() => {
+                  handleSetChannelName();
+                }}
                 type="text"
                 value={channelName}
                 variant="outlined"
@@ -118,7 +131,9 @@ const ChannelsToolbar = (props) => {
                 fullWidth
                 label="Channel Goal"
                 name="channelGoal"
-                onChange={handleSetChannelGoal}
+                onChange={() => {
+                  handleSetChannelGoal();
+                }}
                 type="text"
                 value={channelGoal}
                 variant="outlined"
@@ -128,7 +143,9 @@ const ChannelsToolbar = (props) => {
                 fullWidth
                 label="Password"
                 name="password"
-                onChange={handleSetPassword}
+                onChange={() => {
+                  handleSetPassword();
+                }}
                 type="password"
                 value={password}
                 variant="outlined"
@@ -149,7 +166,13 @@ const ChannelsToolbar = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button
+            onClick={() => {
+              handleClose();
+            }}
+            color="primary"
+            autoFocus
+          >
             취소
           </Button>
         </DialogActions>

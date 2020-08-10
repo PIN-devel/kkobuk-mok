@@ -24,7 +24,7 @@ const SearchComponent = (props) => {
   };
 
   const onSearchValue = (e) => {
-    setSearchValue(e.target.value);
+    setSearchValue(e);
   };
 
   return (
@@ -47,7 +47,9 @@ const SearchComponent = (props) => {
               <SearchIcon
                 className="search-component-grid-item-se-icon"
                 fontSize="large"
-                onClick={implSearch}
+                onClick={() => {
+                  implSearch();
+                }}
               />
             </Grid>
             <Grid item xs={9}>
@@ -55,7 +57,9 @@ const SearchComponent = (props) => {
                 value={searchValue}
                 placeholder="Search..."
                 autoFocus={true}
-                onChange={onSearchValue}
+                onChange={(e) => {
+                  onSearchValue(e.target.value);
+                }}
                 className="input2"
               />
             </Grid>

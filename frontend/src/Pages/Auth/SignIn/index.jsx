@@ -154,7 +154,13 @@ export default function SignIn() {
   const ShowEmail = (
     <div>
       <h1>고객님의 이메일은 {foundEmail} 입니다</h1>
-      <Button onClick={backToSearch}>돌아가기</Button>
+      <Button
+        onClick={() => {
+          backToSearch();
+        }}
+      >
+        돌아가기
+      </Button>
     </div>
   );
 
@@ -179,7 +185,9 @@ export default function SignIn() {
               className={classes.margin}
               variant="contained"
               color="primary"
-              onClick={findEmail}
+              onClick={() => {
+                findEmail();
+              }}
             >
               메일 찾기
             </Button>
@@ -201,7 +209,9 @@ export default function SignIn() {
               className={classes.margin}
               variant="contained"
               color="primary"
-              onClick={findPassword}
+              onClick={() => {
+                findPassword();
+              }}
             >
               비밀번호 찾기
             </Button>
@@ -287,10 +297,20 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link type="button" onClick={handleOpen}>
+                <Link
+                  type="button"
+                  onClick={() => {
+                    handleOpen();
+                  }}
+                >
                   Forgot email or password?
                 </Link>
-                <Modal open={openModal} onClose={handleClose}>
+                <Modal
+                  open={openModal}
+                  onClose={() => {
+                    handleClose();
+                  }}
+                >
                   {Forgot}
                 </Modal>
               </Grid>

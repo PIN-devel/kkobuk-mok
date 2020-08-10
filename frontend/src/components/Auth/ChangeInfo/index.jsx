@@ -29,15 +29,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const token = Cookies.get("token");
-const config = {
-  headers: {
-    Authorization: `Jwt ${token}`,
-  },
-};
-
 const ChangeInfo = () => {
-  const { user, SERVER_URL } = useContext(AuthContext);
+  const { SERVER_URL } = useContext(AuthContext);
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
@@ -46,6 +39,16 @@ const ChangeInfo = () => {
   const [new_password1, setNew_Password1] = useState("");
   const [new_password2, setNew_Password2] = useState("");
   const [newKey, setNewKey] = useState("");
+  const [wantDelete, setWanteDelete] = useState(false);
+  const [tryDelete, setTryDelete] = useState(false);
+
+  const token = Cookies.get("token");
+  const userID = Cookies.get("myUserId");
+  const config = {
+    headers: {
+      Authorization: `Jwt ${token}`,
+    },
+  };
 
   const handleOldP = (e) => {
     setOld_Password(e.target.value);
@@ -118,25 +121,25 @@ const ChangeInfo = () => {
 
   const EditImage = (e) => {
     e.preventDefault();
-    axios
-      .put(`${SERVER_URL}/accounts/${user.id}`, {
-        ...user,
-        image: newImage,
-      })
-      .then((res) => {
-        console.log(res);
-        alert("프로필 이미지가 변경되었습니다");
-      })
-      .catch((err) => {
-        alert("프로필 이미지 변경 실패");
-        console.log(err);
-      });
+    // axios
+    //   .put(`${SERVER_URL}/accounts/${userID}`, {
+    //     ...user,
+    //     image: newImage,
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     alert("프로필 이미지가 변경되었습니다");
+    //   })
+    //   .catch((err) => {
+    //     alert("프로필 이미지 변경 실패");
+    //     console.log(err);
+    //   });
   };
 
   const deleteAccount = (e) => {
     e.preventDefault();
     axios
-      .delete(`${SERVER_URL}/accounts/${user.id}`, config)
+      .delete(`${SERVER_URL}/accounts/${userID}`, config)
       .then((res) => {
         alert("회원탈퇴 되었습니다");
         console.log("회원탈퇴");
@@ -149,6 +152,10 @@ const ChangeInfo = () => {
       });
   };
 
+  const tryDeleteAccount = (e) => {
+    var wantDelete = false;
+  };
+
   const EditForm = (
     <div style={modalStyle} className={classes.paper}>
       <div>
@@ -157,9 +164,11 @@ const ChangeInfo = () => {
           className={classes.margin}
           variant="contained"
           color="primary"
-          onClick={EditImage}
+          onClick={() => {
+            EditImage();
+          }}
         >
-          Edit Image
+          이미지 변경
         </Button>
       </div>
       <div>
@@ -167,7 +176,9 @@ const ChangeInfo = () => {
           type="password"
           label="현재 비밀번호"
           variant="outlined"
-          onChange={handleOldP}
+          onChange={() => {
+            handleOldP();
+          }}
         />
         <TextField
           error={new_password1.length >= 8 ? false : true}
@@ -175,7 +186,9 @@ const ChangeInfo = () => {
           type="password"
           label="새 비밀번호"
           variant="outlined"
-          onChange={handleNP1}
+          onChange={() => {
+            handleNP1();
+          }}
         />
         <TextField
           error={new_password1 === new_password2 ? false : true}
@@ -185,13 +198,17 @@ const ChangeInfo = () => {
           type="password"
           label="비밀번호 확인"
           variant="outlined"
-          onChange={handleNP2}
+          onChange={() => {
+            handleNP2();
+          }}
         />
         <Button
           className={classes.margin}
           variant="contained"
           color="primary"
-          onClick={ChangePass}
+          onClick={() => {
+            ChangePass();
+          }}
         >
           비밀번호 변경
         </Button>
@@ -200,13 +217,17 @@ const ChangeInfo = () => {
         <TextField
           label="Product Key"
           variant="outlined"
-          onChange={handleNewKey}
+          onChange={() => {
+            handleNewKey();
+          }}
         />
         <Button
           className={classes.margin}
           variant="contained"
           color="primary"
-          onClick={ChangeKey}
+          onClick={() => {
+            ChangeKey();
+          }}
         >
           제품키 등록/변경
         </Button>
@@ -214,7 +235,9 @@ const ChangeInfo = () => {
           className={classes.margin}
           variant="contained"
           color="primary"
-          onClick={deleteAccount}
+          onClick={() => {
+            tryDeleteAccount();
+          }}
         >
           회원 탈퇴
         </Button>
@@ -224,12 +247,19 @@ const ChangeInfo = () => {
 
   return (
     <div>
-      <Button type="button" onClick={handleOpen}>
+      <Button
+        type="button"
+        onClick={() => {
+          handleOpen();
+        }}
+      >
         정보 변경
       </Button>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+        }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
