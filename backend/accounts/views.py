@@ -223,11 +223,24 @@ def main_info(request):
     if request.user.current_state == 2: # timesetting 테이블 만들어진 상태
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
         if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists(): # start 누른 후 센싱 값 있는 경우
+            # 현재 시간 기준으로 10시간 전까지 30분 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
+            now = datetime.now()
+            ls = []
+            for i in range(0,20):
+                st = now - timedelta(minutes=i*30)
+                ed = now - timedelta(minutes=(i+1)*30)
+                cnt = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).count()
+                if cnt:
+                    avg = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
+                    ls.append({"time": str(st)[11:16], "score": avg})
+            
             info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
             data = {
                 'posture_level': info.posture_level,
                 'temperature': info.temperature,
                 'humidity': info.humidity,
+                'posture_avg': ls,
+                'user_state': request.user.current_state,
             }
             return Response({"status": "OK", "data": data})
     # 센싱 값 없는 경우 or 공부 중이 아닌 경우
@@ -235,6 +248,8 @@ def main_info(request):
         'posture_level': 0,
         'temperature': 0,
         'humidity': 0,
+        'posture_avg': [],
+        'user_state': request.user.current_state,
     }
     return Response({"status": "OK", "data": data})
 
