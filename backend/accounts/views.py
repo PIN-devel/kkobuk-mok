@@ -36,15 +36,19 @@ def detail_or_delete_or_update(request, user_id):
     if request.method == 'GET':
         if user.sensing:
             startdate = date.today()
-            posture = {}
+            posture = []
             for i in range(0,8):
+                p = {}
                 day = startdate - timedelta(days=i)
                 cnt = Sensing.objects.filter(user=user).filter(created_at__contains=day).count()
                 if cnt:
                     avg = Sensing.objects.filter(user=user).filter(created_at__contains=day).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
-                    posture[str(day)] = round(avg,2)
+                    p["name"] = str(day)[5:]
+                    p["score"] = round(avg,2)
                 else:
-                    posture[str(day)] = 0
+                    p["name"] = str(day)[5:]
+                    p["score"] = 0
+                posture.append(p)
         return Response({"status": "OK", "data": {**serializer.data, "posture": posture}})
 
     # 삭제
