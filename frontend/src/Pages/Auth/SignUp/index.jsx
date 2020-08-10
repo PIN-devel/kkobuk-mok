@@ -23,23 +23,20 @@ import { AuthContext } from "../../../contexts/AuthContext";
 export default function SignUp() {
   const classes = useStyles();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  // const [product, setProduct] = useState("");
+  const [productKey, setProductKey] = useState("");
   const [gender, setGender] = useState("1");
   const [birthDate, setBirthDate] = useState("2000-01-01");
-  const { auth, setAuth, SERVER_URL, setUser } = useContext(AuthContext);
+  const [confirmedPKey, setConfirmedPKey] = useState(false);
+  const { setAuth, SERVER_URL } = useContext(AuthContext);
 
   const history = useHistory();
 
-  const handleSetFirstName = (first) => {
-    setFirstName(first);
-  };
-  const handleSetLastName = (last) => {
-    setLastName(last);
+  const handleSetName = (name) => {
+    setName(name);
   };
   const handleSetEmail = (email) => {
     setEmail(email);
@@ -47,18 +44,38 @@ export default function SignUp() {
   const handleSetPassword = (password) => {
     setPassword(password);
   };
-  const handelSetPasswordConfirm = (passwordConfirm) => {
+  const handleSetPasswordConfirm = (passwordConfirm) => {
     setPasswordConfirm(passwordConfirm);
+  };
+  const handleSetProductKey = (pk) => {
+    setProductKey(pk);
+  };
+  const handleSetConfirmedPkey = () => {
+    if (productKey.length === 16) {
+      axios
+        .get(`${SERVER_URL}/certification/${productKey}/`)
+        .then((res) => {
+          console.log(res);
+          if (res.success) {
+            setConfirmedPKey(true);
+          }
+          alert(res.msg);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    } else {
+      alert("제품키는 16자리입니다");
+    }
   };
   const handleSetGender = (gender) => {
     setGender(gender);
   };
   const handleSetBirthDate = (birthdate) => {
-    setBirthDate(birthDate);
+    setBirthDate(birthdate);
   };
 
   const reqSignUp = (signUpData) => {
-    // console.log(signUpData);
     const url = `${SERVER_URL}/rest-auth/signup/`;
     const handleSetAuth = (auth, userId) => {
       setAuth(auth);
@@ -68,11 +85,27 @@ export default function SignUp() {
       .post(url, signUpData)
       .then((res) => {
         console.log("회원가입성공");
-        // console.log(res);
         console.log(res);
         Cookies.set("token", res.data.token, { path: "/" });
+        const token = Cookies.get("token");
+        const config = {
+          headers: {
+            Authorization: `Jwt ${token}`,
+          },
+        };
         handleSetAuth(true, res.data.user.pk);
-        history.push("user/");
+        axios
+          .post(`${SERVER_URL}/registration/${productKey}/`, null, config)
+          .then((res) => {
+            console.log(res);
+            alert("회원가입되셨습니다");
+            history.push("user/");
+          })
+          .catch((err) => {
+            console.log("회원가입 실패");
+            console.log(err.reponse);
+          });
+
         // 이거 프로필로 갈 때, 유저가 product 키 입력해줬으면 그것도 같이 보내주자 아 그러지는 말까?.... 어쩌지 고민좀
       })
       .catch((err) => {
@@ -84,23 +117,21 @@ export default function SignUp() {
     e.preventDefault();
     const numGender = Number(gender);
 
-    // const useBirthDate =
-    if (password === passwordConfirm) {
-      if (password.length < 8) {
-        alert("비밀번호는 8자리 이상 입력해주세요");
-      } else {
-        reqSignUp({
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          password1: password,
-          password2: password,
-          gender: numGender,
-          birth_date: birthDate,
-        });
-      }
+    if (password !== passwordConfirm) {
+      alert("비밀번호를 확인해주세요");
+    } else if (password.length < 8) {
+      alert("비밀번호는 8자리 이상 입력해주세요");
+    } else if (!confirmedPKey) {
+      alert("제품키를 인증해주세요");
     } else {
-      alert("비밀번호가 다릅니다.");
+      reqSignUp({
+        name,
+        email,
+        password1: password,
+        password2: password,
+        gender: numGender,
+        birth_date: birthDate,
+      });
     }
   };
 
@@ -114,36 +145,27 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={() => {
+            handleSubmit();
+          }}
+        >
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                autoComplete="name"
+                name="name"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="name"
+                label="Name"
                 autoFocus
                 value={firstName}
                 onChange={(e) => {
-                  handleSetFirstName(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                value={lastName}
-                onChange={(e) => {
-                  handleSetLastName(e.target.value);
+                  handleSetName(e.target.value);
                 }}
               />
             </Grid>
@@ -164,6 +186,10 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                error={password.length < 8 ? false : true}
+                helperText={
+                  password.length < 8 ? "" : "비밀번호는 8자리 이상입니다"
+                }
                 variant="outlined"
                 required
                 fullWidth
@@ -180,6 +206,10 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                error={password === passwordConfirm ? false : true}
+                helperText={
+                  password === passwordConfirm ? "" : "비밀번호를 확인해주세요"
+                }
                 variant="outlined"
                 required
                 fullWidth
@@ -190,25 +220,34 @@ export default function SignUp() {
                 autoComplete="current-password"
                 value={passwordConfirm}
                 onChange={(e) => {
-                  handelSetPasswordConfirm(e.target.value);
+                  handleSetPasswordConfirm(e.target.value);
                 }}
               />
             </Grid>
-            {/* <Grid item xs={12}>
+            <Grid item xs={12} md={9}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="product"
+                id="productKey"
                 label="Product Key"
-                name="product"
+                name="productKey"
                 autoComplete="p-key"
                 value={product}
                 onChange={(e) => {
-                  setProduct(e.target.value);
+                  handleSetProductKey(e.target.value);
                 }}
               />
-            </Grid> */}
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Button
+                onClick={() => {
+                  handleSetConfirmedPkey();
+                }}
+              >
+                제품키 인증
+              </Button>
+            </Grid>
             <Grid item xs={12} sm={3}>
               <FormLabel>Gender</FormLabel>
             </Grid>

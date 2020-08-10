@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import clsx from "clsx";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -6,6 +6,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import { Button } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -20,19 +21,20 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link, Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
-import axios from "axios";
-
-const token = Cookies.get("token");
-const config = {
-  headers: {
-    Authorization: `Jwt ${token}`,
-  },
-};
+import Axios from "axios";
 
 export default function Dashboard(props) {
   const { SERVER_URL, setAuth } = useContext(AuthContext);
+  const token = Cookies.get("token");
+  const config = {
+    headers: {
+      Authorization: `Jwt ${token}`,
+    },
+  };
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [friendRequests, setFriendRequests] = useState([]);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -43,19 +45,61 @@ export default function Dashboard(props) {
 
   // 여기 header 유저 모양
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl2, setAnchorEl2] = useState(null);
   const [wannaLogout, setWannaLogout] = useState(false);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event);
+  };
+
+  const tester = () => {
+    console.log(friendRequests);
+  };
+
+  const handleClick2 = (e) => {
+    setAnchorEl2(e);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const handleClose2 = () => {
+    setAnchorEl2(null);
+  };
+
+  const acceptRequest = (F_id) => {
+    console.log("accepted");
+    Axios.post(`${SERVER_URL}/accounts/friend/${F_id}/accept/`, null, config)
+      .then((res) => {
+        console.log("친구 수락 성공");
+        const newList = friendRequests.filter(
+          (comp) => comp.sender.id !== F_id
+        );
+        setFriendRequests(newList);
+      })
+      .catch((err) => {
+        console.log("친구 수락 실패");
+      });
+  };
+
+  const rejectRequest = (F_id) => {
+    console.log("rejected");
+    Axios.post(`${SERVER_URL}//accounts/friend/${F_id}/reject/`, null, config)
+      .then((res) => {
+        console.log("친구 거절 성공");
+        const newList = friendRequests.filter(
+          (comp) => comp.sender.id !== F_id
+        );
+        setFriendRequests(newList);
+      })
+      .catch((err) => {
+        console.log("친구 거절 실패");
+      });
+  };
+
   const Logout = () => {
-    axios
-      .post(`${SERVER_URL}/rest-auth/logout/`, config)
+    Axios.post(`${SERVER_URL}/rest-auth/logout/`, config)
       .then((res) => {
         console.log(res);
         Cookies.remove("token");
@@ -67,6 +111,20 @@ export default function Dashboard(props) {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    Axios.get(`${SERVER_URL}/accounts/friend/request/`, config)
+      .then((res) => {
+        console.log("가져오기 성공");
+        console.log(res.data.data);
+        setFriendRequests(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        console.log("가져오기 실패");
+      });
+  }, []);
+
   // 반응형
   // const isTablet = useMediaQuery("(max-width:960px)");
 
@@ -100,13 +158,22 @@ export default function Dashboard(props) {
           >
             꼬북
           </Typography>
+          <Button
+            onClick={() => {
+              tester();
+            }}
+          >
+            테스트
+          </Button>
 
           <IconButton
             aria-controls="simple-menu"
             aria-haspopup="true"
             variant="contained"
             color="inherit"
-            onClick={handleClick}
+            onClick={(e) => {
+              handleClick(e.currentTarget);
+            }}
           >
             <AccountCircleIcon />
           </IconButton>
@@ -120,14 +187,64 @@ export default function Dashboard(props) {
             <MenuItem component={Link} to="/User">
               Profile
             </MenuItem>
-            <MenuItem onClick={Logout}>Logout</MenuItem>
+            <MenuItem
+              onClick={() => {
+                Logout();
+              }}
+            >
+              Logout
+            </MenuItem>
           </Menu>
 
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+          <IconButton
+            aria-controls="simple-menu2"
+            aria-haspopup="true"
+            variant="contained"
+            color="inherit"
+            onClick={(e) => {
+              handleClick2(e.currentTarget);
+            }}
+          >
+            <Badge badgeContent={friendRequests.length} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
+          <Menu
+            id="simple-menu2"
+            anchorEl2={anchorEl2}
+            keepMounted
+            open={Boolean(anchorEl2)}
+            onClose={handleClose2}
+          >
+            {friendRequests.length === 0 ? (
+              <MenuItem>
+                <h4>친구 요청이 없습니다</h4>
+              </MenuItem>
+            ) : (
+              friendRequests.map((req) => {
+                return (
+                  <MenuItem>
+                    {req.sender.first_name}님의 친구요청
+                    <Button
+                      onClick={() => {
+                        acceptRequest(req.sender.id);
+                      }}
+                    >
+                      수락
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        rejectRequest(req.sender.id);
+                      }}
+                    >
+                      거절
+                    </Button>
+                  </MenuItem>
+                );
+              })
+            )}
+            <MenuItem component={Link} to="/User"></MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 

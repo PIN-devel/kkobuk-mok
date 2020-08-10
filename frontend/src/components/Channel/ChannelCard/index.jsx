@@ -55,7 +55,13 @@ const ChannelCard = (props) => {
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <Button onClick={entranceChannel}>입장하기</Button>
+      <Button
+        onClick={() => {
+          entranceChannel();
+        }}
+      >
+        입장하기
+      </Button>
       <CardContent>
         <div className={classes.imageContainer}>
           <img

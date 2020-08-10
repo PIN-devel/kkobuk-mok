@@ -14,13 +14,6 @@ import SearchComponent from "../../Search";
 import Cookies from "js-cookie";
 import Axios from "axios";
 
-const token = Cookies.get("token");
-const config = {
-  headers: {
-    Authorization: `Jwt ${token}`,
-  },
-};
-
 export default function ResponsiveDialog(props) {
   //   const decision = useContext(friendsContext);
   //   console.log(decision);
@@ -29,27 +22,35 @@ export default function ResponsiveDialog(props) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   // const [searchFriendOpen, setSearchFriendOpen] = useState(false);
-  const tableHead = ["이름", "이메일"];
+  const tableHead = ["이름", "이메일", "친구요청"];
   const [foundList, setFoundList] = useState([]);
   const [friendName, setFriendName] = useState("");
 
   const findPerson = (name) => {
-    Axios.get(
-      `${SERVER_URL}/accounts/?kw=${name}&order_by='point'&period="month"`,
-      config
-    )
-      .then((res) => {
-        console.log("사람 찾기 성공");
-        const pplList = res.data.data.map((person) => {
-          return [person.last_name + person.first_name, person.email];
+    const token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `Jwt ${token}`,
+      },
+    };
+    if (name !== "") {
+      Axios.get(
+        `${SERVER_URL}/accounts/?kw=${name}&order_by='point'&period="month"`,
+        config
+      )
+        .then((res) => {
+          console.log("사람 찾기 성공");
+          const pplList = res.data.data.map((person) => {
+            return [person.id, person.name, person.email];
+          });
+          setFoundList(pplList);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log("사람 찾기 실패");
+          console.log(err.response);
         });
-        setFoundList(pplList);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log("사람 찾기 실패");
-        console.log(err.response);
-      });
+    }
   };
 
   useEffect(() => findPerson(friendName), [friendName]);
@@ -64,13 +65,21 @@ export default function ResponsiveDialog(props) {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          handleClickOpen();
+        }}
+      >
         친구 찾기
       </Button>
       <Dialog
         fullScreen={fullScreen}
         open={open}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+        }}
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
@@ -85,12 +94,19 @@ export default function ResponsiveDialog(props) {
               tableHeaderColor="primary"
               tableHead={tableHead}
               tableData={foundList}
-              isLooking={true}
+              setTableData={setFoundList}
+              dataType={2}
             />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button
+            onClick={() => {
+              handleClose();
+            }}
+            color="primary"
+            autoFocus
+          >
             끄기
           </Button>
         </DialogActions>
