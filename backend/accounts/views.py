@@ -12,7 +12,7 @@ from .models import FriendRequest, Product, TimeSetting, Sensing
 from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer
 from .helper import email_auth_num
 
-from django.db.models import Count, Sum
+from django.db.models import Sum
 from datetime import date, timedelta, datetime, time
 
 User = get_user_model()
@@ -115,9 +115,9 @@ def friends_list(request):
     friends = user.friends.all()
     res = {'friends':[]}
     for friend in friends:
-        if friend.sensing:
+        posture = []
+        if friend.sensing.all():
             startdate = date.today()
-            posture = []
             for i in [0, 7]:
                 day = startdate - timedelta(days=i)
                 cnt = Sensing.objects.filter(user=friend).filter(created_at__gte=datetime.combine(day, time.min)).count()
@@ -126,6 +126,8 @@ def friends_list(request):
                     posture.append(round(avg,2))
                 else:
                     posture.append(0)
+        else:
+            posture = [0, 0]
         res['friends'].append({**UserListSerializer(friend).data, "posture":posture})
     return Response({"status": "OK", "data": res})
 

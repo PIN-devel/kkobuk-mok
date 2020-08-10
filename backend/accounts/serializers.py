@@ -83,8 +83,8 @@ class FriendRequestSenderListSerializer(serializers.ModelSerializer):
 
 
 # 추후 모델링 결정되면, 방 멤버들 정보 어떤거 보여줄지 넣으면 됨
-class MemberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ('id', 'email', 'name', 'gender', 'image', 'current_state')
-        read_only_fields = ('id', 'email')
+# class MemberSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = get_user_model()
+#         fields = ('id', 'email', 'name', 'gender', 'image', 'current_state')
+#         read_only_fields = ('id', 'email')

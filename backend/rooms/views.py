@@ -9,6 +9,12 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Room
 from .serializers import RoomSerializer, RoomListSerializer
 
+from accounts.serializers import UserListSerializer
+from accounts.models import Sensing
+
+from django.db.models import Sum
+from datetime import date, timedelta, datetime, time
+
 PER_PAGE = 6
 
 @api_view(['GET', 'POST'])
@@ -38,7 +44,31 @@ def detail_or_in_or_out(request, room_id):
     serializer = RoomSerializer(room)
     if request.method == 'GET':
         if request.user.room == room: # 참여 중인 방 정보만 가져올 수 있음
-            return Response({"status": "OK", "data": serializer.data})
+            members = room.members.all()
+            res = {'members':[]}
+            for member in members:
+                posture = []
+                if member.sensing.all():
+                    # 오늘 통계 (방 생성 후 조건도 포함)
+                    today = date.today()
+                    cnt = Sensing.objects.filter(user=member).filter(created_at__gte=datetime.combine(today, time.min)).filter(created_at__gte=room.created_at).count()
+                    if cnt:
+                        avg = Sensing.objects.filter(user=member).filter(created_at__gte=datetime.combine(today, time.min)).filter(created_at__gte=room.created_at).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
+                        posture.append(round(avg,2))
+                    else:
+                        posture.append(0)
+                    # 방 생성 후 총 통계
+                    cnt = Sensing.objects.filter(user=member).filter(created_at__gte=room.created_at).count()
+                    if cnt:
+                        avg = Sensing.objects.filter(user=member).filter(created_at__gte=room.created_at).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
+                        posture.append(round(avg,2))
+                    else:
+                        posture.append(0)                    
+                else:
+                    posture = [0, 0]
+                res['members'].append({**UserListSerializer(member).data, "posture":posture})
+            return Response({"status": "OK", "data": {**serializer.data, **res}})
+
         else:
             return Response({"status": "FAIL", "error_msg": "참여 멤버가 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
     else:

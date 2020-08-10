@@ -7,3 +7,5 @@ class Room(models.Model):
 
     description = models.CharField(max_length=300)
     member_num = models.IntegerField(default=1)
+
+    created_at = models.DateTimeField(auto_now_add=True)
