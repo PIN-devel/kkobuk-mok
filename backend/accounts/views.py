@@ -9,11 +9,11 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from .models import FriendRequest, Product, TimeSetting, Sensing
-from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer
+from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer
 from .helper import email_auth_num
 
 from django.db.models import Sum
-from datetime import date, timedelta, datetime, time
+from datetime import date, timedelta, datetime, time, timezone
 
 User = get_user_model()
 
@@ -276,3 +276,86 @@ def sensing_save(request):
     if p.user.current_state == 2:
         Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
     return Response({"status": "OK", "data": {"user_state": p.user.current_state}})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def timer_start(request):
+    total_time = request.data.get('total_time')
+    work_time = request.data.get('work_time')
+    break_time = request.data.get('break_time')
+
+    t = TimeSetting.objects.create(user=request.user, total_time=total_time, work_time=work_time, break_time=break_time, real_work_time=total_time)
+    request.user.current_state = 2
+    request.user.save()
+
+    data = {
+        "user_state": request.user.current_state,
+        "time": TimeSettingSerializer(t).data
+    }
+    return Response({"status": "OK", "data": data})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def timer_pause(request):
+    if TimeSetting.objects.filter(user=request.user).exists():
+        t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
+        t.last_stop_time = datetime.now()
+        t.save()
+        request.user.current_state = 3
+        request.user.save()
+        data = {
+            "user_state": request.user.current_state,
+            "time": TimeSettingSerializer(t).data
+        }
+        return Response({"status": "OK", "data": data})
+    else:
+        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def timer_restart(request):
+    if TimeSetting.objects.filter(user=request.user).exists():
+        t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
+        # 예외처리(일시정지하지 않은 상태에서 요청 오면)
+        if t.last_stop_time == None:
+            return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)
+        # 현재 시간 - 일시정지한 시간
+        now = datetime.now(timezone.utc)
+        cha = now - t.last_stop_time
+        # 위의 값을 분 단위로 바꾸기 + total에 합산
+        t.total_stop_time += cha.total_seconds()//60
+        # 일시정지 시간 초기화
+        t.last_stop_time = None
+        t.save()
+        # 유저 상태 - 공부중
+        request.user.current_state = 2
+        request.user.save()
+
+        data = {
+            "user_state": request.user.current_state,
+            "time": TimeSettingSerializer(t).data
+        }
+        return Response({"status": "OK", "data": data})
+    else:
+        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)  
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def timer_stop(request):
+    if TimeSetting.objects.filter(user=request.user).exists():
+        t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
+        # 중간에 공부 멈추면, 현재 시간 - start한 시간(created_at) - 일시정지 시간 = 실제 공부 시간
+        t.real_work_time = ((datetime.now(timezone.utc) - t.created_at).total_seconds()//60) - t.total_stop_time 
+        t.save()
+
+        request.user.current_state = 1
+        request.user.save()
+
+        data = {
+            "user_state": request.user.current_state,
+            "time": TimeSettingSerializer(t).data
+        }
+        return Response({"status": "OK", "data": data})
+    else:
+        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)  
