@@ -62,10 +62,10 @@ class UserListSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ('id','email','name', 'image', 'current_state')
         
-# class TimeSettingSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = TimeSetting
-#         fields = '__all__'
+class TimeSettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeSetting
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     friends = UserListSerializer(many=True)

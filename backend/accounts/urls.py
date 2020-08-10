@@ -15,12 +15,16 @@ urlpatterns = [
    
     path('friend/request/', views.friend_requests_list),
 
-    # path('timesetting/', views.timesetting_create_or_delete_or_update),
-
     path('find/<product_key>/', views.email_find),
 
     path('maininfo/', views.main_info),
     # 라즈베리파이
     path('initialinfo/', views.initial_info),
     path('sensingsave/', views.sensing_save),
+
+    # 타이머 로직
+    path('timer/start/', views.timer_start),
+    path('timer/pause/', views.timer_pause),
+    path('timer/restart/', views.timer_restart),
+    path('timer/stop/', views.timer_stop),
 ]

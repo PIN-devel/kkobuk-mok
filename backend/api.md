@@ -36,3 +36,9 @@
 | 라즈베리파이 |  |  |  |  |  |
 | 초기화 설정 값 | get | /accounts/initialinfo/ | query: product_key | desired_humidity, auto_setting, user_state |  |
 | 센싱값 저장 | post | /accounts/sensingsave/ | product_key, posture_level, temperature, humidity | user_state |  |
+|  |  |  |  |  | |
+| 타이머 시작 | post | /accounts/timer/start/ | token, total_time, work_time, break_time | user_state, 현재 timesetting 데이터 | |
+| 타이머 일시정지 | post | /accounts/timer/pause/ | token | user_state, 현재 timesetting 데이터                          | |
+| 타이머 재시작 | post | /accounts/timer/restart/ | token | user_state, 현재 timesetting 데이터                          | |
+| 타이머 중지 | post | /accounts/timer/stop/ | token | user_state, 현재 timesetting 데이터                          | |
+|  |  |  |  |  | |
