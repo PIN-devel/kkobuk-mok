@@ -13,7 +13,7 @@ from .serializers import UserSerializer, UserListSerializer, FriendRequestSender
 from .helper import email_auth_num
 
 from django.db.models import Count, Sum
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime, time
 
 User = get_user_model()
 
@@ -115,7 +115,18 @@ def friends_list(request):
     friends = user.friends.all()
     res = {'friends':[]}
     for friend in friends:
-        res['friends'].append(UserSerializer(friend).data)
+        if friend.sensing:
+            startdate = date.today()
+            posture = []
+            for i in [0, 7]:
+                day = startdate - timedelta(days=i)
+                cnt = Sensing.objects.filter(user=friend).filter(created_at__gte=datetime.combine(day, time.min)).count()
+                if cnt:
+                    avg = Sensing.objects.filter(user=friend).filter(created_at__gte=datetime.combine(day, time.min)).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
+                    posture.append(round(avg,2))
+                else:
+                    posture.append(0)
+        res['friends'].append({**UserListSerializer(friend).data, "posture":posture})
     return Response({"status": "OK", "data": res})
 
 @api_view(['GET'])
