@@ -12,18 +12,24 @@ from rooms.models import Room
 
 # Create your models here.
 class TimeSetting(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    # 사용자 설정 값
     total_time = models.IntegerField()
     work_time = models.IntegerField()
     break_time = models.IntegerField()
+    # 일시정지 기록
+    total_stop_time = models.IntegerField(default=0)
+    last_stop_time = models.DateTimeField(null=True)
+    # 실제 총 작업 시간
+    real_work_time = models.IntegerField()
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='time_setting')
 
 class User(AbstractUser):
-    last_name = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
 
     GENDER_CHOICES = [(0, 'Male'), (1, 'Female')]
     gender = models.IntegerField(default=True, choices=GENDER_CHOICES)
-    
-    time_setting = models.OneToOneField(TimeSetting, on_delete=models.SET_NULL, null=True)
     
     desired_humidity = models.IntegerField(null=True)
     
@@ -39,12 +45,11 @@ class User(AbstractUser):
         options = {'quality':60}
     )
 
-    # 
     friends = models.ManyToManyField('self')
 
-    # product_key = models.CharField(max_length=200)
-
     room = models.ForeignKey(Room, null=True, on_delete=models.CASCADE, related_name='members')
+
+    current_state = models.IntegerField(default=1) # 1-아무것도 안함 2-공부중 3-휴식중
 
 class FriendRequest(models.Model):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sending')
@@ -52,7 +57,7 @@ class FriendRequest(models.Model):
 
 class Sensing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sensing')
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     posture_level = models.IntegerField()
     temperature = models.FloatField()
     humidity = models.FloatField()

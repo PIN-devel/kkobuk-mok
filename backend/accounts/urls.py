@@ -15,7 +15,7 @@ urlpatterns = [
    
     path('friend/request/', views.friend_requests_list),
 
-    path('timesetting/', views.timesetting_create_or_delete_or_update),
+    # path('timesetting/', views.timesetting_create_or_delete_or_update),
 
     path('find/<product_key>/', views.email_find),
 

@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from .models import FriendRequest, Product, TimeSetting, Sensing
-from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer
+from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer
 from .helper import email_auth_num
 
 from django.db.models import Count, Sum
@@ -21,7 +21,7 @@ User = get_user_model()
 @permission_classes([IsAuthenticated])
 def list(request):
     kw = request.GET.get('kw')
-    users = User.objects.filter(email__icontains=kw) if kw else User.objects.all()
+    users = User.objects.filter(name__icontains=kw) if kw else User.objects.all()
     serializer = UserListSerializer(users, many=True)
     return Response({"status": "OK", "data": serializer.data})
 
@@ -39,9 +39,9 @@ def detail_or_delete_or_update(request, user_id):
             posture = {}
             for i in range(0,8):
                 day = startdate - timedelta(days=i)
-                cnt = Sensing.objects.filter(user=user).filter(created_at=day).count()
+                cnt = Sensing.objects.filter(user=user).filter(created_at__contains=day).count()
                 if cnt:
-                    avg = Sensing.objects.filter(user=user).filter(created_at=day).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
+                    avg = Sensing.objects.filter(user=user).filter(created_at__contains=day).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
                     posture[str(day)] = round(avg,2)
                 else:
                     posture[str(day)] = 0
@@ -167,29 +167,29 @@ def friend_reject(request,user_id):
     request.delete()
     return Response({"status": "OK", "msg": "친구 요청을 거절하였습니다."})
 
-@api_view(['POST','DELETE','PUT'])
-@permission_classes([IsAuthenticated])
-def timesetting_create_or_delete_or_update(request):
-    if request.method == 'POST':
-        serializer = TimeSettingSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            time_setting = serializer.save()
-            request.user.time_setting=time_setting
-            request.user.save()        
-            return Response(TimeSettingSerializer(time_setting).data)
-    elif request.method == 'DELETE':
-        time_setting = request.user.time_setting
-        if time_setting:
-            time_setting.delete()
-            return Response({"status": "OK", "msg": "삭제가 완료되었습니다."})
-        else:
-            return Response({"status": "FAIL", "msg": "time_setting이 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
-    else: # PUT update
-        time_setting = request.user.time_setting
-        serializer = TimeSettingSerializer(time_setting,data=request.data,partial=True)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response({"status": "OK", "data": serializer.data})
+# @api_view(['POST','DELETE','PUT'])
+# @permission_classes([IsAuthenticated])
+# def timesetting_create_or_delete_or_update(request):
+#     if request.method == 'POST':
+#         serializer = TimeSettingSerializer(data=request.data)
+#         if serializer.is_valid(raise_exception=True):
+#             time_setting = serializer.save()
+#             request.user.time_setting=time_setting
+#             request.user.save()        
+#             return Response(TimeSettingSerializer(time_setting).data)
+#     elif request.method == 'DELETE':
+#         time_setting = request.user.time_setting
+#         if time_setting:
+#             time_setting.delete()
+#             return Response({"status": "OK", "msg": "삭제가 완료되었습니다."})
+#         else:
+#             return Response({"status": "FAIL", "msg": "time_setting이 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+#     else: # PUT update
+#         time_setting = request.user.time_setting
+#         serializer = TimeSettingSerializer(time_setting,data=request.data,partial=True)
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+#             return Response({"status": "OK", "data": serializer.data})
     
 @api_view(['GET'])
 def email_find(request, product_key):
@@ -203,41 +203,33 @@ def email_find(request, product_key):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def main_info(request):
-    if Sensing.objects.filter(user=request.user).order_by('-pk'):
-        info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
-        data = {
-            'posture_level': info.posture_level,
-            'temperature': info.temperature,
-            'humidity': info.humidity,
-        }
-    else: # 센싱 값 없는 경우
-        data = {
-            'posture_level': 0,
-            'temperature': 0,
-            'humidity': 0,
-        }
+    if request.user.current_state == 2: # timesetting 테이블 만들어진 상태
+        t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
+        if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists(): # start 누른 후 센싱 값 있는 경우
+            info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
+            data = {
+                'posture_level': info.posture_level,
+                'temperature': info.temperature,
+                'humidity': info.humidity,
+            }
+            return Response({"status": "OK", "data": data})
+    # 센싱 값 없는 경우 or 공부 중이 아닌 경우
+    data = {
+        'posture_level': 0,
+        'temperature': 0,
+        'humidity': 0,
+    }
     return Response({"status": "OK", "data": data})
 
 @api_view(['GET'])
 def initial_info(request):
     product_key = request.GET.get('product_key')
     p = get_object_or_404(Product, product_key=product_key)
-    if p.user.time_setting:
-        data = {
-            'desired_humidity': p.user.desired_humidity,
-            'auto_setting': p.user.auto_setting,
-            'total_time': p.user.time_setting.total_time,
-            'work_time': p.user.time_setting.work_time,
-            'break_time': p.user.time_setting.break_time,
-        }
-    else:
-        data = {
-            'desired_humidity': p.user.desired_humidity,
-            'auto_setting': p.user.auto_setting,
-            'total_time': None,
-            'work_time': None,
-            'break_time': None,
-        }
+    data = {
+        'desired_humidity': p.user.desired_humidity,
+        'auto_setting': p.user.auto_setting,
+        'user_state': p.user.current_state,
+    }
     return Response({"status": "OK", "data": data})
 
 @api_view(['POST'])
@@ -248,5 +240,7 @@ def sensing_save(request):
     humidity = request.data.get('humidity')
 
     p = get_object_or_404(Product, product_key=product_key)
-    Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
-    return Response({"status": "OK"})
+    # 공부 중일 때만 자세 값 저장
+    if p.user.current_state == 2:
+        Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
+    return Response({"status": "OK", "data": {"user_state": p.user.current_state}})
