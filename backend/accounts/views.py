@@ -17,6 +17,19 @@ from datetime import date, timedelta, datetime, time, timezone
 
 User = get_user_model()
 
+def user_state_check(ing, total, work, rest):
+    if ing >= total:
+        return 1
+    else:
+        if ing > work+rest:
+            return user_state_check(ing-(work+rest), total, work, rest)
+        elif ing == work+rest:
+            return 2
+        else:
+            if ing < work:
+                return 2
+            return 3
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def list(request):
@@ -183,30 +196,6 @@ def friend_reject(request,user_id):
     request = get_object_or_404(FriendRequest, sender=sender, receiver=receiver)
     request.delete()
     return Response({"status": "OK", "msg": "친구 요청을 거절하였습니다."})
-
-# @api_view(['POST','DELETE','PUT'])
-# @permission_classes([IsAuthenticated])
-# def timesetting_create_or_delete_or_update(request):
-#     if request.method == 'POST':
-#         serializer = TimeSettingSerializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             time_setting = serializer.save()
-#             request.user.time_setting=time_setting
-#             request.user.save()        
-#             return Response(TimeSettingSerializer(time_setting).data)
-#     elif request.method == 'DELETE':
-#         time_setting = request.user.time_setting
-#         if time_setting:
-#             time_setting.delete()
-#             return Response({"status": "OK", "msg": "삭제가 완료되었습니다."})
-#         else:
-#             return Response({"status": "FAIL", "msg": "time_setting이 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
-#     else: # PUT update
-#         time_setting = request.user.time_setting
-#         serializer = TimeSettingSerializer(time_setting,data=request.data,partial=True)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return Response({"status": "OK", "data": serializer.data})
     
 @api_view(['GET'])
 def email_find(request, product_key):
@@ -220,8 +209,19 @@ def email_find(request, product_key):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def main_info(request):
-    if request.user.current_state == 2: # timesetting 테이블 만들어진 상태
+    if request.user.current_state != 1: # timesetting 테이블 만들어진 상태
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
+
+        # 유저 상태 업데이트
+        # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
+        now = datetime.now(timezone.utc)
+        if t.last_stop_time:
+            ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
+        else:
+            ing = (now - t.created_at).total_seconds()//60
+        request.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
+        request.user.save()
+
         if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists(): # start 누른 후 센싱 값 있는 경우
             # 현재 시간 기준으로 10시간 전까지 30분 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
             now = datetime.now()
@@ -275,6 +275,20 @@ def sensing_save(request):
     # 공부 중일 때만 자세 값 저장
     if p.user.current_state == 2:
         Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
+    
+    if p.user.current_state != 1: # timesetting 테이블 만들어진 상태
+        t = TimeSetting.objects.filter(user=p.user).order_by('-pk')[0]
+        
+        # 유저 상태 업데이트
+        # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
+        now = datetime.now(timezone.utc)
+        if t.last_stop_time:
+            ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
+        else:
+            ing = (now - t.created_at).total_seconds()//60
+        p.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
+        p.user.save()
+
     return Response({"status": "OK", "data": {"user_state": p.user.current_state}})
 
 @api_view(['POST'])
