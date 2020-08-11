@@ -18,7 +18,7 @@ from datetime import date, timedelta, datetime, time, timezone
 User = get_user_model()
 
 def user_state_check(ing, total, work, rest):
-    if ing >= total:
+    if total != 0 and ing >= total:
         return 1
     else:
         if ing > work+rest:
@@ -214,13 +214,18 @@ def main_info(request):
 
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
-        now = datetime.now(timezone.utc)
-        if t.last_stop_time:
-            ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
-        else:
-            ing = (now - t.created_at).total_seconds()//60
-        request.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
-        request.user.save()
+        if t.total_time or t.work_time:
+            now = datetime.now(timezone.utc)
+            if t.last_stop_time:
+                ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
+            else:
+                ing = (now - t.created_at).total_seconds()//60
+            if t.work_time:
+                request.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
+            else:
+                if ing >= t.total_time:
+                    request.user.current_state = 1
+            request.user.save()
 
         if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists(): # start 누른 후 센싱 값 있는 경우
             # 현재 시간 기준으로 10시간 전까지 30분 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
@@ -281,15 +286,24 @@ def sensing_save(request):
         
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
-        now = datetime.now(timezone.utc)
-        if t.last_stop_time:
-            ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
-        else:
-            ing = (now - t.created_at).total_seconds()//60
-        p.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
-        p.user.save()
-
-    return Response({"status": "OK", "data": {"user_state": p.user.current_state}})
+        if t.total_time or t.work_time:
+            now = datetime.now(timezone.utc)
+            if t.last_stop_time:
+                ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
+            else:
+                ing = (now - t.created_at).total_seconds()//60
+            if t.work_time:
+                p.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
+            else:
+                if ing >= t.total_time:
+                    p.user.current_state = 1
+            p.user.save()
+    data = {
+        'desired_humidity': p.user.desired_humidity,
+        "auto_setting": p.user.auto_setting,
+        "user_state": p.user.current_state,
+    }
+    return Response({"status": "OK", "data": data})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
