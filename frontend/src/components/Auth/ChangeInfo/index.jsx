@@ -44,11 +44,9 @@ const ChangeInfo = () => {
   const [productKey2, setProductKey2] = useState("");
   const [productKey3, setProductKey3] = useState("");
   const [productKey4, setProductKey4] = useState("");
-  const [newKey, setNewKey] = useState("");
   const [confirmedPKey, setConfirmedPKey] = useState(false);
   const [wantDelete, setWanteDelete] = useState(false);
   const [tryDelete, setTryDelete] = useState(false);
-  const [confirmedPKey, setConfirmedPKey] = useState(false);
 
   const token = Cookies.get("token");
   const userID = Cookies.get("myUserId");
@@ -59,15 +57,15 @@ const ChangeInfo = () => {
   };
 
   const handleOldP = (e) => {
-    setOld_Password(e.target.value);
+    setOld_Password(e);
   };
 
   const handleNP1 = (e) => {
-    setNew_Password1(e.target.value);
+    setNew_Password1(e);
   };
 
   const handleNP2 = (e) => {
-    setNew_Password2(e.target.value);
+    setNew_Password2(e);
   };
 
   const handleSetProductKey1 = (pk) => {
@@ -97,7 +95,7 @@ const ChangeInfo = () => {
         alert("비밀번호가 변경되었습니다");
       })
       .catch((err) => {
-        alert("현재 비밀번호가 틀립니다");
+        alert("비밀번호 변경 실패");
         console.log(err.response);
         console.log("비번 변경 실패");
       });
@@ -117,10 +115,6 @@ const ChangeInfo = () => {
     } else {
       alert("새 비밀번호를 확인해주세요");
     }
-  };
-
-  const handleNewKey = (e) => {
-    setNewKey(e.target.value);
   };
 
   const handleSetConfirmedPkey = () => {
@@ -212,97 +206,6 @@ const ChangeInfo = () => {
   const EditForm = (
     <div style={modalStyle} className={classes.paper}>
       <div>
-        {/* <input type="file" onChange={ImageHandler} />
-        <Button
-          className={classes.margin}
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            EditImage();
-          }}
-        >
-          이미지 변경
-        </Button>
-      </div>
-      <div>
-        <TextField
-          type="password"
-          label="현재 비밀번호"
-          variant="outlined"
-          value={old_password}
-          onChange={handleOldP}
-        />
-        <TextField
-          error={new_password1.length >= 8 ? false : true}
-          helperText={new_password1.length >= 8 ? "" : "8자리 이상이어야합니다"}
-          type="password"
-          label="새 비밀번호"
-          variant="outlined"
-          value={new_password1}
-          onChange={handleNP1}
-        />
-        <TextField
-          error={new_password1 === new_password2 ? false : true}
-          helperText={
-            new_password1 === new_password2 ? "" : "비밀번호를 확인해주세요"
-          }
-          type="password"
-          label="비밀번호 확인"
-          variant="outlined"
-          value={new_password2}
-          onChange={handleNP2}
-        />
-        <Button
-          className={classes.margin}
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            ChangePass();
-          }}
-        >
-          비밀번호 변경
-        </Button>
-      </div>
-      <div>
-        <TextField
-          label="Product Key"
-          variant="outlined"
-          value={newKey}
-          onChange={handleNewKey}
-        />
-        {confirmedPKey ? (
-          <Button
-            className={classes.margin}
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              ChangeKey();
-            }}
-          >
-            제품키 변경
-          </Button>
-        ) : (
-          <Button
-            className={classes.margin}
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              handleSetConfirmedPkey();
-            }}
-          >
-            제품키 인증
-          </Button>
-        )}
-        <Button
-          className={classes.margin}
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            tryDeleteAccount();
-          }}
-        >
-          회원 탈퇴
-        </Button> */}
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
