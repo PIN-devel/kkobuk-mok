@@ -82,8 +82,9 @@ def detail_or_delete_or_update(request, user_id):
         else:
             return Response({"status": "FAIL", "error_msg": "수정 권한이 없습니다."}, status=status.HTTP_403_FORBIDDEN)
 
-@api_view(['GET'])
-def key_certification(request, product_key):
+@api_view(['POST'])
+def key_certification(request):
+    product_key = request.data.get('product_key')
     # db에 제품키 있는지 확인
     p = Product.objects.filter(product_key=product_key)
     if p.exists():
@@ -107,7 +108,8 @@ def key_certification(request, product_key):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def key_registration(request, product_key):
+def key_registration(request):
+    product_key = request.data.get('product_key')
     p = get_object_or_404(Product, product_key=product_key)
     # 키 등록
     if not p.user:
@@ -213,8 +215,9 @@ def friend_reject(request,user_id):
     request.delete()
     return Response({"status": "OK", "msg": "친구 요청을 거절하였습니다."})
     
-@api_view(['GET'])
-def email_find(request, product_key):
+@api_view(['POST'])
+def email_find(request):
+    product_key = request.data.get('product_key')
     product = get_object_or_404(Product, product_key=product_key)
     if product.user:
         res = {'email': product.user.email}
