@@ -81,6 +81,12 @@ class FriendRequestSenderListSerializer(serializers.ModelSerializer):
         model = FriendRequest
         fields = ('sender',)
 
+class FriendRequestReceiverListSerializer(serializers.ModelSerializer):
+    receiver = UserListSerializer()
+    class Meta:
+        model = FriendRequest
+        fields = ('receiver',)
+
 
 # 추후 모델링 결정되면, 방 멤버들 정보 어떤거 보여줄지 넣으면 됨
 # class MemberSerializer(serializers.ModelSerializer):
