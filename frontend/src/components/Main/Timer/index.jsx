@@ -22,20 +22,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const token = Cookies.get("token");
-const config = {
-  headers: {
-    Authorization: `Jwt ${token}`,
-  },
-};
-
 const Timer = (props) => {
   const { SERVER_URL } = useContext(AuthContext);
   const classes = useStyles();
   const [status, setStatus] = useState(0);
-  // Not started = 0
-  // started = 1
-  // stopped = 2
   const [time, setTime] = useState({ s: 0, m: 0, h: 0 });
   const [interv, setInterv] = useState("");
   const [stopwatch, setStopwatch] = useState({

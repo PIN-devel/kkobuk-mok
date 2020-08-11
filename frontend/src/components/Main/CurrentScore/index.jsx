@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Wrapper } from "./styles";
+import { MainContext } from "../../../contexts/MainContext";
 
 const CurrentScore = (props) => {
+  const { currentScore } = useContext(MainContext);
   const [myWord, setMyWord] = useState("");
   const [myClass, setMyClass] = useState("whiteCircle");
   useEffect(() => {
-    if (props.myScore === 3) {
+    if (currentScore === 3) {
       setMyWord("위험");
       setMyClass("redCircle");
-    } else if (props.myScore === 2) {
+    } else if (currentScore === 2) {
       setMyWord("보통");
       setMyClass("yellowCircle");
-    } else if (props.myScore === 1) {
+    } else if (currentScore === 1) {
       setMyWord("완벽");
       setMyClass("blueCircle");
     } else {
       setMyWord("");
       setMyClass("whiteCircle");
     }
-  }, [props.myScore]);
+  }, [currentScore]);
   return (
     <Wrapper>
       <div className="container">

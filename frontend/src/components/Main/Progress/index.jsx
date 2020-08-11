@@ -9,12 +9,21 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { MainContext } from "../../../contexts/MainContext";
 
-const Progress = (props) => {
+const Progress = () => {
+  const { currentScoreData } = useContext(MainContext);
+  const [myData, setMyData] = useState([]);
+
+  useEffect(() => {
+    const newList = currentScoreData;
+    setMyData(newList);
+  }, [currentScoreData]);
+
   return (
     <ResponsiveContainer height={260} width="90%">
       <LineChart
-        data={props.scoreData}
+        data={myData}
         margin={{
           top: 5,
           right: 30,
