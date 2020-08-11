@@ -12,7 +12,7 @@ import CardHeader from "../../components/Friends/Card/CardHeader.js";
 import CardBody from "../../components/Friends/Card/CardBody.js";
 import Layout from "../../Layout/MyDash/Dashboard";
 import ResponsiveDialog from "../../components/Friends/Dialog";
-import SentFriendRequests from "";
+import SentFriendRequests from "../../components/Friends/SentFriendRequests";
 import useStyles from "./styles";
 import { AuthContext } from "../../contexts/AuthContext";
 import Axios from "axios";

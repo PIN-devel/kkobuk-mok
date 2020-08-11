@@ -41,6 +41,7 @@ const ChangeInfo = () => {
   const [newKey, setNewKey] = useState("");
   const [wantDelete, setWanteDelete] = useState(false);
   const [tryDelete, setTryDelete] = useState(false);
+  const [confirmedPKey, setConfirmedPKey] = useState(false);
 
   const token = Cookies.get("token");
   const userID = Cookies.get("myUserId");
@@ -79,11 +80,15 @@ const ChangeInfo = () => {
   const ChangePass = (e) => {
     e.preventDefault();
     if (new_password1 === new_password2) {
-      sendPass({
-        new_password1,
-        new_password2,
-        old_password,
-      });
+      if (new_password1.length >= 8) {
+        sendPass({
+          new_password1,
+          new_password2,
+          old_password,
+        });
+      } else {
+        alert("비밀번호는 8자리 이상이어야 합니다");
+      }
     } else {
       alert("새 비밀번호를 확인해주세요");
     }
@@ -91,6 +96,24 @@ const ChangeInfo = () => {
 
   const handleNewKey = (e) => {
     setNewKey(e.target.value);
+  };
+
+  const ConfirmKey = (e) => {
+    e.preventDefault();
+    axios
+      .get(`${SERVER_URL}/certification/${newKey}/`)
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          setConfirmedPKey(true);
+          alert(res.msg);
+        } else {
+          alert(res.msg);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   const ChangeKey = (e) => {
@@ -221,16 +244,30 @@ const ChangeInfo = () => {
             handleNewKey();
           }}
         />
-        <Button
-          className={classes.margin}
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            ChangeKey();
-          }}
-        >
-          제품키 등록/변경
-        </Button>
+        {!confirmedPKey ? (
+          <Button
+            className={classes.margin}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              ConfirmKey();
+            }}
+          >
+            인증
+          </Button>
+        ) : (
+          <Button
+            className={classes.margin}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              ChangeKey();
+            }}
+          >
+            등록
+          </Button>
+        )}
+
         <Button
           className={classes.margin}
           variant="contained"
