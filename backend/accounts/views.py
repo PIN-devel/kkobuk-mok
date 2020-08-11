@@ -233,7 +233,7 @@ def main_info(request):
 
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
-        if t.total_time or t.work_time:
+        if (t.total_time or t.work_time) and request.user.current_state != 4:
             now = datetime.now(timezone.utc)
             if t.last_stop_time:
                 ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
@@ -308,7 +308,7 @@ def sensing_save(request):
         
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
-        if t.total_time or t.work_time:
+        if (t.total_time or t.work_time) and request.user.current_state != 4:
             now = datetime.now(timezone.utc)
             if t.last_stop_time:
                 ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
@@ -351,7 +351,7 @@ def timer_pause(request):
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
         t.last_stop_time = datetime.now()
         t.save()
-        request.user.current_state = 3
+        request.user.current_state = 4
         request.user.save()
         data = {
             "user_state": request.user.current_state,

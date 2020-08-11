@@ -15,8 +15,6 @@ import Cookies from "js-cookie";
 import Axios from "axios";
 
 export default function ResponsiveDialog(props) {
-  //   const decision = useContext(friendsContext);
-  //   console.log(decision);
   const { SERVER_URL } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const theme = useTheme();

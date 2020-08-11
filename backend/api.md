@@ -2,7 +2,7 @@
 
 | 기능             | HTTP Methods | Url                                                  | Input Parameter                                              | Response                                                     | O/X                                                 |
 | ---------------- | ------------ | ---------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 회원가입         | post         | /rest-auth/signup/                                   | email, password1, password2, last_name, first_name, gender(0-남자, 1-여자), birth_date(생년월일) | 이메일 중복, 필수값 입력 안했을 시 -> 400 반환<br />성공 -> token | O |
+| 회원가입         | post         | /rest-auth/signup/                                   | email, password1, password2, name, gender(0-남자, 1-여자), birth_date(생년월일) | 이메일 중복, 필수값 입력 안했을 시 -> 400 반환<br />성공 -> token | O |
 | 로그인           | post         | /rest-auth/login/                                    | email, password                                              | token                                                        | O                                                       |
 | 로그아웃         | post         | /rest-auth/logout/                                   | token                                                        |                                                              | O |
 | 비밀번호 변경    | post         | /rest-auth/password/change/                          | token, new_password1, new_password2, old_password            | 기존 비밀번호 다를 경우-> 400<br />성공 -> detail 메세지     | O    |
@@ -35,7 +35,7 @@
 | 메인페이지 정보 | get | /accounts/maininfo/ | token | 현재 posture_level, temperature, humidity, posture_avg(최근까지 시간 별 자세 통계), user_state |                     |
 |  |  |  |  |  |  |
 | 라즈베리파이 |  |  |  |  |  |
-| 초기화 설정 값 | get | /accounts/initialinfo/ | query: product_key | desired_humidity, auto_setting, user_state |  |
+| 초기화 설정 값 | post | /accounts/initialinfo/ | product_key | desired_humidity, auto_setting, user_state |  |
 | 센싱값 저장 | post | /accounts/sensingsave/ | product_key, posture_level, temperature, humidity | desired_humidity, auto_setting, user_state |  |
 |  |  |  |  |  | |
 | 타이머 시작 | post | /accounts/timer/start/ | token, total_time, work_time, break_time | user_state, time(현재 timesetting 데이터) | |
