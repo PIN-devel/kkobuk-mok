@@ -120,9 +120,9 @@ export default function SignIn() {
   const findEmail = (e) => {
     e.preventDefault();
     axios
-      .post(`${SERVER_URL}/accounts/find/${productKey}/`)
+      .post(`${SERVER_URL}/accounts/find/`, { product_key: productKey })
       .then((res) => {
-        setFoundEmail(res.data.data.email);
+        alert(res.data.data.email);
         setModalStatus(1);
       })
       .catch((err) => {
@@ -138,6 +138,7 @@ export default function SignIn() {
       .post(`${SERVER_URL}/rest-auth/password/reset/`, data)
       .then((res) => {
         console.log(res);
+        alert("메일을 확인해주세요");
         setModalStatus(2);
       })
       .catch((err) => {
@@ -185,9 +186,7 @@ export default function SignIn() {
               className={classes.margin}
               variant="contained"
               color="primary"
-              onClick={() => {
-                findEmail();
-              }}
+              onClick={findEmail}
             >
               메일 찾기
             </Button>
@@ -209,9 +208,7 @@ export default function SignIn() {
               className={classes.margin}
               variant="contained"
               color="primary"
-              onClick={() => {
-                findPassword();
-              }}
+              onClick={findPassword}
             >
               비밀번호 찾기
             </Button>

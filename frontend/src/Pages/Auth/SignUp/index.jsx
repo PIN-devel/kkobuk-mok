@@ -80,9 +80,8 @@ export default function SignUp() {
   const handleSetConfirmedPkey = () => {
     const pkey = productKey1 + productKey2 + productKey3 + productKey4;
     if (pkey.length === 16) {
-      const body = { product_key: pkey };
       axios
-        .post(`${SERVER_URL}/accounts/certification/`, body)
+        .post(`${SERVER_URL}/accounts/certification/`, { product_key: pkey })
         .then((res) => {
           console.log(res);
           if (res.data.data.success) {
@@ -139,22 +138,22 @@ export default function SignUp() {
     e.preventDefault();
     const numGender = Number(gender);
 
-    // if (password !== passwordConfirm) {
-    //   alert("비밀번호를 확인해주세요");
-    // } else if (password.length < 8) {
-    //   alert("비밀번호는 8자리 이상 입력해주세요");
-    // } else if (!confirmedPKey) {
-    //   alert("제품키를 인증해주세요");
-    // } else {
-    reqSignUp({
-      name: name,
-      email: email,
-      password1: password,
-      password2: passwordConfirm,
-      gender: numGender,
-      birth_date: birthDate,
-    });
-    // }
+    if (password !== passwordConfirm) {
+      alert("비밀번호를 확인해주세요");
+    } else if (password.length < 8) {
+      alert("비밀번호는 8자리 이상 입력해주세요");
+    } else if (!confirmedPKey) {
+      alert("제품키를 인증해주세요");
+    } else {
+      reqSignUp({
+        name: name,
+        email: email,
+        password1: password,
+        password2: passwordConfirm,
+        gender: numGender,
+        birth_date: birthDate,
+      });
+    }
   };
 
   return (
@@ -328,6 +327,7 @@ export default function SignUp() {
 
             <Grid item xs={12} md={4}>
               <Button
+                disabled={confirmedPKey ? true : false}
                 onClick={() => {
                   handleSetConfirmedPkey();
                 }}
@@ -386,7 +386,6 @@ export default function SignUp() {
           </Grid>
           <Button
             type="submit"
-            // disabled={confirmedPKey ? false : true}
             fullWidth
             variant="contained"
             color="primary"
