@@ -228,6 +228,13 @@ def email_find(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def main_info(request):
+    # 초기값
+    posture_level = 0
+    temperature = 0
+    humidity = 0
+    posture_avg = []
+    time = {}
+
     if request.user.current_state != 1: # timesetting 테이블 만들어진 상태
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
 
@@ -235,8 +242,8 @@ def main_info(request):
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
         if (t.total_time or t.work_time) and request.user.current_state != 4:
             now = datetime.now(timezone.utc)
-            if t.last_stop_time:
-                ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
+            if t.total_stop_time:
+                ing = ((now - t.created_at).total_seconds()//60) - t.total_stop_time
             else:
                 ing = (now - t.created_at).total_seconds()//60
             if t.work_time:
@@ -259,23 +266,23 @@ def main_info(request):
                     ls.append({"time": str(st)[11:16], "score": avg})
             
             info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
-            data = {
-                'posture_level': info.posture_level,
-                'temperature': info.temperature,
-                'humidity': info.humidity,
-                'posture_avg': ls,
-                'user_state': request.user.current_state,
-                'time': TimeSettingSerializer(t).data,
-            }
-            return Response({"status": "OK", "data": data})
-    # 센싱 값 없는 경우 or 공부 중이 아닌 경우
+    
+            posture_level = info.posture_level
+            temperature = info.temperature
+            humidity = info.humidity
+            posture_avg = ls
+            time = TimeSettingSerializer(t).data
+
+        else:
+            time = TimeSettingSerializer(t).data  
+
     data = {
-        'posture_level': 0,
-        'temperature': 0,
-        'humidity': 0,
-        'posture_avg': [],
+        'posture_level': posture_level,
+        'temperature': temperature,
+        'humidity': humidity,
+        'posture_avg': posture_avg,
         'user_state': request.user.current_state,
-        'time': {}
+        'time': time,
     }
     return Response({"status": "OK", "data": data})
 
