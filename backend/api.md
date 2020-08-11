@@ -10,10 +10,10 @@
 | 유저 상세 조회   | get          | /accounts/<user_id>/                                 | token                                                        | data 없을 경우 -> 404<br />성공 -> data                      | --                   |
 | 회원정보 수정    | put          | /accounts/<user_id>/                                 | token, 수정할 data                                           | token 안보낼때 -> 401<br />본인 계정이 아닐 때 -> 403<br />성공 -> 수정된 유저 data | O |
 | 회원 탈퇴        | delete       | /accounts/<user_id>/                                 | token                                                        | token 안보낼때 -> 401<br />본인 계정이 아닐 때 -> 403<br />성공 -> 삭제된 유저 data | O |
-| 이메일 찾기 | post | /accounts/find/<product_key>/ |  | 성공 -> data {email}, 해당 유저가 없을 때 404 | -- |
+| 이메일 찾기 | post | /accounts/find/ | product_key | 성공 -> data {email}, 해당 유저가 없을 때 404 | -- |
 | 비밀번호 찾기    | post         | /rest-auth/password/reset/                           | email                                                        |                                                              | O |
-| 제품키 인증      | get          | /certification/<product_key>/                        |                                                              | data {success ( 성공 시 true, 실패 시 false ), msg}          | --        |
-| 제품키 등록      | post         | /registration/<product_key>/                         | token                                                        | 성공 -> 200,  사용 중인 제품 키 -> 400, 해당 제품 키 없을 때 -> 404 | -- |
+| 제품키 인증      | post      | /accounts/certification/        | product_key | data {success ( 성공 시 true, 실패 시 false ), msg}          | --        |
+| 제품키 등록      | post         | /accounts/registration/              | token, product_key                                           | 성공 -> 200,  사용 중인 제품 키 -> 400, 해당 제품 키 없을 때 -> 404 | -- |
 |                  |              |                                                      |                                                              |                                                              |                                                              |
 | 방 리스트        | get          | /rooms/                                              | token, query : _page, keyword                 | 방 리스트 data                                               | O                                           |
 | 방 생성          | post         | /rooms/                                              | token, name, (password), description                      | 해당 방 정보 data                                          | O                                       |
