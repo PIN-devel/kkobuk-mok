@@ -34,7 +34,7 @@ export default function CustomTable(props) {
     },
   };
   const addFriend = (id) => {
-    Axios.post(`${SERVER_URL}/accounts/friend/${id}/`, null, config)
+    Axios.post(`${SERVER_URL}/accounts/friend/${id}/`, { flag: true }, config)
       .then((res) => {
         console.log(res.data);
         console.log("요청 성공");
@@ -59,7 +59,7 @@ export default function CustomTable(props) {
   };
 
   const cancelRequest = (id) => {
-    Axios.post(`${SERVER_URL}/accounts/friend/${id}/`, null, config) // 여기 나중에 수정해야함
+    Axios.post(`${SERVER_URL}/accounts/friend/${id}/`, { flag: false }, config) // 여기 나중에 수정해야함
       .then((res) => {
         console.log(res.data);
         console.log("친구 요청 취소 성공");

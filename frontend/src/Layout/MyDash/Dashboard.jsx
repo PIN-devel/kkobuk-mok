@@ -113,7 +113,7 @@ export default function Dashboard(props) {
   };
 
   useEffect(() => {
-    Axios.get(`${SERVER_URL}/accounts/friend/request/`, config)
+    Axios.get(`${SERVER_URL}/accounts/friend/request/receive/`, config)
       .then((res) => {
         console.log("가져오기 성공");
         console.log(res.data.data);

@@ -17,10 +17,6 @@ const useStyles = makeStyles({
 
 const Profile = (props) => {
   const { SERVER_URL } = useContext(AuthContext);
-
-  const testing = () => {
-    console.log(props.friends);
-  };
   return (
     <Wrapper>
       <Grid container spacing={2}>
@@ -31,20 +27,13 @@ const Profile = (props) => {
           <div className="profileInfo">
             <h3>이름: {props.name}</h3>
             <h3>이메일: {props.email}</h3>
-            <h3>제품키: QWER-QWER-QWER-QWER</h3>
+            {/* <h3>제품키: {props.mykey}</h3> */}
             <h3>현재 {props.friends.length}명의 친구들과 교류하고 있습니다</h3>
-            <button
-              onClick={() => {
-                testing();
-              }}
-            >
-              tester
-            </button>
             <ChangeInfo />
           </div>
         </Grid>
         <Grid item xs={12} sm={5} className="Today">
-          <CircleProgressBar percentage={30} speed={10} />
+          <CircleProgressBar percentage={props.today} speed={10} />
         </Grid>
       </Grid>
     </Wrapper>
