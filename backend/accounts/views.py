@@ -277,9 +277,9 @@ def main_info(request):
     }
     return Response({"status": "OK", "data": data})
 
-@api_view(['GET'])
+@api_view(['POST'])
 def initial_info(request):
-    product_key = request.GET.get('product_key')
+    product_key = request.data.get('product_key')
     p = get_object_or_404(Product, product_key=product_key)
     data = {
         'desired_humidity': p.user.desired_humidity,
