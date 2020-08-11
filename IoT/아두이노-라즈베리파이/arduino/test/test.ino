@@ -17,6 +17,7 @@ Servo servo;
 
 boolean b_new_data = false;
 String s_data;
+boolean humidifier_state = false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -78,20 +79,71 @@ void function(){
     }
     
     else if(s_data == "SP"){
-      tone(SPEAKER_PIN,Tones[5]);
-      delay(200);
-      noTone(SPEAKER_PIN);
-      delay(50);
-      tone(SPEAKER_PIN,Tones[5]);
-      delay(200);
+      tone(SPEAKER_PIN,1865);
+      delay(2000);
+      
+      tone(SPEAKER_PIN,988);
+      delay(500);
+      tone(SPEAKER_PIN,1175);
+      delay(500);
+      tone(SPEAKER_PIN,1480);
+      delay(500);
+      tone(SPEAKER_PIN,1175);
+      delay(500);
+
+      tone(SPEAKER_PIN,932);
+      delay(500);
+      tone(SPEAKER_PIN,1109);
+      delay(500);
+      tone(SPEAKER_PIN,1319);
+      delay(500);
+      tone(SPEAKER_PIN,932);
+      delay(500);
+
+            tone(SPEAKER_PIN,988);
+      delay(500);
+      tone(SPEAKER_PIN,1175);
+      delay(500);
+      tone(SPEAKER_PIN,1480);
+      delay(500);
+      tone(SPEAKER_PIN,1175);
+      delay(500);
+
+      tone(SPEAKER_PIN,932);
+      delay(500);
+      tone(SPEAKER_PIN,1109);
+      delay(500);
+      tone(SPEAKER_PIN,1319);
+      delay(500);
+      tone(SPEAKER_PIN,932);
+      delay(500);
+      
+   
       noTone(SPEAKER_PIN);
       Serial.println("알람");      
     }
     else if(s_data == "RON"){
-      digitalWrite(RELAY_PIN,1);
+      if (!humidifier_state){
+        digitalWrite(RELAY_PIN,1);
+        delay(200);
+        digitalWrite(RELAY_PIN,0);
+         
+        humidifier_state = true;
+      }
       Serial.println("가습기 : on");     
     }
     else if(s_data == "ROF"){
+      if (humidifier_state){
+        digitalWrite(RELAY_PIN,1);
+        delay(200);
+        digitalWrite(RELAY_PIN,0);
+        delay(200);
+        digitalWrite(RELAY_PIN,1);
+        delay(200);
+        digitalWrite(RELAY_PIN,0);
+        
+        humidifier_state = false;
+      }
       digitalWrite(RELAY_PIN,0);
       Serial.println("가습기 : off");      
     }
