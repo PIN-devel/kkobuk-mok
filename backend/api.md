@@ -2,7 +2,7 @@
 
 | 기능             | HTTP Methods | Url                                                  | Input Parameter                                              | Response                                                     | O/X                                                 |
 | ---------------- | ------------ | ---------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 회원가입         | post         | /rest-auth/signup/                                   | email, password1, password2, last_name, first_name, gender(0-남자, 1-여자), birth_date(생년월일) | 이메일 중복, 필수값 입력 안했을 시 -> 400 반환<br />성공 -> token | O |
+| 회원가입         | post         | /rest-auth/signup/                                   | email, password1, password2, name, gender(0-남자, 1-여자), birth_date(생년월일) | 이메일 중복, 필수값 입력 안했을 시 -> 400 반환<br />성공 -> token | O |
 | 로그인           | post         | /rest-auth/login/                                    | email, password                                              | token                                                        | O                                                       |
 | 로그아웃         | post         | /rest-auth/logout/                                   | token                                                        |                                                              | O |
 | 비밀번호 변경    | post         | /rest-auth/password/change/                          | token, new_password1, new_password2, old_password            | 기존 비밀번호 다를 경우-> 400<br />성공 -> detail 메세지     | O    |
