@@ -22,7 +22,7 @@
 |                  |              |                                                      |                                                              |                                                              |                                                              |
 | 친구 리스트 조회     | get          | /accounts/friend/                  | token                                                        |                                                              | O |
 | 친구요청 리스트 조회 | get          | /accounts/friend/request/          | token                                                        |                                                              | O |
-| 친구 요청/취소       | post         | /accounts/friend/<user_id>/        | token                                                        |                                                              | - |
+| 친구 요청/취소       | post         | /accounts/friend/<user_id>/        | token, flag(요청이면 true, 요청 취소면 false)                       |  | - |
 | 친구 삭제 | delete | /accounts/friend/<user_id>/ | token | | O |
 | 친구 요청 수락       | post         | /accounts/friend/<user_id>/accept/ | token                                                        |                                                              | O |
 | 친구요청 거절 | post | /accounts/friend/<user_id>/reject/ | token | | O |

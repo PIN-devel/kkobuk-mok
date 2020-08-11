@@ -152,24 +152,32 @@ def friend_requests_list(request):
     serializer = FriendRequestSenderListSerializer(friend_requests, many=True)
     return Response({"status": "OK", "data": serializer.data})
 
-@api_view(['POST','DELETE'])
+@api_view(['POST', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def friend_add_or_delete(request, user_id): 
     sender = request.user
     receiver = get_object_or_404(User,id=user_id)
-    if request.method == 'POST': # 친구 신청 / 신청취소
+    if request.method == 'POST':
         if receiver in sender.friends.all(): 
             return Response({"status": "FAIL", "msg": "이미 친구 등록된 유저입니다."}, status=status.HTTP_409_CONFLICT)
-        try:
-            request = FriendRequest.objects.get(sender=sender, receiver=receiver)
-            request.delete()
-            res = "DELETE"
-        except FriendRequest.DoesNotExist:
+        # 친구 요청/ 요청 취소
+        flag = request.data.get('flag')
+        if flag: # 요청
+            # 이미 요청한 상태라면
+            if FriendRequest.objects.filter(sender=sender, receiver=receiver).exists():
+                return Response({"status": "FAIL", "msg": "이미 친구 신청을 한 상태입니다."}, status=status.HTTP_409_CONFLICT)
             FriendRequest.objects.create(
                 sender=sender,
                 receiver=receiver
             )
             res = "ADD"
+        else: # 요청 취소
+            # 요청 리스트에 없다면
+            if not FriendRequest.objects.filter(sender=sender, receiver=receiver).exists():
+                return Response({"status": "FAIL", "msg": "친구 신청을 하지 않았습니다."}, status=status.HTTP_409_CONFLICT)
+            request = FriendRequest.objects.get(sender=sender, receiver=receiver)
+            request.delete()            
+            res = "DELETE"
         data = {
             "status": res
         }
