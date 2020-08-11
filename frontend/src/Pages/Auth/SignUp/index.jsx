@@ -27,7 +27,11 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [productKey, setProductKey] = useState("");
+  const [productKey1, setProductKey1] = useState("");
+  const [productKey2, setProductKey2] = useState("");
+  const [productKey3, setProductKey3] = useState("");
+  const [productKey4, setProductKey4] = useState("");
+  const [fullProductKey, setFullProductKey] = useState("");
   const [gender, setGender] = useState("1");
   const [birthDate, setBirthDate] = useState("2000-01-01");
   const [confirmedPKey, setConfirmedPKey] = useState(false);
@@ -47,19 +51,33 @@ export default function SignUp() {
   const handleSetPasswordConfirm = (passwordConfirm) => {
     setPasswordConfirm(passwordConfirm);
   };
-  const handleSetProductKey = (pk) => {
-    setProductKey(pk);
+  const handleSetProductKey1 = (pk) => {
+    setProductKey1(pk);
+  };
+  const handleSetProductKey2 = (pk) => {
+    setProductKey2(pk);
+  };
+  const handleSetProductKey3 = (pk) => {
+    setProductKey3(pk);
+  };
+  const handleSetProductKey4 = (pk) => {
+    setProductKey4(pk);
   };
   const handleSetConfirmedPkey = () => {
-    if (productKey.length === 16) {
+    const fullkey = productKey1 + productKey2 + productKey3 + productKey4;
+    if (fullkey.length === 16) {
+      setFullProductKey(fullkey);
+      const thekey = {
+        product_key: fullkey,
+      };
       axios
-        .get(`${SERVER_URL}/certification/${productKey}/`)
+        .post(`${SERVER_URL}/accounts/certification/`, thekey)
         .then((res) => {
           console.log(res);
-          if (res.success) {
+          if (res.data.data.success) {
             setConfirmedPKey(true);
           }
-          alert(res.msg);
+          alert(res.data.data.msg);
         })
         .catch((err) => {
           console.log(err.response);
@@ -84,7 +102,7 @@ export default function SignUp() {
     axios
       .post(url, signUpData)
       .then((res) => {
-        console.log("회원가입성공");
+        console.log("회원가입 성공");
         console.log(res);
         Cookies.set("token", res.data.token, { path: "/" });
         const token = Cookies.get("token");
@@ -94,8 +112,12 @@ export default function SignUp() {
           },
         };
         handleSetAuth(true, res.data.user.pk);
+        const fullkey = productKey1 + productKey2 + productKey3 + productKey4;
+        const thekey = {
+          product_key: fullkey,
+        };
         axios
-          .post(`${SERVER_URL}/registration/${productKey}/`, null, config)
+          .post(`${SERVER_URL}/accounts/registration/`, thekey, config)
           .then((res) => {
             console.log(res);
             alert("회원가입되셨습니다");
@@ -105,10 +127,10 @@ export default function SignUp() {
             console.log("회원가입 실패");
             console.log(err.reponse);
           });
-
         // 이거 프로필로 갈 때, 유저가 product 키 입력해줬으면 그것도 같이 보내주자 아 그러지는 말까?.... 어쩌지 고민좀
       })
       .catch((err) => {
+        console.log("회원가입 실패");
         console.log(err.response);
       });
   };
@@ -117,22 +139,22 @@ export default function SignUp() {
     e.preventDefault();
     const numGender = Number(gender);
 
-    if (password !== passwordConfirm) {
-      alert("비밀번호를 확인해주세요");
-    } else if (password.length < 8) {
-      alert("비밀번호는 8자리 이상 입력해주세요");
-    } else if (!confirmedPKey) {
-      alert("제품키를 인증해주세요");
-    } else {
-      reqSignUp({
-        name,
-        email,
-        password1: password,
-        password2: password,
-        gender: numGender,
-        birth_date: birthDate,
-      });
-    }
+    // if (password !== passwordConfirm) {
+    //   alert("비밀번호를 확인해주세요");
+    // } else if (password.length < 8) {
+    //   alert("비밀번호는 8자리 이상 입력해주세요");
+    // } else if (!confirmedPKey) {
+    //   alert("제품키를 인증해주세요");
+    // } else {
+    reqSignUp({
+      name: name,
+      email: email,
+      password1: password,
+      password2: passwordConfirm,
+      gender: numGender,
+      birth_date: birthDate,
+    });
+    // }
   };
 
   return (
@@ -163,7 +185,7 @@ export default function SignUp() {
                 id="name"
                 label="Name"
                 autoFocus
-                value={firstName}
+                value={name}
                 onChange={(e) => {
                   handleSetName(e.target.value);
                 }}
@@ -186,9 +208,9 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={password.length < 8 ? false : true}
+                error={password.length < 8 ? true : false}
                 helperText={
-                  password.length < 8 ? "" : "비밀번호는 8자리 이상입니다"
+                  password.length < 8 ? "비밀번호는 8자리 이상입니다" : ""
                 }
                 variant="outlined"
                 required
@@ -224,22 +246,74 @@ export default function SignUp() {
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={9}>
+            {/* <Grid item xs={6} md={2}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="productKey"
-                label="Product Key"
-                name="productKey"
+                id="productKey1"
+                name="productKey1"
                 autoComplete="p-key"
-                value={product}
+                inputProps={{ maxLength: 4 }}
+                value={productKey1}
                 onChange={(e) => {
-                  handleSetProductKey(e.target.value);
+                  handleSetProductKey1(e.target.value);
+                }}
+              >
+                -
+              </TextField>
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="productKey2"
+                name="productKey2"
+                autoComplete="p-key"
+                inputProps={{ maxLength: 4 }}
+                value={productKey2}
+                onChange={(e) => {
+                  handleSetProductKey2(e.target.value);
+                }}
+              >
+                -
+              </TextField>
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="productKey3"
+                name="productKey3"
+                autoComplete="p-key"
+                inputProps={{ maxLength: 4 }}
+                value={productKey3}
+                onChange={(e) => {
+                  handleSetProductKey3(e.target.value);
+                }}
+              >
+                -
+              </TextField>
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="productKey4"
+                name="productKey4"
+                autoComplete="p-key"
+                inputProps={{ maxLength: 4 }}
+                value={productKey4}
+                onChange={(e) => {
+                  handleSetProductKey4(e.target.value);
                 }}
               />
-            </Grid>
-            <Grid item xs={12} md={3}>
+            </Grid> */}
+
+            {/* <Grid item xs={12} md={4}>
               <Button
                 onClick={() => {
                   handleSetConfirmedPkey();
@@ -247,7 +321,7 @@ export default function SignUp() {
               >
                 제품키 인증
               </Button>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={3}>
               <FormLabel>Gender</FormLabel>
             </Grid>
@@ -298,6 +372,7 @@ export default function SignUp() {
           </Grid>
           <Button
             type="submit"
+            // disabled={confirmedPKey ? false : true}
             fullWidth
             variant="contained"
             color="primary"
