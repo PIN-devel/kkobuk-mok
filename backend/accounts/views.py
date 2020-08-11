@@ -265,6 +265,7 @@ def main_info(request):
                 'humidity': info.humidity,
                 'posture_avg': ls,
                 'user_state': request.user.current_state,
+                'time': TimeSettingSerializer(t).data,
             }
             return Response({"status": "OK", "data": data})
     # 센싱 값 없는 경우 or 공부 중이 아닌 경우
@@ -274,6 +275,7 @@ def main_info(request):
         'humidity': 0,
         'posture_avg': [],
         'user_state': request.user.current_state,
+        'time': {}
     }
     return Response({"status": "OK", "data": data})
 
