@@ -351,7 +351,7 @@ def timer_pause(request):
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
         t.last_stop_time = datetime.now()
         t.save()
-        request.user.current_state = 3
+        request.user.current_state = 4
         request.user.save()
         data = {
             "user_state": request.user.current_state,
