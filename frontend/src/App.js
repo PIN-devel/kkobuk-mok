@@ -16,6 +16,7 @@ function App() {
   const SERVER_URL = "http://localhost:8000";
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
   const [channelIn, setChannelIn] = useState(null);
+  const [requestMade, setRequestMade] = useState(0);
 
   useEffect(() => {
     console.log("유이펙 발동");

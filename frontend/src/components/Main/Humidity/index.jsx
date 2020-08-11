@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Wrapper } from "./styles";
 import Typography from "@material-ui/core/Typography";
 import { MainContext } from "../../../contexts/MainContext";

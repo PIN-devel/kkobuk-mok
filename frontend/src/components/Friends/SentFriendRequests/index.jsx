@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { FriendContext } from "../../../contexts/FriendContext";
 import { Button } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -12,8 +13,9 @@ import Table from "../Table/Table";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const SentFriendRequests = () => {
+const SentFriendRequests = (props) => {
   const { SERVER_URL } = useContext(AuthContext);
+  const { requestMade } = useContext(FriendContext);
   const [sentRequests, setSentRequests] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const theme = useTheme();
@@ -51,7 +53,7 @@ const SentFriendRequests = () => {
         console.log("친구 요청 보낸 목록 가져오기 실패");
         console.log(err.response);
       });
-  }, []);
+  }, [requestMade]);
 
   return (
     <div>

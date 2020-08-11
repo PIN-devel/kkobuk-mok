@@ -9,6 +9,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { FriendContext } from "../../../contexts/FriendContext";
 import Cookies from "js-cookie";
 // core components
 import styles from "./tableStyle.js";
@@ -18,6 +19,7 @@ const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
   const { SERVER_URL } = useContext(AuthContext);
+  const { requestMade, setRequestMade } = useContext(FriendContext);
   const classes = useStyles();
   const {
     tableHead,
@@ -39,6 +41,8 @@ export default function CustomTable(props) {
         console.log(res.data);
         console.log("요청 성공");
         alert("친구요청이 완료되었습니다");
+        const newone = requestMade + 1;
+        setRequestMade(newone);
       })
       .catch((err) => {
         console.log(err.response);
@@ -46,11 +50,13 @@ export default function CustomTable(props) {
       });
   };
 
-  const deleteFriend = (id) => {
-    Axios.delete(`${SERVER_URL}/accounts/friend/${id}/`, null, config)
+  const deleteFriend = (F_id) => {
+    Axios.delete(`${SERVER_URL}/accounts/friend/${F_id}/`, null, config)
       .then((res) => {
         console.log(res.data);
         console.log("요청 성공");
+        const newList = tableData.filter((comp) => comp[0] !== F_id);
+        setTableData(newList);
       })
       .catch((err) => {
         console.log(err.response);
@@ -58,13 +64,18 @@ export default function CustomTable(props) {
       });
   };
 
-  const cancelRequest = (id) => {
-    Axios.post(`${SERVER_URL}/accounts/friend/${id}/`, { flag: false }, config) // 여기 나중에 수정해야함
+  const cancelRequest = (F_id) => {
+    Axios.post(
+      `${SERVER_URL}/accounts/friend/${F_id}/`,
+      { flag: false },
+      config
+    )
       .then((res) => {
         console.log(res.data);
         console.log("친구 요청 취소 성공");
         alert("친구 요청이 취소되었습니다");
-        // 수미가 url 만들면 보낸 요청리스트 다시 불러와서 axios로 받아와서 setTableData돌려야함
+        const newList = tableData.filter((comp) => comp[0] !== F_id);
+        setTableData(newList);
       })
       .catch((err) => {
         console.log(err.response);
