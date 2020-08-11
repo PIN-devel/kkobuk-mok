@@ -1,8 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -38,7 +40,12 @@ const ChangeInfo = () => {
   const [old_password, setOld_Password] = useState("");
   const [new_password1, setNew_Password1] = useState("");
   const [new_password2, setNew_Password2] = useState("");
+  const [productKey1, setProductKey1] = useState("");
+  const [productKey2, setProductKey2] = useState("");
+  const [productKey3, setProductKey3] = useState("");
+  const [productKey4, setProductKey4] = useState("");
   const [newKey, setNewKey] = useState("");
+  const [confirmedPKey, setConfirmedPKey] = useState(false);
   const [wantDelete, setWanteDelete] = useState(false);
   const [tryDelete, setTryDelete] = useState(false);
   const [confirmedPKey, setConfirmedPKey] = useState(false);
@@ -63,11 +70,30 @@ const ChangeInfo = () => {
     setNew_Password2(e.target.value);
   };
 
+  const handleSetProductKey1 = (pk) => {
+    setProductKey1(pk);
+  };
+
+  const handleSetProductKey2 = (pk) => {
+    setProductKey2(pk);
+  };
+
+  const handleSetProductKey3 = (pk) => {
+    setProductKey3(pk);
+  };
+
+  const handleSetProductKey4 = (pk) => {
+    setProductKey4(pk);
+  };
+
   const sendPass = (pw) => {
     axios
       .post(`${SERVER_URL}/rest-auth/password/change/`, pw, config)
       .then((res) => {
         console.log(res);
+        setOld_Password("");
+        setNew_Password1("");
+        setNew_Password2("");
         alert("비밀번호가 변경되었습니다");
       })
       .catch((err) => {
@@ -77,8 +103,7 @@ const ChangeInfo = () => {
       });
   };
 
-  const ChangePass = (e) => {
-    e.preventDefault();
+  const ChangePass = () => {
     if (new_password1 === new_password2) {
       if (new_password1.length >= 8) {
         sendPass({
@@ -98,35 +123,42 @@ const ChangeInfo = () => {
     setNewKey(e.target.value);
   };
 
-  const ConfirmKey = (e) => {
-    e.preventDefault();
-    axios
-      .get(`${SERVER_URL}/certification/${newKey}/`)
-      .then((res) => {
-        console.log(res);
-        if (res.success) {
-          setConfirmedPKey(true);
-          alert(res.msg);
-        } else {
-          alert(res.msg);
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
+  const handleSetConfirmedPkey = () => {
+    const pkey = productKey1 + productKey2 + productKey3 + productKey4;
+    if (pkey.length === 16) {
+      const body = { product_key: pkey };
+      axios
+        .post(`${SERVER_URL}/accounts/certification/`, body)
+        .then((res) => {
+          console.log(res);
+          if (res.data.data.success) {
+            setConfirmedPKey(true);
+          }
+          alert(res.data.data.msg);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    } else {
+      alert("제품키는 16자리입니다");
+    }
   };
 
-  const ChangeKey = (e) => {
-    e.preventDefault();
+  const setupPkey = () => {
+    const pkey = productKey1 + productKey2 + productKey3 + productKey4;
     axios
-      .post(`${SERVER_URL}/registration/${newKey}/`, config)
+      .post(
+        `${SERVER_URL}/accounts/registration/`,
+        { product_key: pkey },
+        config
+      )
       .then((res) => {
         console.log(res);
-        alert("제품키 등록 완료");
+        alert("제품키 변경 성공");
       })
       .catch((err) => {
-        console.log(err);
-        alert("존재하지 않는 제품키입니다");
+        console.log("제품키 변경 실패");
+        console.log(err.reponse);
       });
   };
 
@@ -142,8 +174,7 @@ const ChangeInfo = () => {
     setNewImage(e.target.files[0]);
   };
 
-  const EditImage = (e) => {
-    e.preventDefault();
+  const EditImage = () => {
     // axios
     //   .put(`${SERVER_URL}/accounts/${userID}`, {
     //     ...user,
@@ -159,8 +190,7 @@ const ChangeInfo = () => {
     //   });
   };
 
-  const deleteAccount = (e) => {
-    e.preventDefault();
+  const deleteAccount = () => {
     axios
       .delete(`${SERVER_URL}/accounts/${userID}`, config)
       .then((res) => {
@@ -182,7 +212,7 @@ const ChangeInfo = () => {
   const EditForm = (
     <div style={modalStyle} className={classes.paper}>
       <div>
-        <input type="file" onChange={ImageHandler} />
+        {/* <input type="file" onChange={ImageHandler} />
         <Button
           className={classes.margin}
           variant="contained"
@@ -199,9 +229,8 @@ const ChangeInfo = () => {
           type="password"
           label="현재 비밀번호"
           variant="outlined"
-          onChange={() => {
-            handleOldP();
-          }}
+          value={old_password}
+          onChange={handleOldP}
         />
         <TextField
           error={new_password1.length >= 8 ? false : true}
@@ -209,9 +238,8 @@ const ChangeInfo = () => {
           type="password"
           label="새 비밀번호"
           variant="outlined"
-          onChange={() => {
-            handleNP1();
-          }}
+          value={new_password1}
+          onChange={handleNP1}
         />
         <TextField
           error={new_password1 === new_password2 ? false : true}
@@ -221,9 +249,8 @@ const ChangeInfo = () => {
           type="password"
           label="비밀번호 확인"
           variant="outlined"
-          onChange={() => {
-            handleNP2();
-          }}
+          value={new_password2}
+          onChange={handleNP2}
         />
         <Button
           className={classes.margin}
@@ -240,22 +267,10 @@ const ChangeInfo = () => {
         <TextField
           label="Product Key"
           variant="outlined"
-          onChange={() => {
-            handleNewKey();
-          }}
+          value={newKey}
+          onChange={handleNewKey}
         />
-        {!confirmedPKey ? (
-          <Button
-            className={classes.margin}
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              ConfirmKey();
-            }}
-          >
-            인증
-          </Button>
-        ) : (
+        {confirmedPKey ? (
           <Button
             className={classes.margin}
             variant="contained"
@@ -264,10 +279,20 @@ const ChangeInfo = () => {
               ChangeKey();
             }}
           >
-            등록
+            제품키 변경
+          </Button>
+        ) : (
+          <Button
+            className={classes.margin}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              handleSetConfirmedPkey();
+            }}
+          >
+            제품키 인증
           </Button>
         )}
-
         <Button
           className={classes.margin}
           variant="contained"
@@ -277,7 +302,167 @@ const ChangeInfo = () => {
           }}
         >
           회원 탈퇴
-        </Button>
+        </Button> */}
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="old_password"
+              label="Old Password"
+              type="password"
+              name="old_password"
+              autoComplete="old_password"
+              value={old_password}
+              onChange={(e) => {
+                handleOldP(e.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={new_password1.length < 8 ? true : false}
+              helperText={
+                new_password1.length < 8 ? "비밀번호는 8자리 이상입니다" : ""
+              }
+              variant="outlined"
+              fullWidth
+              name="password"
+              label="New Password"
+              type="password"
+              id="password"
+              autoComplete="new_password"
+              value={new_password1}
+              onChange={(e) => {
+                handleNP1(e.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              error={new_password1 === new_password2 ? false : true}
+              helperText={
+                new_password1 === new_password2 ? "" : "비밀번호를 확인해주세요"
+              }
+              variant="outlined"
+              required
+              fullWidth
+              name="check"
+              label="Confirm Password"
+              type="password"
+              id="check"
+              autoComplete="confirm_password"
+              value={new_password2}
+              onChange={(e) => {
+                handleNP2(e.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              className={classes.margin}
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                ChangePass();
+              }}
+            >
+              비밀번호 변경
+            </Button>
+          </Grid>
+          <Grid item xs={6} md={2}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="productKey1"
+              name="productKey1"
+              autoComplete="p-key"
+              inputProps={{ maxLength: 4 }}
+              value={productKey1}
+              onChange={(e) => {
+                handleSetProductKey1(e.target.value);
+              }}
+            >
+              -
+            </TextField>
+          </Grid>
+          <Grid item xs={6} md={2}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="productKey2"
+              name="productKey2"
+              autoComplete="p-key"
+              inputProps={{ maxLength: 4 }}
+              value={productKey2}
+              onChange={(e) => {
+                handleSetProductKey2(e.target.value);
+              }}
+            >
+              -
+            </TextField>
+          </Grid>
+          <Grid item xs={6} md={2}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="productKey3"
+              name="productKey3"
+              autoComplete="p-key"
+              inputProps={{ maxLength: 4 }}
+              value={productKey3}
+              onChange={(e) => {
+                handleSetProductKey3(e.target.value);
+              }}
+            >
+              -
+            </TextField>
+          </Grid>
+          <Grid item xs={6} md={2}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="productKey4"
+              name="productKey4"
+              autoComplete="p-key"
+              inputProps={{ maxLength: 4 }}
+              value={productKey4}
+              onChange={(e) => {
+                handleSetProductKey4(e.target.value);
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            {confirmedPKey ? (
+              <Button
+                className={classes.margin}
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setupPkey();
+                }}
+              >
+                제품키 변경
+              </Button>
+            ) : (
+              <Button
+                className={classes.margin}
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  handleSetConfirmedPkey();
+                }}
+              >
+                제품키 인증
+              </Button>
+            )}
+          </Grid>
+        </Grid>
       </div>
     </div>
   );
