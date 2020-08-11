@@ -113,7 +113,7 @@ export default function SignUp() {
     axios
       .post(url, signUpData)
       .then((res) => {
-        console.log("회원가입성공");
+        console.log("회원가입 성공");
         console.log(res);
         Cookies.set("token", res.data.token, { path: "/" });
         const token = Cookies.get("token");
@@ -130,6 +130,7 @@ export default function SignUp() {
         // 이거 프로필로 갈 때, 유저가 product 키 입력해줬으면 그것도 같이 보내주자 아 그러지는 말까?.... 어쩌지 고민좀
       })
       .catch((err) => {
+        console.log("회원가입 실패");
         console.log(err.response);
       });
   };
@@ -138,22 +139,22 @@ export default function SignUp() {
     e.preventDefault();
     const numGender = Number(gender);
 
-    if (password !== passwordConfirm) {
-      alert("비밀번호를 확인해주세요");
-    } else if (password.length < 8) {
-      alert("비밀번호는 8자리 이상 입력해주세요");
-    } else if (!confirmedPKey) {
-      alert("제품키를 인증해주세요");
-    } else {
-      reqSignUp({
-        name,
-        email,
-        password1: password,
-        password2: password,
-        gender: numGender,
-        birth_date: birthDate,
-      });
-    }
+    // if (password !== passwordConfirm) {
+    //   alert("비밀번호를 확인해주세요");
+    // } else if (password.length < 8) {
+    //   alert("비밀번호는 8자리 이상 입력해주세요");
+    // } else if (!confirmedPKey) {
+    //   alert("제품키를 인증해주세요");
+    // } else {
+    reqSignUp({
+      name: name,
+      email: email,
+      password1: password,
+      password2: passwordConfirm,
+      gender: numGender,
+      birth_date: birthDate,
+    });
+    // }
   };
 
   return (
@@ -303,7 +304,26 @@ export default function SignUp() {
                 onChange={(e) => {
                   handleSetProductKey4(e.target.value);
                 }}
-              />
+              >
+                -
+              </TextField>
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="productKey2"
+                name="productKey2"
+                autoComplete="p-key"
+                inputProps={{ maxLength: 4 }}
+                value={productKey2}
+                onChange={(e) => {
+                  handleSetProductKey2(e.target.value);
+                }}
+              >
+                -
+              </TextField>
             </Grid>
 
             <Grid item xs={12} md={4}>
@@ -366,6 +386,7 @@ export default function SignUp() {
           </Grid>
           <Button
             type="submit"
+            // disabled={confirmedPKey ? false : true}
             fullWidth
             variant="contained"
             color="primary"

@@ -49,7 +49,7 @@ class User(AbstractUser):
 
     room = models.ForeignKey(Room, null=True, on_delete=models.CASCADE, related_name='members')
 
-    current_state = models.IntegerField(default=1) # 1-아무것도 안함 2-공부중 3-휴식중
+    current_state = models.IntegerField(default=1) # 1-아무것도 안함 2-공부중 3-휴식중, 4-일시정지
 
 class FriendRequest(models.Model):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sending')

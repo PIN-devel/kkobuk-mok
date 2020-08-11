@@ -48,6 +48,7 @@ const ChangeInfo = () => {
   const [confirmedPKey, setConfirmedPKey] = useState(false);
   const [wantDelete, setWanteDelete] = useState(false);
   const [tryDelete, setTryDelete] = useState(false);
+  const [confirmedPKey, setConfirmedPKey] = useState(false);
 
   const token = Cookies.get("token");
   const userID = Cookies.get("myUserId");
@@ -104,11 +105,15 @@ const ChangeInfo = () => {
 
   const ChangePass = () => {
     if (new_password1 === new_password2) {
-      sendPass({
-        new_password1,
-        new_password2,
-        old_password,
-      });
+      if (new_password1.length >= 8) {
+        sendPass({
+          new_password1,
+          new_password2,
+          old_password,
+        });
+      } else {
+        alert("비밀번호는 8자리 이상이어야 합니다");
+      }
     } else {
       alert("새 비밀번호를 확인해주세요");
     }
