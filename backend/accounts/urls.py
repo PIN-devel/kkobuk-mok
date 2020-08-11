@@ -13,7 +13,8 @@ urlpatterns = [
     path('friend/<int:user_id>/accept/', views.friend_accept),
     path('friend/<int:user_id>/reject/', views.friend_reject),
    
-    path('friend/request/', views.friend_requests_list),
+    path('friend/request/receive/', views.friend_requests_receive_list),
+    path('friend/request/send/', views.friend_requests_send_list),
 
     path('find/<product_key>/', views.email_find),
 

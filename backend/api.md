@@ -21,7 +21,8 @@
 | 방 입장, 퇴장    | post         | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            | O                                        |
 |                  |              |                                                      |                                                              |                                                              |                                                              |
 | 친구 리스트 조회     | get          | /accounts/friend/                  | token                                                        |                                                              | O |
-| 친구요청 리스트 조회 | get          | /accounts/friend/request/          | token                                                        |                                                              | O |
+| 친구요청 받은 목록 | get          | /accounts/friend/request/receive/ | token                                                        |                                                              | O |
+| 친구요청한 목록 | get | /accounts/friend/request/send/ | token | |  |
 | 친구 요청/취소       | post         | /accounts/friend/<user_id>/        | token, flag(요청이면 true, 요청 취소면 false)                       |  | - |
 | 친구 삭제 | delete | /accounts/friend/<user_id>/ | token | | O |
 | 친구 요청 수락       | post         | /accounts/friend/<user_id>/accept/ | token                                                        |                                                              | O |

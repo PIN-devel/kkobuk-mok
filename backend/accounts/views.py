@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from .models import FriendRequest, Product, TimeSetting, Sensing
-from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer
+from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer, FriendRequestReceiverListSerializer
 from .helper import email_auth_num
 
 from django.db.models import Sum
@@ -146,10 +146,18 @@ def friends_list(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def friend_requests_list(request):
+def friend_requests_receive_list(request):
     user = request.user
     friend_requests = FriendRequest.objects.filter(receiver=user)
     serializer = FriendRequestSenderListSerializer(friend_requests, many=True)
+    return Response({"status": "OK", "data": serializer.data})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def friend_requests_send_list(request):
+    user = request.user
+    friend_requests = FriendRequest.objects.filter(sender=user)
+    serializer = FriendRequestReceiverListSerializer(friend_requests, many=True)
     return Response({"status": "OK", "data": serializer.data})
 
 @api_view(['POST', 'PUT', 'DELETE'])
@@ -290,7 +298,10 @@ def sensing_save(request):
         Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
     
     if p.user.current_state != 1: # timesetting 테이블 만들어진 상태
-        t = TimeSetting.objects.filter(user=p.user).order_by('-pk')[0]
+        if TimeSetting.objects.filter(user=p.user).exists():
+            t = TimeSetting.objects.filter(user=p.user).order_by('-pk')[0]
+        else: # 예외처리
+            return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)
         
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
