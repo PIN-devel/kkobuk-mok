@@ -1,11 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-// import FriendAppBar from "../../components/Friends/FriendsAppBar/";
-
-// import React from "react";
-// // @material-ui/core components
-// // core components
-// import GridItem from "components/Grid/GridItem.js";
-// import GridContainer from "components/Grid/GridContainer.js";
 import Table from "../../components/Friends/Table/Table.js";
 import Card from "../../components/Friends/Card/Card.js";
 import CardHeader from "../../components/Friends/Card/CardHeader.js";
@@ -23,6 +16,7 @@ const Friends = () => {
   const classes = useStyles();
   // const [searchFriendOpen, setSearchFriendOpen] = useState(false);
   const [friends, setFriends] = useState([]);
+  const [sentRequests, setSentRequests] = useState([]);
   const token = Cookies.get("token");
   const userID = Cookies.get("myUserId");
   const config = {
@@ -68,7 +62,10 @@ const Friends = () => {
           <SentFriendRequests />
         </CardHeader>
         <CardBody>
-          <ResponsiveDialog />
+          <ResponsiveDialog
+            sentRequests={sentRequests}
+            setSentRequests={setSentRequests}
+          />
           <Table
             tableHeaderColor="primary"
             tableHead={tableHead}
