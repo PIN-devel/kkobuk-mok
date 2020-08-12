@@ -330,23 +330,23 @@ def sensing_save(request):
     if p.user.current_state != 1: # timesetting 테이블 만들어진 상태
         if TimeSetting.objects.filter(user=p.user).exists():
             t = TimeSetting.objects.filter(user=p.user).order_by('-pk')[0]
+            # 유저 상태 업데이트
+            # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
+            if (t.total_time or t.work_time) and p.user.current_state != 4:
+                now = datetime.now(timezone.utc)
+                if t.last_stop_time:
+                    ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
+                else:
+                    ing = (now - t.created_at).total_seconds()//60
+                if t.work_time:
+                    p.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
+                else:
+                    if ing >= t.total_time:
+                        p.user.current_state = 1
+                p.user.save()
+
         else: # 예외처리
             return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # 유저 상태 업데이트
-        # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
-        if (t.total_time or t.work_time) and p.user.current_state != 4:
-            now = datetime.now(timezone.utc)
-            if t.last_stop_time:
-                ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
-            else:
-                ing = (now - t.created_at).total_seconds()//60
-            if t.work_time:
-                p.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
-            else:
-                if ing >= t.total_time:
-                    p.user.current_state = 1
-            p.user.save()
     data = {
         'desired_humidity': p.user.desired_humidity,
         "auto_setting": p.user.auto_setting,
