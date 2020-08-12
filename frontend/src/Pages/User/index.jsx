@@ -42,13 +42,6 @@ const User = () => {
           today={me.posture[6].score}
         />
         <Graphs data={me.posture} />
-        <iframe
-          src="https://service.dongledongle.com/kkobukChat"
-          frameborder="0"
-          defaultValue="안녕?"
-          width="100%"
-          height="500"
-        ></iframe>
       </Wrapper>
     </Layout>
   );
