@@ -279,8 +279,12 @@ def main_info(request):
 
         else:
             time = TimeSettingSerializer(t).data
-            
-        spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time
+        
+        if t.last_stop_time:
+            bk_time = int((now - t.last_stop_time).total_seconds())
+            spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time - bk_time
+        else:
+            spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time
     data = {
         'posture_level': posture_level,
         'temperature': temperature,
