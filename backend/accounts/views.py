@@ -427,4 +427,4 @@ def timer_stop(request):
         }
         return Response({"status": "OK", "data": data})
     else:
-        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)  
