@@ -235,13 +235,14 @@ def main_info(request):
     posture_avg = []
     time = {}
 
+    now = datetime.now(timezone.utc)
     if request.user.current_state != 1: # timesetting 테이블 만들어진 상태
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
 
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
         if (t.total_time or t.work_time) and request.user.current_state != 4:
-            now = datetime.now(timezone.utc)
+
             if t.total_stop_time:
                 ing = ((now - t.created_at).total_seconds()//60) - t.total_stop_time//60
             else:
@@ -264,6 +265,8 @@ def main_info(request):
                 if cnt:
                     avg = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
                     ls.append({"time": str(st)[11:16], "score": avg})
+                else:
+                    ls.append({"time": str(st)[11:16], "score": 0})
             
             info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
     
@@ -275,7 +278,7 @@ def main_info(request):
 
         else:
             time = TimeSettingSerializer(t).data  
-
+    spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time
     data = {
         'posture_level': posture_level,
         'temperature': temperature,
@@ -283,6 +286,7 @@ def main_info(request):
         'posture_avg': posture_avg,
         'user_state': request.user.current_state,
         'time': time,
+        'spent_time': spent_time,
     }
     return Response({"status": "OK", "data": data})
 
