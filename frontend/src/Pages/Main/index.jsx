@@ -18,7 +18,7 @@ const Main = () => {
   };
 
   const [currentImg, setCurrentImg] = useState();
-  const [currentScore, setCurrentScore] = useState();
+  const [currentScore, setCurrentScore] = useState(0);
   const [currentHu, setCurrentHu] = useState(0);
   const [currentTemp, setCurrentTemp] = useState(0);
   const [currentScoreData, setCurrentScoreData] = useState([]);
@@ -27,6 +27,9 @@ const Main = () => {
   const [TotalTime, setTotalTime] = useState(0);
   const [WorkTime, setWorkTime] = useState(0);
   const [BreakTime, setBreakTime] = useState(0);
+  const [DeHumid, setDeHumid] = useState(0);
+  const [isAuto, setIsAuto] = useState(0);
+  const [isSoundOn, setIsSoundOn] = useState(false);
 
   const scoreDataRef = useRef(currentScoreData);
   scoreDataRef.current = currentScoreData;
@@ -67,6 +70,7 @@ const Main = () => {
         // } else {
         //   setSpentTime(0);
         // }
+        setDeHumid(res.data.data.desired_humidity);
         setCurrentStatus(res.data.data.user_state);
         setSpentTime(res.data.data.spent_time);
         setCurrentScore(res.data.data.posture_level);
@@ -105,6 +109,12 @@ const Main = () => {
           TotalTime,
           WorkTime,
           BreakTime,
+          DeHumid,
+          setDeHumid,
+          isAuto,
+          setIsAuto,
+          isSoundOn,
+          setIsSoundOn,
         }}
       >
         <Wrapper>
