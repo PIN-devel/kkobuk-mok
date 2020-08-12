@@ -148,7 +148,6 @@ export default function Dashboard(props) {
           >
             <MenuIcon />
           </IconButton>
-
           <Typography
             component="h1"
             variant="h6"
@@ -165,7 +164,6 @@ export default function Dashboard(props) {
           >
             테스트
           </Button>
-
           <IconButton
             aria-controls="simple-menu"
             aria-haspopup="true"
