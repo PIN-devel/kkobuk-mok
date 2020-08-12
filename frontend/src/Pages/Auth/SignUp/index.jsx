@@ -31,7 +31,6 @@ export default function SignUp() {
   const [productKey2, setProductKey2] = useState("");
   const [productKey3, setProductKey3] = useState("");
   const [productKey4, setProductKey4] = useState("");
-  const [fullProductKey, setFullProductKey] = useState("");
   const [gender, setGender] = useState("1");
   const [birthDate, setBirthDate] = useState("2000-01-01");
   const [confirmedPKey, setConfirmedPKey] = useState(false);
@@ -63,15 +62,26 @@ export default function SignUp() {
   const handleSetProductKey4 = (pk) => {
     setProductKey4(pk);
   };
+
+  const setupPkey = (url, body, config) => {
+    axios
+      .post(`${url}/accounts/registration/`, body, config)
+      .then((res) => {
+        console.log(res);
+        alert("회원가입되셨습니다");
+        history.push("user/");
+      })
+      .catch((err) => {
+        console.log("회원가입 실패");
+        console.log(err.reponse);
+      });
+  };
+
   const handleSetConfirmedPkey = () => {
-    const fullkey = productKey1 + productKey2 + productKey3 + productKey4;
-    if (fullkey.length === 16) {
-      setFullProductKey(fullkey);
-      const thekey = {
-        product_key: fullkey,
-      };
+    const pkey = productKey1 + productKey2 + productKey3 + productKey4;
+    if (pkey.length === 16) {
       axios
-        .post(`${SERVER_URL}/accounts/certification/`, thekey)
+        .post(`${SERVER_URL}/accounts/certification/`, { product_key: pkey })
         .then((res) => {
           console.log(res);
           if (res.data.data.success) {
@@ -112,21 +122,10 @@ export default function SignUp() {
           },
         };
         handleSetAuth(true, res.data.user.pk);
-        const fullkey = productKey1 + productKey2 + productKey3 + productKey4;
-        const thekey = {
-          product_key: fullkey,
-        };
-        axios
-          .post(`${SERVER_URL}/accounts/registration/`, thekey, config)
-          .then((res) => {
-            console.log(res);
-            alert("회원가입되셨습니다");
-            history.push("user/");
-          })
-          .catch((err) => {
-            console.log("회원가입 실패");
-            console.log(err.reponse);
-          });
+        const pkey = productKey1 + productKey2 + productKey3 + productKey4;
+        const body = { product_key: pkey };
+        setupPkey(SERVER_URL, body, config);
+
         // 이거 프로필로 갈 때, 유저가 product 키 입력해줬으면 그것도 같이 보내주자 아 그러지는 말까?.... 어쩌지 고민좀
       })
       .catch((err) => {
@@ -139,22 +138,22 @@ export default function SignUp() {
     e.preventDefault();
     const numGender = Number(gender);
 
-    // if (password !== passwordConfirm) {
-    //   alert("비밀번호를 확인해주세요");
-    // } else if (password.length < 8) {
-    //   alert("비밀번호는 8자리 이상 입력해주세요");
-    // } else if (!confirmedPKey) {
-    //   alert("제품키를 인증해주세요");
-    // } else {
-    reqSignUp({
-      name: name,
-      email: email,
-      password1: password,
-      password2: passwordConfirm,
-      gender: numGender,
-      birth_date: birthDate,
-    });
-    // }
+    if (password !== passwordConfirm) {
+      alert("비밀번호를 확인해주세요");
+    } else if (password.length < 8) {
+      alert("비밀번호는 8자리 이상 입력해주세요");
+    } else if (!confirmedPKey) {
+      alert("제품키를 인증해주세요");
+    } else {
+      reqSignUp({
+        name: name,
+        email: email,
+        password1: password,
+        password2: passwordConfirm,
+        gender: numGender,
+        birth_date: birthDate,
+      });
+    }
   };
 
   return (
@@ -167,13 +166,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form
-          className={classes.form}
-          noValidate
-          onSubmit={() => {
-            handleSubmit();
-          }}
-        >
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -246,7 +239,7 @@ export default function SignUp() {
                 }}
               />
             </Grid>
-            {/* <Grid item xs={6} md={2}>
+            <Grid item xs={6} md={2}>
               <TextField
                 variant="outlined"
                 required
@@ -310,18 +303,39 @@ export default function SignUp() {
                 onChange={(e) => {
                   handleSetProductKey4(e.target.value);
                 }}
-              />
-            </Grid> */}
+              >
+                -
+              </TextField>
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="productKey2"
+                name="productKey2"
+                autoComplete="p-key"
+                inputProps={{ maxLength: 4 }}
+                value={productKey2}
+                onChange={(e) => {
+                  handleSetProductKey2(e.target.value);
+                }}
+              >
+                -
+              </TextField>
+            </Grid>
 
-            {/* <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4}>
               <Button
+                disabled={confirmedPKey ? true : false}
                 onClick={() => {
                   handleSetConfirmedPkey();
                 }}
               >
                 제품키 인증
               </Button>
-            </Grid> */}
+            </Grid>
+
             <Grid item xs={12} sm={3}>
               <FormLabel>Gender</FormLabel>
             </Grid>
@@ -372,7 +386,6 @@ export default function SignUp() {
           </Grid>
           <Button
             type="submit"
-            // disabled={confirmedPKey ? false : true}
             fullWidth
             variant="contained"
             color="primary"

@@ -14,12 +14,16 @@ from PIL import Image, ImageOps
 import numpy as np
 
 SERVER_URL = 'http://3.35.17.150'
+init_res = requests.post(SERVER_URL+'/accounts/initialinfo/',data={"product_key":"1111-1111-1111-1111"})
+pre_user_state = init_res.json()['data']['user_state']
 
 arduino = serial.Serial("/dev/ttyACM0",9600)
 np.set_printoptions(suppress=True)
 model = tensorflow.keras.models.load_model('keras_model.h5')
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 size = (224, 224)
+
+
 
 
 def index(request):
@@ -65,18 +69,26 @@ def take_pic(request):
     # product_key, posture_level, temperature, humidity
     
     res = requests.post(SERVER_URL+'/accounts/sensingsave/',data={"posture_level":int(motor[2:]),"product_key":"1111-1111-1111-1111","temperature":float(tem),"humidity":float(hum)})
-    user_state = res.json()['data']['user_state'] # 1 - 아무것도 안함 2 - 공부중 3 - 휴식중
+    user_state = res.json()['data']['user_state'] # 1 - 아무것도 안함 2 - 공부중 3 - 휴식중 4 - 일시정지
     auto_setting = res.json()['data']['auto_setting']
     desired_humidity = res.json()['data']['desired_humidity']
 
     # 가습기 제어
-    if user_state == 2 and auto_setting:
+    if user_state == 2 and auto_setting: # 공부중이면서 가습기 auto setting mode일 경우
         if desired_humidity > hum:
             arduino.write('RON'.encode())
         else:
             arduino.write('ROF'.encode())
     else:
         arduino.write('ROF'.encode())
+
+    # 알람
+    if (pre_user_state == 2 and user_state == 3) or (pre_user_state == 3 and user_state == 2):
+        arduino.write('SP'.encode())
+
+
+    pre_user_state = user_state
+
     print("1싸이클 종료 :", time.time() - start)
     return Response({})
 

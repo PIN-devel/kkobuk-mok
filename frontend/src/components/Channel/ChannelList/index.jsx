@@ -43,11 +43,21 @@ const ChannelList = (props) => {
       </div>
       <div className={classes.pagination}>
         {/* <Button onClick={() => handleSetPage(1)}>test</Button> */}
-        <IconButton disabled={left} onClick={() => handleSetPage("left")}>
+        <IconButton
+          disabled={left}
+          onClick={() => {
+            handleSetPage("left");
+          }}
+        >
           <ChevronLeftIcon />
         </IconButton>
         <Typography variant="caption">{page} Page </Typography>
-        <IconButton disabled={right} onClick={() => handleSetPage("right")}>
+        <IconButton
+          disabled={right}
+          onClick={() => {
+            handleSetPage("right");
+          }}
+        >
           <ChevronRightIcon />
         </IconButton>
       </div>
