@@ -234,6 +234,7 @@ def main_info(request):
     humidity = 0
     posture_avg = []
     time = {}
+    spent_time = 0
 
     now = datetime.now(timezone.utc)
     if request.user.current_state != 1: # timesetting 테이블 만들어진 상태
@@ -277,8 +278,9 @@ def main_info(request):
             time = TimeSettingSerializer(t).data
 
         else:
-            time = TimeSettingSerializer(t).data  
-    spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time
+            time = TimeSettingSerializer(t).data
+            
+        spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time
     data = {
         'posture_level': posture_level,
         'temperature': temperature,
@@ -421,4 +423,4 @@ def timer_stop(request):
         }
         return Response({"status": "OK", "data": data})
     else:
-        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)  
+        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)
