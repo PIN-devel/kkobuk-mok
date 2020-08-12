@@ -257,7 +257,6 @@ def main_info(request):
 
         if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists(): # start 누른 후 센싱 값 있는 경우
             # 현재 시간 기준으로 5분 전까지 30초 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
-            now = datetime.now()
             ls = []
             for i in range(0,10):
                 st = now - timedelta(seconds=i*30)
@@ -317,7 +316,9 @@ def sensing_save(request):
     p = get_object_or_404(Product, product_key=product_key)
     # 공부 중일 때만 자세 값 저장
     if p.user.current_state == 2:
-        Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
+        # 예외처리
+        if isinstance(posture_level, int) and isinstance(temperature, float) and isinstance(humidity, float):
+            Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
     
     if p.user.current_state != 1: # timesetting 테이블 만들어진 상태
         if TimeSetting.objects.filter(user=p.user).exists():
@@ -427,4 +428,4 @@ def timer_stop(request):
         }
         return Response({"status": "OK", "data": data})
     else:
-        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)  

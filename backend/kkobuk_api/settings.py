@@ -78,10 +78,8 @@ INSTALLED_APPS = [
     'accounts',
     'rooms',
 
-
     # cors
     'corsheaders',
-
 ]
 
 MIDDLEWARE = [
@@ -172,8 +170,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+   # os.path.join(BASE_DIR, '../frontend/build/static'),
+   # os.path.join(BASE_DIR, '../frontend/build/images'),
 )
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -228,8 +229,6 @@ EMAIL_USE_SSL = False
 EMAIL_PORT = 587
 DEFAULT_FROM_MAIL = EMAIL_HOST_USER
 
-# 이미지 경로
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
