@@ -13,7 +13,7 @@ from accounts.serializers import UserListSerializer
 from accounts.models import Sensing
 
 from django.db.models import Sum
-from datetime import date, timedelta, datetime, time
+from datetime import date, timedelta, datetime, time, timezone
 
 PER_PAGE = 6
 
@@ -46,8 +46,10 @@ def detail_or_in_or_out(request, room_id):
         if request.user.room == room: # 참여 중인 방 정보만 가져올 수 있음
             members = room.members.all()
             res = {'members':[]}
+            now = datetime.now(timezone.utc)
             for member in members:
                 posture = []
+                ls = []
                 if member.sensing.all():
                     # 오늘 통계 (방 생성 후 조건도 포함)
                     today = date.today()
@@ -63,10 +65,21 @@ def detail_or_in_or_out(request, room_id):
                         avg = Sensing.objects.filter(user=member).filter(created_at__gte=room.created_at).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
                         posture.append(round(avg,2))
                     else:
-                        posture.append(0)                    
+                        posture.append(0)
+
+                    # 현재 시간 기준으로 5분 전까지 30초 간격으로 자세 통계 계산
+                    for i in range(0,10):
+                        st = now - timedelta(seconds=i*30)
+                        ed = now - timedelta(seconds=(i+1)*30)
+                        cnt = Sensing.objects.filter(user=member).filter(created_at__lte=st, created_at__gte=ed).count()
+                        if cnt:
+                            avg = Sensing.objects.filter(user=member).filter(created_at__lte=st, created_at__gte=ed).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
+                            ls.append({"time": str(st)[11:16], "score": avg})
+                        else:
+                            ls.append({"time": str(st)[11:16], "score": 0})               
                 else:
                     posture = [0, 0]
-                res['members'].append({**UserListSerializer(member).data, "posture":posture})
+                res['members'].append({**UserListSerializer(member).data, "posture":posture, "time":ls})
             return Response({"status": "OK", "data": {**serializer.data, **res}})
 
         else:
