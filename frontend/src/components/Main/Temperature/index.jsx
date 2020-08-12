@@ -5,14 +5,14 @@ import { MainContext } from "../../../contexts/MainContext";
 
 const Temperature = (props) => {
   const { currentTemp } = useContext(MainContext);
-  const [myTemp, setMyTemp] = useState(0);
-  useEffect(() => {
-    const newT = currentTemp;
-    setMyTemp(newT);
-  }, [currentTemp]);
+  // const [myTemp, setMyTemp] = useState(0);
+  // useEffect(() => {
+  //   const newT = currentTemp;
+  //   setMyTemp(newT);
+  // }, [currentTemp]);
   return (
     <Wrapper>
-      <Typography>현재 온도 : {myTemp} 도</Typography>
+      <Typography>현재 온도 : {currentTemp} 도</Typography>
     </Wrapper>
   );
 };
