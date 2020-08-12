@@ -30,10 +30,16 @@ class User(AbstractUser):
 
     GENDER_CHOICES = [(0, 'Male'), (1, 'Female')]
     gender = models.IntegerField(default=True, choices=GENDER_CHOICES)
-    
-    desired_humidity = models.IntegerField(null=True)
-    
-    auto_setting = models.BooleanField(default=False)
+
+    # 희망 습도
+    desired_humidity = models.IntegerField(default=40)
+    # 가습기 자동 온오프 - true / 사용자 조작 - false
+    auto_setting = models.BooleanField(default=True)
+    # 가습기 사용자 조작 on / off
+    humidifier_on_off = models.BooleanField(default=False)
+
+    # 무음모드
+    slient_mode = models.BooleanField(default=False)
     
     birth_date = models.DateField(null=True)
 

@@ -293,6 +293,10 @@ def main_info(request):
         'user_state': request.user.current_state,
         'time': time,
         'spent_time': spent_time,
+        'desired_humidity': request.user.desired_humidity,
+        'auto_setting': request.user.auto_setting,
+        'humidifier_on_off': request.user.humidifier_on_off,
+        'slient_mode': request.user.slient_mode,
     }
     return Response({"status": "OK", "data": data})
 
@@ -304,6 +308,8 @@ def initial_info(request):
         'desired_humidity': p.user.desired_humidity,
         'auto_setting': p.user.auto_setting,
         'user_state': p.user.current_state,
+        'humidifier_on_off': p.user.humidifier_on_off,
+        'slient_mode': p.user.slient_mode,
     }
     return Response({"status": "OK", "data": data})
 
@@ -345,6 +351,8 @@ def sensing_save(request):
         'desired_humidity': p.user.desired_humidity,
         "auto_setting": p.user.auto_setting,
         "user_state": p.user.current_state,
+        'humidifier_on_off': p.user.humidifier_on_off,
+        'slient_mode': p.user.slient_mode,
     }
     return Response({"status": "OK", "data": data})
 
