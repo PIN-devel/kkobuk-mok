@@ -26,6 +26,7 @@ urlpatterns = [
     path('timer/pause/', views.timer_pause),
     path('timer/restart/', views.timer_restart),
     path('timer/stop/', views.timer_stop),
+    
     path('', views.list),
     path('<int:user_id>/', views.detail_or_delete_or_update),
 ]

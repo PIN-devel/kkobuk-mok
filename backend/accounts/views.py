@@ -228,15 +228,24 @@ def email_find(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def main_info(request):
+    # 초기값
+    posture_level = 0
+    temperature = 0
+    humidity = 0
+    posture_avg = []
+    time = {}
+    spent_time = 0
+
+    now = datetime.now(timezone.utc)
     if request.user.current_state != 1: # timesetting 테이블 만들어진 상태
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
 
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
         if (t.total_time or t.work_time) and request.user.current_state != 4:
-            now = datetime.now(timezone.utc)
-            if t.last_stop_time:
-                ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
+
+            if t.total_stop_time:
+                ing = ((now - t.created_at).total_seconds()//60) - t.total_stop_time//60
             else:
                 ing = (now - t.created_at).total_seconds()//60
             if t.work_time:
@@ -247,33 +256,43 @@ def main_info(request):
             request.user.save()
 
         if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists(): # start 누른 후 센싱 값 있는 경우
-            # 현재 시간 기준으로 10시간 전까지 30분 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
+            # 현재 시간 기준으로 5분 전까지 30초 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
             now = datetime.now()
             ls = []
-            for i in range(0,20):
-                st = now - timedelta(minutes=i*30)
-                ed = now - timedelta(minutes=(i+1)*30)
+            for i in range(0,10):
+                st = now - timedelta(seconds=i*30)
+                ed = now - timedelta(seconds=(i+1)*30)
                 cnt = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).count()
                 if cnt:
                     avg = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
                     ls.append({"time": str(st)[11:16], "score": avg})
+                else:
+                    ls.append({"time": str(st)[11:16], "score": 0})
             
             info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
-            data = {
-                'posture_level': info.posture_level,
-                'temperature': info.temperature,
-                'humidity': info.humidity,
-                'posture_avg': ls,
-                'user_state': request.user.current_state,
-            }
-            return Response({"status": "OK", "data": data})
-    # 센싱 값 없는 경우 or 공부 중이 아닌 경우
+    
+            posture_level = info.posture_level
+            temperature = info.temperature
+            humidity = info.humidity
+            posture_avg = ls
+            time = TimeSettingSerializer(t).data
+
+        else:
+            time = TimeSettingSerializer(t).data
+        
+        if t.last_stop_time:
+            bk_time = int((now - t.last_stop_time).total_seconds())
+            spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time - bk_time
+        else:
+            spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time
     data = {
-        'posture_level': 0,
-        'temperature': 0,
-        'humidity': 0,
-        'posture_avg': [],
+        'posture_level': posture_level,
+        'temperature': temperature,
+        'humidity': humidity,
+        'posture_avg': posture_avg,
         'user_state': request.user.current_state,
+        'time': time,
+        'spent_time': spent_time,
     }
     return Response({"status": "OK", "data": data})
 
@@ -373,7 +392,7 @@ def timer_restart(request):
         now = datetime.now(timezone.utc)
         cha = now - t.last_stop_time
         # 위의 값을 분 단위로 바꾸기 + total에 합산
-        t.total_stop_time += cha.total_seconds()//60
+        t.total_stop_time += int(cha.total_seconds())
         # 일시정지 시간 초기화
         t.last_stop_time = None
         t.save()
@@ -396,7 +415,7 @@ def timer_stop(request):
     if TimeSetting.objects.filter(user=request.user).exists():
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
         # 중간에 공부 멈추면, 현재 시간 - start한 시간(created_at) - 일시정지 시간 = 실제 공부 시간
-        t.real_work_time = ((datetime.now(timezone.utc) - t.created_at).total_seconds()//60) - t.total_stop_time 
+        t.real_work_time = ((datetime.now(timezone.utc) - t.created_at).total_seconds()//60) - t.total_stop_time//60
         t.save()
 
         request.user.current_state = 1

@@ -1,11 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-// import FriendAppBar from "../../components/Friends/FriendsAppBar/";
-
-// import React from "react";
-// // @material-ui/core components
-// // core components
-// import GridItem from "components/Grid/GridItem.js";
-// import GridContainer from "components/Grid/GridContainer.js";
 import Table from "../../components/Friends/Table/Table.js";
 import Card from "../../components/Friends/Card/Card.js";
 import CardHeader from "../../components/Friends/Card/CardHeader.js";
@@ -15,6 +8,7 @@ import ResponsiveDialog from "../../components/Friends/Dialog";
 import SentFriendRequests from "../../components/Friends/SentFriendRequests";
 import useStyles from "./styles";
 import { AuthContext } from "../../contexts/AuthContext";
+import { FriendContext } from "../../contexts/FriendContext";
 import Axios from "axios";
 import Cookies from "js-cookie";
 
@@ -23,8 +17,9 @@ const Friends = () => {
   const classes = useStyles();
   // const [searchFriendOpen, setSearchFriendOpen] = useState(false);
   const [friends, setFriends] = useState([]);
+  const [sentRequests, setSentRequests] = useState([]);
+  const [requestMade, setRequestMade] = useState(0);
   const token = Cookies.get("token");
-  const userID = Cookies.get("myUserId");
   const config = {
     headers: {
       Authorization: `Jwt ${token}`,
@@ -61,23 +56,33 @@ const Friends = () => {
 
   return (
     <Layout>
-      <Card>
-        <CardHeader color="primary">
-          <h4 className={classes.cardTitleWhite}>친구 목록</h4>
-          <p className={classes.cardCategoryWhite}>친구들과 으쌰으쌰</p>
-          <SentFriendRequests />
-        </CardHeader>
-        <CardBody>
-          <ResponsiveDialog />
-          <Table
-            tableHeaderColor="primary"
-            tableHead={tableHead}
-            tableData={friends}
-            setTableData={setFriends}
-            dataType={1}
-          />
-        </CardBody>
-      </Card>
+      <FriendContext.Provider
+        value={{
+          requestMade,
+          setRequestMade,
+        }}
+      >
+        <Card>
+          <CardHeader color="primary">
+            <h4 className={classes.cardTitleWhite}>친구 목록</h4>
+            <p className={classes.cardCategoryWhite}>친구들과 으쌰으쌰</p>
+            <SentFriendRequests />
+          </CardHeader>
+          <CardBody>
+            <ResponsiveDialog
+              sentRequests={sentRequests}
+              setSentRequests={setSentRequests}
+            />
+            <Table
+              tableHeaderColor="primary"
+              tableHead={tableHead}
+              tableData={friends}
+              setTableData={setFriends}
+              dataType={1}
+            />
+          </CardBody>
+        </Card>
+      </FriendContext.Provider>
     </Layout>
   );
 };

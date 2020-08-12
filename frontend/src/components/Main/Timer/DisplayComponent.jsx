@@ -3,11 +3,11 @@ import React from "react";
 function DisplayComponent(props) {
   return (
     <div>
-      <span>{props.time.h >= 10 ? props.time.h : "0" + props.time.h}</span>
+      <span>{props.hour >= 10 ? props.hour : "0" + props.hour}</span>
       &nbsp;:&nbsp;
-      <span>{props.time.m >= 10 ? props.time.m : "0" + props.time.m}</span>
+      <span>{props.min >= 10 ? props.min : "0" + props.min}</span>
       &nbsp;:&nbsp;
-      <span>{props.time.s >= 10 ? props.time.s : "0" + props.time.s}</span>
+      <span>{props.sec >= 10 ? props.sec : "0" + props.sec}</span>
     </div>
   );
 }

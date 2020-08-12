@@ -113,7 +113,7 @@ export default function Dashboard(props) {
   };
 
   useEffect(() => {
-    Axios.get(`${SERVER_URL}/accounts/friend/request/`, config)
+    Axios.get(`${SERVER_URL}/accounts/friend/request/receive/`, config)
       .then((res) => {
         console.log("가져오기 성공");
         console.log(res.data.data);
@@ -148,7 +148,6 @@ export default function Dashboard(props) {
           >
             <MenuIcon />
           </IconButton>
-
           <Typography
             component="h1"
             variant="h6"
@@ -165,7 +164,6 @@ export default function Dashboard(props) {
           >
             테스트
           </Button>
-
           <IconButton
             aria-controls="simple-menu"
             aria-haspopup="true"

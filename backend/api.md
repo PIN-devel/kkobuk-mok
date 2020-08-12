@@ -32,7 +32,7 @@
 | 작업 시간 삭제 | delete       | /accounts/timesetting/ | token | | |
 | 작업 시간 수정 | put | /accounts/timesetting/ | token,total_time,work_time,break_time | | |
 |  |  |  |  | | |
-| 메인페이지 정보 | get | /accounts/maininfo/ | token | 현재 posture_level, temperature, humidity, posture_avg(최근까지 시간 별 자세 통계), user_state |                     |
+| 메인페이지 정보 | get | /accounts/maininfo/ | token | 현재 posture_level, temperature, humidity, posture_avg(최근까지 시간 별 자세 통계), user_state, time(현재 timesetting 값) |                     |
 |  |  |  |  |  |  |
 | 라즈베리파이 |  |  |  |  |  |
 | 초기화 설정 값 | post | /accounts/initialinfo/ | product_key | desired_humidity, auto_setting, user_state |  |

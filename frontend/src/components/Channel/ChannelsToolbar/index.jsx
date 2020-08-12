@@ -98,7 +98,9 @@ const ChannelsToolbar = (props) => {
       <Dialog
         fullScreen={fullScreen}
         open={open}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+        }}
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
@@ -108,19 +110,14 @@ const ChannelsToolbar = (props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <form
-              className={classes.form}
-              onSubmit={() => {
-                createChannel();
-              }}
-            >
+            <form className={classes.form} onSubmit={createChannel}>
               <TextField
                 className={classes.textField}
                 fullWidth
                 label="Channel Name"
                 name="channelName"
-                onChange={() => {
-                  handleSetChannelName();
+                onChange={(e) => {
+                  handleSetChannelName(e);
                 }}
                 type="text"
                 value={channelName}
@@ -131,8 +128,8 @@ const ChannelsToolbar = (props) => {
                 fullWidth
                 label="Channel Goal"
                 name="channelGoal"
-                onChange={() => {
-                  handleSetChannelGoal();
+                onChange={(e) => {
+                  handleSetChannelGoal(e);
                 }}
                 type="text"
                 value={channelGoal}
@@ -143,8 +140,8 @@ const ChannelsToolbar = (props) => {
                 fullWidth
                 label="Password"
                 name="password"
-                onChange={() => {
-                  handleSetPassword();
+                onChange={(e) => {
+                  handleSetPassword(e);
                 }}
                 type="password"
                 value={password}
