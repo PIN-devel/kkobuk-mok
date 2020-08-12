@@ -307,24 +307,6 @@ export default function SignUp() {
                 -
               </TextField>
             </Grid>
-            <Grid item xs={6} md={2}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="productKey2"
-                name="productKey2"
-                autoComplete="p-key"
-                inputProps={{ maxLength: 4 }}
-                value={productKey2}
-                onChange={(e) => {
-                  handleSetProductKey2(e.target.value);
-                }}
-              >
-                -
-              </TextField>
-            </Grid>
-
             <Grid item xs={12} md={4}>
               <Button
                 disabled={confirmedPKey ? true : false}

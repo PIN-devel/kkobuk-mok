@@ -238,7 +238,8 @@ def main_info(request):
 
     now = datetime.now(timezone.utc)
     if request.user.current_state != 1: # timesetting 테이블 만들어진 상태
-        t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
+        if TimeSetting.objects.filter(user=request.user).exists(): # 예외처리
+            t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
 
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
@@ -257,7 +258,6 @@ def main_info(request):
 
         if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists(): # start 누른 후 센싱 값 있는 경우
             # 현재 시간 기준으로 5분 전까지 30초 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
-            now = datetime.now()
             ls = []
             for i in range(0,10):
                 st = now - timedelta(seconds=i*30)
@@ -293,6 +293,10 @@ def main_info(request):
         'user_state': request.user.current_state,
         'time': time,
         'spent_time': spent_time,
+        'desired_humidity': request.user.desired_humidity,
+        'auto_setting': request.user.auto_setting,
+        'humidifier_on_off': request.user.humidifier_on_off,
+        'slient_mode': request.user.slient_mode,
     }
     return Response({"status": "OK", "data": data})
 
@@ -304,6 +308,8 @@ def initial_info(request):
         'desired_humidity': p.user.desired_humidity,
         'auto_setting': p.user.auto_setting,
         'user_state': p.user.current_state,
+        'humidifier_on_off': p.user.humidifier_on_off,
+        'slient_mode': p.user.slient_mode,
     }
     return Response({"status": "OK", "data": data})
 
@@ -317,7 +323,9 @@ def sensing_save(request):
     p = get_object_or_404(Product, product_key=product_key)
     # 공부 중일 때만 자세 값 저장
     if p.user.current_state == 2:
-        Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
+        # 예외처리
+        if isinstance(posture_level, int) and isinstance(temperature, float) and isinstance(humidity, float):
+            Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
     
     if p.user.current_state != 1: # timesetting 테이블 만들어진 상태
         if TimeSetting.objects.filter(user=p.user).exists():
@@ -343,6 +351,8 @@ def sensing_save(request):
         'desired_humidity': p.user.desired_humidity,
         "auto_setting": p.user.auto_setting,
         "user_state": p.user.current_state,
+        'humidifier_on_off': p.user.humidifier_on_off,
+        'slient_mode': p.user.slient_mode,
     }
     return Response({"status": "OK", "data": data})
 
@@ -391,7 +401,7 @@ def timer_restart(request):
         # 현재 시간 - 일시정지한 시간
         now = datetime.now(timezone.utc)
         cha = now - t.last_stop_time
-        # 위의 값을 분 단위로 바꾸기 + total에 합산
+        # 위의 값을 초 단위로 바꾸기 + total에 합산
         t.total_stop_time += int(cha.total_seconds())
         # 일시정지 시간 초기화
         t.last_stop_time = None

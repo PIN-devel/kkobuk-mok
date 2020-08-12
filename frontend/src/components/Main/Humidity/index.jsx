@@ -5,15 +5,15 @@ import { MainContext } from "../../../contexts/MainContext";
 
 const Humidity = (props) => {
   const { currentHu } = useContext(MainContext);
-  const [myHu, setMyHu] = useState(0);
-  useEffect(() => {
-    const newH = currentHu;
-    setMyHu(newH);
-  }, [currentHu]);
+  // const [myHu, setMyHu] = useState(0);
+  // useEffect(() => {
+  //   const newH = currentHu;
+  //   setMyHu(newH);
+  // }, [currentHu]);
   return (
     <Wrapper>
       <Typography id="discrete-slider-always" gutterBottom>
-        습도 : {myHu} %
+        습도 : {currentHu} %
       </Typography>
     </Wrapper>
   );

@@ -3,7 +3,7 @@ import { Wrapper } from "./styles";
 import { Grid } from "@material-ui/core";
 import Progress from "../Progress";
 import Timer from "../Timer";
-
+import HControl from "../HControl";
 const ControlPanel = () => {
   const [scoreData, setScoreData] = useState([]);
   return (
@@ -12,7 +12,7 @@ const ControlPanel = () => {
         <Grid item xs={12} md={6} className="ProgressChart">
           <Progress scoreData={scoreData} />
         </Grid>
-        <Grid item xs={12} md={6} className="Panel">
+        <Grid item xs={12} md={6} className="Timer">
           <Timer scoreData={scoreData} setScoreData={setScoreData} />
         </Grid>
       </Grid>
