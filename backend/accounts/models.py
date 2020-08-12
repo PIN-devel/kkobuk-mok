@@ -14,11 +14,11 @@ from rooms.models import Room
 class TimeSetting(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # 사용자 설정 값
-    total_time = models.IntegerField()
-    work_time = models.IntegerField()
-    break_time = models.IntegerField()
+    total_time = models.IntegerField() # 분 단위
+    work_time = models.IntegerField() # 분 단위
+    break_time = models.IntegerField() # 분 단위
     # 일시정지 기록
-    total_stop_time = models.IntegerField(default=0)
+    total_stop_time = models.IntegerField(default=0) # 초 단위
     last_stop_time = models.DateTimeField(null=True)
     # 실제 총 작업 시간
     real_work_time = models.IntegerField()

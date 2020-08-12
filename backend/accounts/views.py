@@ -243,7 +243,7 @@ def main_info(request):
         if (t.total_time or t.work_time) and request.user.current_state != 4:
             now = datetime.now(timezone.utc)
             if t.total_stop_time:
-                ing = ((now - t.created_at).total_seconds()//60) - t.total_stop_time
+                ing = ((now - t.created_at).total_seconds()//60) - t.total_stop_time//60
             else:
                 ing = (now - t.created_at).total_seconds()//60
             if t.work_time:
@@ -382,7 +382,7 @@ def timer_restart(request):
         now = datetime.now(timezone.utc)
         cha = now - t.last_stop_time
         # 위의 값을 분 단위로 바꾸기 + total에 합산
-        t.total_stop_time += cha.total_seconds()//60
+        t.total_stop_time += int(cha.total_seconds())
         # 일시정지 시간 초기화
         t.last_stop_time = None
         t.save()
@@ -405,7 +405,7 @@ def timer_stop(request):
     if TimeSetting.objects.filter(user=request.user).exists():
         t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
         # 중간에 공부 멈추면, 현재 시간 - start한 시간(created_at) - 일시정지 시간 = 실제 공부 시간
-        t.real_work_time = ((datetime.now(timezone.utc) - t.created_at).total_seconds()//60) - t.total_stop_time 
+        t.real_work_time = ((datetime.now(timezone.utc) - t.created_at).total_seconds()//60) - t.total_stop_time//60
         t.save()
 
         request.user.current_state = 1
