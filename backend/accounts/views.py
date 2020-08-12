@@ -335,7 +335,7 @@ def sensing_save(request):
         
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
-        if (t.total_time or t.work_time) and request.user.current_state != 4:
+        if (t.total_time or t.work_time) and p.user.current_state != 4:
             now = datetime.now(timezone.utc)
             if t.last_stop_time:
                 ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
