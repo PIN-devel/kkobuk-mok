@@ -72,7 +72,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'name', 'gender', 'birth_date', 'desired_humidity', 'auto_setting', 'room', 'image','friends', 'current_state')
+        fields = ('id', 'email', 'name', 'gender', 'birth_date', 'desired_humidity', 'humidifier_on_off', 'slient_mode',
+         'auto_setting', 'room', 'image','friends', 'current_state')
         read_only_fields = ('id', 'email', 'room', 'friends', 'current_state')
 
 class FriendRequestSenderListSerializer(serializers.ModelSerializer):
