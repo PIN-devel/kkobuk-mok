@@ -45,6 +45,10 @@ const ChannelCard = (props) => {
       .then((res) => {
         // console.log("채널 카드 성공");
         // console.log(res.data.data);
+        console.log("여기봐~~~~~~~~~~~~~~~~");
+        console.log(res.data);
+        // console.log(res.data.data);
+
         handleSetChannelIn(res.data.data);
       })
       .catch((err) => {
