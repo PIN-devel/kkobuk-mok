@@ -238,7 +238,8 @@ def main_info(request):
 
     now = datetime.now(timezone.utc)
     if request.user.current_state != 1: # timesetting 테이블 만들어진 상태
-        t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
+        if TimeSetting.objects.filter(user=request.user).exists(): # 예외처리
+            t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
 
         # 유저 상태 업데이트
         # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
@@ -392,7 +393,7 @@ def timer_restart(request):
         # 현재 시간 - 일시정지한 시간
         now = datetime.now(timezone.utc)
         cha = now - t.last_stop_time
-        # 위의 값을 분 단위로 바꾸기 + total에 합산
+        # 위의 값을 초 단위로 바꾸기 + total에 합산
         t.total_stop_time += int(cha.total_seconds())
         # 일시정지 시간 초기화
         t.last_stop_time = None
