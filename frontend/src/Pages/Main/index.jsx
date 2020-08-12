@@ -16,6 +16,7 @@ const Main = () => {
       Authorization: `Jwt ${token}`,
     },
   };
+
   const [currentImg, setCurrentImg] = useState();
   const [currentScore, setCurrentScore] = useState();
   const [currentHu, setCurrentHu] = useState(0);
@@ -53,42 +54,21 @@ const Main = () => {
   // user: 9
   // work_time: 0
 
-  const findoutSpent = (started, wasted) => {
-    const st_year = Number(started.slice(0, 4));
-    const st_month = Number(started.slice(5, 7)) - 1;
-    const st_day = Number(started.slice(8, 10));
-    const st_hour = Number(started.slice(11, 13));
-    const st_min = Number(started.slice(14, 16));
-    const st_sec = Number(started.slice(17, 19));
-    const backthen = new Date(
-      st_year,
-      st_month,
-      st_day,
-      st_hour,
-      st_min,
-      st_sec
-    );
-    const now = new Date();
-    return Math.floor(Math.abs(now - backthen) / 1000) - wasted;
-  };
-
   const getInfo = () => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
       .then((res) => {
         setCurrentTemp(res.data.data.temperature);
         setCurrentHu(res.data.data.humidity);
-        const St = res.data.data.user_state;
-        setCurrentStatus(St);
-        if (St !== 1) {
-          // 뭔가 하고있음
-          const spent = findoutSpent(
-            res.data.data.time.created_at,
-            res.data.data.time.total_stop_time
-          );
-          console.log(res.data.data.time.total_stop_time);
-          setSpentTime(spent);
-        }
+        // const St = res.data.data.user_state;
+        // setCurrentStatus(St);
+        // if (St !== 1) {
+        //   setSpentTime(res.data.data.spent_time);
+        // } else {
+        //   setSpentTime(0);
+        // }
+        setCurrentStatus(res.data.data.user_state);
+        setSpentTime(res.data.data.spent_time);
         setCurrentScore(res.data.data.posture_level);
         setCurrentScoreData(res.data.data.posture_avg);
         setTotalTime(res.data.data.time.total_time);

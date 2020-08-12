@@ -6,7 +6,6 @@ import { makeStyles } from "@material-ui/core";
 import CircleProgressBar from "../Today";
 import ChangeInfo from "../../Auth/ChangeInfo";
 import { AuthContext } from "../../../contexts/AuthContext";
-import tableStyle from "../../Friends/Table/tableStyle";
 
 const useStyles = makeStyles({
   buttonStyle: {
