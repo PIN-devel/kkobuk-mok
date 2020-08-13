@@ -39,9 +39,9 @@ const User = () => {
           name={me.name}
           email={me.email}
           friends={me.friends}
-          today={me.posture[6].score}
+          today={me.posture[0].score}
         />
-        <Graphs data={me.posture} />
+        <Graphs data={me.posture.slice(1, 8)} />
       </Wrapper>
     </Layout>
   );

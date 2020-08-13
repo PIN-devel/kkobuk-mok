@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import DisplayComponent from "./DisplayComponent";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -12,6 +11,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Wrapper } from "./styles";
 import { MainContext } from "../../../contexts/MainContext";
+import FormLabel from "@material-ui/core/FormLabel";
+import Switch from "@material-ui/core/Switch";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -31,6 +33,8 @@ const Timer = () => {
     BreakTime,
     spentTime,
     currentStatus,
+    haveCycle,
+    setHaveCycle,
   } = useContext(MainContext);
   const classes = useStyles();
   const [mySpentHour, setMySpentHour] = useState(0);
@@ -53,11 +57,13 @@ const Timer = () => {
     const hour = parseInt(TotalTime / 60);
     const min = TotalTime % 60;
     setMystatus(currentStatus);
-    setMyTotalHour(hour);
-    setMyTotalMin(min);
-    setMyWorkTime(WorkTime);
-    setMyBreakTime(BreakTime);
-  }, [spentTime]);
+    if (currentStatus !== 1) {
+      setMyTotalHour(hour);
+      setMyTotalMin(min);
+      setMyWorkTime(WorkTime);
+      setMyBreakTime(BreakTime);
+    }
+  }, []);
 
   useEffect(() => {
     const hour = parseInt(spentTime / 3600);
@@ -84,23 +90,54 @@ const Timer = () => {
     setMyBreakTime(e);
   };
 
+  const handleCycle = (bool) => {
+    setHaveCycle(bool);
+    if (!bool) {
+      setMyWorkTime(0);
+      setMyBreakTime(0);
+    }
+  };
+
   const start = () => {
-    const body = {
-      total_time: myTotalHour * 60 + myTotalMin,
-      work_time: myWorkTime,
-      break_time: myBreakTime,
-    };
-    axios
-      .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
-      .then((res) => {
-        console.log("시작!");
-        console.log(res);
-        setMystatus(2);
-      })
-      .catch((err) => {
-        console.log("시작실패");
-        console.log(err.response);
-      });
+    if (haveCycle) {
+      if (myWorkTime === 0 || myBreakTime === 0) {
+        alert("업무시간과 쉬는시간을 설정해주세요!");
+      } else {
+        const body = {
+          total_time: myTotalHour * 60 + myTotalMin,
+          work_time: myWorkTime,
+          break_time: myBreakTime,
+        };
+        axios
+          .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
+          .then((res) => {
+            console.log("시작!");
+            console.log(res);
+            setMystatus(2);
+          })
+          .catch((err) => {
+            console.log("시작실패");
+            console.log(err.response);
+          });
+      }
+    } else {
+      const body = {
+        total_time: myTotalHour * 60 + myTotalMin,
+        work_time: 0,
+        break_time: 0,
+      };
+      axios
+        .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
+        .then((res) => {
+          console.log("시작!");
+          console.log(res);
+          setMystatus(2);
+        })
+        .catch((err) => {
+          console.log("시작실패");
+          console.log(err.response);
+        });
+    }
   };
 
   const stop = () => {
@@ -147,13 +184,31 @@ const Timer = () => {
 
   return (
     <Wrapper>
-      <Grid container spacing={2}>
-        <Grid item xs={12} className="timer">
-          <DisplayComponent
-            hour={mySpentHour}
-            min={mySpentMin}
-            sec={mySpentSec}
-          />
+      <Grid container spacing={3}>
+        <Grid item xs={9} className="timer">
+          <span>{mySpentHour >= 10 ? mySpentHour : "0" + mySpentHour}</span>
+          &nbsp;:&nbsp;
+          <span>{mySpentMin >= 10 ? mySpentMin : "0" + mySpentMin}</span>
+          &nbsp;:&nbsp;
+          <span>{mySpentSec >= 10 ? mySpentSec : "0" + mySpentSec}</span>
+        </Grid>
+        <Grid item xs={3} className="cycle-button">
+          <FormLabel component="legend">사이클</FormLabel>
+          <Typography component="div">
+            <Grid component="label" container alignItems="center" spacing={1}>
+              <Grid item>Off</Grid>
+              <Grid item>
+                <Switch
+                  checked={haveCycle}
+                  color="primary"
+                  onChange={(e) => {
+                    handleCycle(e.target.checked);
+                  }}
+                />
+              </Grid>
+              <Grid item>On</Grid>
+            </Grid>
+          </Typography>
         </Grid>
         <Grid item xs={12} container spacing={2} className="">
           <Grid item xs={12} md={3}>
@@ -199,6 +254,7 @@ const Timer = () => {
                 disabled={currentStatus === 1 ? false : true}
               >
                 <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
                 <MenuItem value={15}>15</MenuItem>
@@ -224,9 +280,10 @@ const Timer = () => {
                   handleMyWorkTime(event.target.value);
                 }}
                 label="Work"
-                disabled={currentStatus === 1 ? false : true}
+                disabled={currentStatus === 1 && haveCycle ? false : true}
               >
                 <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
                 <MenuItem value={15}>15</MenuItem>
@@ -247,14 +304,16 @@ const Timer = () => {
               <Select
                 labelId="Stopwatch-Break-label"
                 id="Stopwatch-Break"
+                disabled={!haveCycle}
                 value={myBreakTime}
                 onChange={(event) => {
                   handleMyBreakTime(event.target.value);
                 }}
                 label="Break"
-                disabled={currentStatus === 1 ? false : true}
+                disabled={currentStatus === 1 && haveCycle ? false : true}
               >
                 <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
                 <MenuItem value={15}>15</MenuItem>

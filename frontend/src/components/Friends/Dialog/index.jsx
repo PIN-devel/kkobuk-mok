@@ -65,7 +65,7 @@ export default function ResponsiveDialog(props) {
     <div>
       <Button
         variant="outlined"
-        color="primary"
+        color="inherit"
         onClick={() => {
           handleClickOpen();
         }}
@@ -74,6 +74,8 @@ export default function ResponsiveDialog(props) {
       </Button>
       <Dialog
         fullScreen={fullScreen}
+        maxWidth="md"
+        fullWidth="True"
         open={open}
         onClose={() => {
           handleClose();

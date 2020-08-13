@@ -1,9 +1,15 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
+  display: flex;
   .timer {
-    margin-left: 29%;
-    font-size: 3rem;
+    justify-content: center;
+    padding-left: 14%;
+    font-size: 3.2rem;
+  }
+  .cycle-button {
+    padding-top: 3%;
+    padding-left: 0;
   }
   .start-button {
     margin-left: 42%;

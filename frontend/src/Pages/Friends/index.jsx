@@ -1,16 +1,18 @@
 import React, { useContext, useState, useEffect } from "react";
-import Table from "../../components/Friends/Table/Table.js";
-import Card from "../../components/Friends/Card/Card.js";
-import CardHeader from "../../components/Friends/Card/CardHeader.js";
-import CardBody from "../../components/Friends/Card/CardBody.js";
+import Cookies from "js-cookie";
+import Axios from "axios";
+
 import Layout from "../../Layout/MyDash/Dashboard";
+import useStyles from "./styles";
+import Table from "../../components/Friends/Table/Table.js";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+
 import ResponsiveDialog from "../../components/Friends/Dialog";
 import SentFriendRequests from "../../components/Friends/SentFriendRequests";
-import useStyles from "./styles";
+
 import { AuthContext } from "../../contexts/AuthContext";
 import { FriendContext } from "../../contexts/FriendContext";
-import Axios from "axios";
-import Cookies from "js-cookie";
 
 const Friends = () => {
   const { SERVER_URL } = useContext(AuthContext);
@@ -25,18 +27,14 @@ const Friends = () => {
       Authorization: `Jwt ${token}`,
     },
   };
-  const tableHead = [
-    "이름",
-    "이메일",
-    "오늘의 점수",
-    "일주일 점수",
-    "친구 삭제",
-  ];
+
+  const tableHead = ["이름", "이메일", "오늘의 점수", "주간 점수", "친구 삭제"];
 
   useEffect(() => {
     Axios.get(`${SERVER_URL}/accounts/friend/`, config)
       .then((res) => {
         console.log("친구들 불러오기 성공");
+        console.log(res.data);
         const friends = res.data.data.friends.map((person) => {
           return [
             person.id,
@@ -62,26 +60,42 @@ const Friends = () => {
           setRequestMade,
         }}
       >
-        <Card>
-          <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>친구 목록</h4>
-            <p className={classes.cardCategoryWhite}>친구들과 으쌰으쌰</p>
-            <SentFriendRequests />
-          </CardHeader>
-          <CardBody>
-            <ResponsiveDialog
-              sentRequests={sentRequests}
-              setSentRequests={setSentRequests}
-            />
-            <Table
-              tableHeaderColor="primary"
-              tableHead={tableHead}
-              tableData={friends}
-              setTableData={setFriends}
-              dataType={1}
-            />
-          </CardBody>
-        </Card>
+        <div className={classes.root}>
+          <Grid container className={classes.friendHeader}>
+            <Grid item xs={12}>
+              <Box bgcolor="black" color="white">
+                <div className={classes.friendHeaderText}>친구 목록</div>
+                <Grid container spacing={3}>
+                  <Grid item xs></Grid>
+                  <Grid item xs={1}>
+                    <SentFriendRequests />
+                  </Grid>
+                  <Grid item xs={1}>
+                    <ResponsiveDialog
+                      sentRequests={sentRequests}
+                      setSentRequests={setSentRequests}
+                    />
+                  </Grid>
+                  <Grid item xs={1}></Grid>
+                </Grid>
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container>
+            <Grid item xs={1} />
+            <Grid item xs>
+              <Table
+                tableHeaderColor="black"
+                tableHead={tableHead}
+                tableData={friends}
+                setTableData={setFriends}
+                dataType={1}
+              />
+            </Grid>
+            <Grid item xs={1} />
+          </Grid>
+        </div>
       </FriendContext.Provider>
     </Layout>
   );
