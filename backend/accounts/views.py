@@ -241,50 +241,52 @@ def main_info(request):
         if TimeSetting.objects.filter(user=request.user).exists(): # 예외처리
             t = TimeSetting.objects.filter(user=request.user).order_by('-pk')[0]
 
-        # 유저 상태 업데이트
-        # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
-        if (t.total_time or t.work_time) and request.user.current_state != 4:
-
-            if t.total_stop_time:
-                ing = ((now - t.created_at).total_seconds()//60) - t.total_stop_time//60
-            else:
-                ing = (now - t.created_at).total_seconds()//60
-            if t.work_time:
-                request.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
-            else:
-                if ing >= t.total_time:
-                    request.user.current_state = 1
-            request.user.save()
-
-        if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists(): # start 누른 후 센싱 값 있는 경우
-            # 현재 시간 기준으로 5분 전까지 30초 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
-            ls = []
-            for i in range(0,10):
-                st = now - timedelta(seconds=i*30)
-                ed = now - timedelta(seconds=(i+1)*30)
-                cnt = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).count()
-                if cnt:
-                    avg = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
-                    ls.append({"time": str(st)[11:16], "score": avg})
+            # 유저 상태 업데이트
+            # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
+            if (t.total_time or t.work_time) and request.user.current_state != 4:
+                if t.total_stop_time:
+                    ing = ((now - t.created_at).total_seconds()- t.total_stop_time)//60
                 else:
-                    ls.append({"time": str(st)[11:16], "score": 0})
-            
-            info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
-    
-            posture_level = info.posture_level
-            temperature = info.temperature
-            humidity = info.humidity
-            posture_avg = ls
-            time = TimeSettingSerializer(t).data
+                    ing = (now - t.created_at).total_seconds()//60
+                if t.work_time:
+                    request.user.current_state = user_state_check(ing, t.total_time, t.work_time, t.break_time)
+                else:
+                    if ing >= t.total_time:
+                        request.user.current_state = 1
+                request.user.save()
 
-        else:
-            time = TimeSettingSerializer(t).data
+            # start 누른 후 센싱 값 있는 경우
+            if Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).exists():
+                # 현재 시간 기준으로 5분 전까지 30초 간격으로 자세 통계 계산(timesetting 설정한 이후 부터)
+                ls = []
+                now2 = datetime.now()
+                for i in range(0,10):
+                    st = now2 - timedelta(seconds=i*30)
+                    ed = now2 - timedelta(seconds=(i+1)*30)
+                    cnt = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).count()
+                    if cnt:
+                        avg = Sensing.objects.filter(user=request.user, created_at__gte=t.created_at).filter(created_at__lte=st, created_at__gte=ed).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
+                        ls.append({"time": str(st)[11:16], "score": avg})
+                    else:
+                        ls.append({"time": str(st)[11:16], "score": 0})
+                
+                info = Sensing.objects.filter(user=request.user).order_by('-pk')[0]
         
-        if t.last_stop_time:
-            bk_time = int((now - t.last_stop_time).total_seconds())
-            spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time - bk_time
-        else:
-            spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time
+                posture_level = info.posture_level
+                temperature = info.temperature
+                humidity = info.humidity
+                posture_avg = ls
+                time = TimeSettingSerializer(t).data
+            else:
+                time = TimeSettingSerializer(t).data
+
+            # 프런트에 전달할 진행 시간 값
+            if t.last_stop_time:
+                bk_time = int((now - t.last_stop_time).total_seconds())
+                spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time - bk_time
+            else:
+                spent_time = int((now - t.created_at).total_seconds()) - t.total_stop_time
+
     data = {
         'posture_level': posture_level,
         'temperature': temperature,
@@ -324,18 +326,18 @@ def sensing_save(request):
     # 공부 중일 때만 자세 값 저장
     if p.user.current_state == 2:
         # 예외처리
-        if isinstance(posture_level, int) and isinstance(temperature, float) and isinstance(humidity, float):
-            Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
-    
+        try:
+            Sensing.objects.create(user=p.user, posture_level=int(posture_level), temperature=float(temperature), humidity=float(humidity))
+        except:
+            print("아두이노에서 온 값이 이상한 것 같아요")
     if p.user.current_state != 1: # timesetting 테이블 만들어진 상태
         if TimeSetting.objects.filter(user=p.user).exists():
             t = TimeSetting.objects.filter(user=p.user).order_by('-pk')[0]
             # 유저 상태 업데이트
             # 현재 시간 - start 시간 - [일시정지 시간] = ing 시간
             if (t.total_time or t.work_time) and p.user.current_state != 4:
-                now = datetime.now(timezone.utc)
-                if t.last_stop_time:
-                    ing = (now - t.created_at - t.last_stop_time).total_seconds()//60
+                if t.total_stop_time:
+                    ing = ((now - t.created_at).total_seconds()- t.total_stop_time)//60
                 else:
                     ing = (now - t.created_at).total_seconds()//60
                 if t.work_time:
