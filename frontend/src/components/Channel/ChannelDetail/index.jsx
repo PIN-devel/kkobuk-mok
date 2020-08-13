@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 import HighRank from "./HighRank";
-import { Grid } from "@material-ui/core";
+import { Typography, Grid, Divider, Button } from "@material-ui/core";
 import useStyles from "./styles";
 
 import axios from "axios";
@@ -76,33 +76,34 @@ const ChannelDetail = (props) => {
 
   return (
     <div className={classes.root}>
-      <button
-        onClick={() => {
-          exitChannel();
-        }}
-      >
-        채널 나가기
-      </button>
-
-      {/* <h1>채널 이름 ; {channel.title}</h1> */}
-      <h3>
-        이거 멤버들 쭈루룩 나오게 할 수도 있고
-        {/* {channel.members.map((member) => (
-          <Grid item key={member.id} lg={4} md={6} xs={12}>
-            {member.email}
-          </Grid>
-        ))} */}
-      </h3>
-      <h1>채널 이름 ; {channel.name}</h1>
-      <h2>채널 슬로건? : {channel.description}</h2>
       {channelData && (
-        <Grid container spacing={4}>
-          {channelData.members.map((member) => (
-            <Grid item lg={6} md={6} xl={12} xs={12}>
-              <ChannelDetailCard member={member} />
+        <div>
+          <Typography align="center" gutterBottom variant="h5">
+            {channel.name}
+          </Typography>
+          <Typography align="center" gutterBottom variant="subtitle1">
+            {channel.description}
+          </Typography>
+          <Grid container spacing={4}>
+            <Grid item xs={10}></Grid>
+            <Grid item xs={2}>
+              <Button
+                color="primary"
+                onClick={() => {
+                  exitChannel();
+                }}
+              >
+                채널 나가기
+              </Button>
             </Grid>
-          ))}
-        </Grid>
+
+            {channelData.members.map((member) => (
+              <Grid item lg={6} md={6} xl={12} xs={12}>
+                <ChannelDetailCard member={member} />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       )}
     </div>
   );
