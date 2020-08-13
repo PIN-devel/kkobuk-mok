@@ -39,9 +39,14 @@ def get_secret(setting, secret=secret):
 SECRET_KEY = get_secret('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'i3b109.p.ssafy.io',
+    '3.35.17.150',
+    'localhost',
+    'kkobuk.tk',
+]
 
 
 # Application definition
@@ -170,8 +175,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-   # os.path.join(BASE_DIR, '../frontend/build/static'),
-   # os.path.join(BASE_DIR, '../frontend/build/images'),
+    os.path.join(BASE_DIR, '../frontend/build/static'),
+    os.path.join(BASE_DIR, '../frontend/build/images'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 

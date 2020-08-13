@@ -6,6 +6,8 @@ import useStyles from "./styles";
 
 import axios from "axios";
 import Cookies from "js-cookie";
+import ChannelChat from "../ChannelChat";
+import UserCard from "../UserCard";
 
 import ChannelDetailCard from "../ChannelDetailCard";
 import ChannelCard from "../ChannelCard";
