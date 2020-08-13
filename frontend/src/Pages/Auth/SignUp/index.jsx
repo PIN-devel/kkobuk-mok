@@ -239,85 +239,88 @@ export default function SignUp() {
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={2}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="productKey1"
-                name="productKey1"
-                autoComplete="p-key"
-                inputProps={{ maxLength: 4 }}
-                value={productKey1}
-                onChange={(e) => {
-                  handleSetProductKey1(e.target.value);
-                }}
-              >
-                -
-              </TextField>
+            <Grid item xs={12}>
+              <Grid container spacing={1}>
+                <Grid item xs>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="productKey1"
+                    name="productKey1"
+                    autoComplete="p-key"
+                    inputProps={{ maxLength: 4 }}
+                    value={productKey1}
+                    onChange={(e) => {
+                      handleSetProductKey1(e.target.value);
+                    }}
+                  >
+                    -
+                  </TextField>
+                </Grid>
+                <Grid item xs>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="productKey2"
+                    name="productKey2"
+                    autoComplete="p-key"
+                    inputProps={{ maxLength: 4 }}
+                    value={productKey2}
+                    onChange={(e) => {
+                      handleSetProductKey2(e.target.value);
+                    }}
+                  >
+                    -
+                  </TextField>
+                </Grid>
+                <Grid item xs>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="productKey3"
+                    name="productKey3"
+                    autoComplete="p-key"
+                    inputProps={{ maxLength: 4 }}
+                    value={productKey3}
+                    onChange={(e) => {
+                      handleSetProductKey3(e.target.value);
+                    }}
+                  >
+                    -
+                  </TextField>
+                </Grid>
+                <Grid item xs>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="productKey4"
+                    name="productKey4"
+                    autoComplete="p-key"
+                    inputProps={{ maxLength: 4 }}
+                    value={productKey4}
+                    onChange={(e) => {
+                      handleSetProductKey4(e.target.value);
+                    }}
+                  >
+                    -
+                  </TextField>
+                </Grid>
+                <Grid item xs={2}>
+                  <Button
+                    disabled={confirmedPKey ? true : false}
+                    onClick={() => {
+                      handleSetConfirmedPkey();
+                    }}
+                  >
+                    제품키 인증
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={6} md={2}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="productKey2"
-                name="productKey2"
-                autoComplete="p-key"
-                inputProps={{ maxLength: 4 }}
-                value={productKey2}
-                onChange={(e) => {
-                  handleSetProductKey2(e.target.value);
-                }}
-              >
-                -
-              </TextField>
-            </Grid>
-            <Grid item xs={6} md={2}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="productKey3"
-                name="productKey3"
-                autoComplete="p-key"
-                inputProps={{ maxLength: 4 }}
-                value={productKey3}
-                onChange={(e) => {
-                  handleSetProductKey3(e.target.value);
-                }}
-              >
-                -
-              </TextField>
-            </Grid>
-            <Grid item xs={6} md={2}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="productKey4"
-                name="productKey4"
-                autoComplete="p-key"
-                inputProps={{ maxLength: 4 }}
-                value={productKey4}
-                onChange={(e) => {
-                  handleSetProductKey4(e.target.value);
-                }}
-              >
-                -
-              </TextField>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Button
-                disabled={confirmedPKey ? true : false}
-                onClick={() => {
-                  handleSetConfirmedPkey();
-                }}
-              >
-                제품키 인증
-              </Button>
-            </Grid>
-
             <Grid item xs={12} sm={3}>
               <FormLabel>Gender</FormLabel>
             </Grid>
