@@ -7,13 +7,14 @@ import Main from "./Pages/Main";
 import SignIn from "./Pages/Auth/SignIn";
 import SignUp from "./Pages/Auth/SignUp";
 import ContactUs from "./Pages/About/ContactUs";
+import Terms from "./Pages/About/Terms";
 import Page404 from "./Pages/Page404";
 import { AuthContext } from "./contexts/AuthContext";
 import Cookies from "js-cookie";
 
 function App() {
-  const SERVER_URL = "http://3.35.17.150:8000";
-  // const SERVER_URL = "http://localhost:8000";
+  // const SERVER_URL = "https://i3b109.p.ssafy.io";
+  const SERVER_URL = "http://localhost:8000";
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
   const [channelIn, setChannelIn] = useState(null);
   const [requestMade, setRequestMade] = useState(0);
@@ -50,6 +51,7 @@ function App() {
             <Route exact path="/Friends" component={Friends} />
             <Route exact path="/Channel" component={Channel} />
             <Route exact path="/ContactUs" component={ContactUs} />
+            <Route exact path="/Terms" component={Terms} />
             <Route exact path="/not-found" component={Page404} />
             <Redirect to="not-found/" />;
           </Switch>

@@ -11,14 +11,14 @@ const CurrentScore = (props) => {
       setMyWord("위험");
       setMyClass("redCircle");
     } else if (currentScore === 2) {
-      setMyWord("보통");
+      setMyWord("주의");
       setMyClass("yellowCircle");
     } else if (currentScore === 1) {
       setMyWord("완벽");
       setMyClass("blueCircle");
     } else {
-      setMyWord("");
-      setMyClass("whiteCircle");
+      setMyWord("대기");
+      setMyClass("blueCircle");
     }
   }, [currentScore]);
   return (

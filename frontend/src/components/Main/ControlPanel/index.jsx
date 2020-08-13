@@ -3,7 +3,6 @@ import { Wrapper } from "./styles";
 import { Grid } from "@material-ui/core";
 import Progress from "../Progress";
 import Timer from "../Timer";
-import HControl from "../HControl";
 const ControlPanel = () => {
   const [scoreData, setScoreData] = useState([]);
   return (

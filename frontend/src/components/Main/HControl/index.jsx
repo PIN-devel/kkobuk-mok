@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Wrapper } from "./styles";
 import { MainContext } from "../../../contexts/MainContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -10,6 +11,7 @@ import { Button, TextField } from "@material-ui/core";
 import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import axios from "axios";
 import Cookies from "js-cookie";
 
 const HControl = () => {
@@ -18,10 +20,14 @@ const HControl = () => {
     setIsAuto,
     DeHumid,
     setDeHumid,
-    isSoundOn,
-    setIsSoundOn,
+    isSilent,
+    setIsSilent,
+    isHumidiOn,
+    setIsHumidiOn,
   } = useContext(MainContext);
-  const [myHumid, setMyHu] = useState(0);
+
+  const { SERVER_URL } = useContext(AuthContext);
+  const [myDeHumid, setMyDeHumid] = useState(0);
 
   const token = Cookies.get("token");
   const userID = Cookies.get("myUserId");
@@ -31,68 +37,175 @@ const HControl = () => {
     },
   };
 
-  const handleAuto = () => {
-    const newV = !isAuto;
-    setIsAuto(newV);
+  const handleAuto = (bool) => {
+    axios
+      .put(`${SERVER_URL}/accounts/${userID}/`, { auto_setting: bool }, config)
+      .then((res) => {
+        console.log(res);
+        if (bool) {
+          console.log("자동 온!");
+        } else {
+          console.log("자동 오프!");
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+        console.log("자동 변경 실패");
+      });
   };
 
-  const handleSound = () => {
-    const newV = !isSoundOn;
-    setIsSoundOn(newV);
+  const handleSound = (bool) => {
+    console.log(bool);
+    axios
+      .put(`${SERVER_URL}/accounts/${userID}/`, { slient_mode: bool }, config)
+      .then((res) => {
+        console.log(res);
+        if (bool) {
+          console.log("소리 오프!");
+        } else {
+          console.log("소리 온!");
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+        console.log("소리 변경 실패");
+      });
   };
 
-  const changeH = (e) => {};
+  const handleDeHumid = (deH) => {
+    setMyDeHumid(deH);
+  };
 
-  useEffect(() => {}, []);
+  const handleHumidi = (bool) => {
+    axios
+      .put(
+        `${SERVER_URL}/accounts/${userID}/`,
+        { humidifier_on_off: bool },
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        if (bool) {
+          console.log("가습기 온!");
+        } else {
+          console.log("가습기 오프!");
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+        console.log("가습기 상태 변경 실패");
+      });
+  };
+
+  const submitDeHumid = () => {
+    const newV = myDeHumid;
+    axios
+      .put(
+        `${SERVER_URL}/accounts/${userID}/`,
+        { desired_humidity: newV },
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        console.log("습도 설정 성공");
+      })
+      .catch((err) => {
+        console.log(err.response);
+        console.log("습도 설정 실패");
+      });
+  };
+
+  useEffect(() => {
+    setMyDeHumid(DeHumid);
+  }, []);
 
   return (
     <Wrapper>
       <FormControl component="fieldset">
-        <FormLabel component="legend">알림 소리</FormLabel>
+        <FormLabel className="nameOf" component="legend">
+          알림 소리
+        </FormLabel>
         <Typography component="div">
           <Grid component="label" container alignItems="center" spacing={1}>
             <Grid item>Off</Grid>
             <Grid item>
               <Switch
-                checked={isSoundOn}
-                onChange={() => {
-                  handleSound();
+                checked={!isSilent}
+                onChange={(e) => {
+                  setIsSilent(!isSilent);
+                  handleSound(!e.target.checked);
                 }}
               />
             </Grid>
             <Grid item>On</Grid>
           </Grid>
         </Typography>
-        <FormLabel component="legend">자동 가습</FormLabel>
+        <FormLabel className="nameOf" component="legend">
+          자동 가습
+        </FormLabel>
         <Typography component="div">
           <Grid component="label" container alignItems="center" spacing={1}>
             <Grid item>Off</Grid>
             <Grid item>
               <Switch
                 checked={isAuto}
-                onChange={() => {
-                  handleAuto();
+                color="primary"
+                onChange={(e) => {
+                  setIsAuto(!isAuto);
+                  handleAuto(e.target.checked);
                 }}
               />
             </Grid>
             <Grid item>On</Grid>
           </Grid>
         </Typography>
-        <FormLabel component="legend">희망 습도</FormLabel>
-        {/* <TextField
-          id="birth"
-          type="date"
-          name="birth"
-          defaultValue="2000-01-01"
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onChange={(e) => {
-            handleSetBirthDate(e.target.value);
-          }}
-        /> */}
-        <Button disabled={isAuto}>가습기 작동</Button>
+        <FormLabel className="nameOf" component="legend">
+          희망 습도
+        </FormLabel>
+        <Grid container>
+          <Grid item xs={8}>
+            <input
+              type="number"
+              name="DeHumid"
+              min="0"
+              max="100"
+              defaultValue={DeHumid}
+              className="HInput"
+              onChange={(e) => {
+                handleDeHumid(e.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <Button
+              onClick={() => {
+                submitDeHumid();
+              }}
+            >
+              설정
+            </Button>
+          </Grid>
+        </Grid>
+
+        <FormLabel className="nameOf" component="legend">
+          가습기
+        </FormLabel>
+        <Typography component="div">
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item>Off</Grid>
+            <Grid item>
+              <Switch
+                disabled={isAuto}
+                checked={isHumidiOn}
+                onChange={(e) => {
+                  setIsHumidiOn(!isHumidiOn);
+                  handleHumidi(e.target.checked);
+                }}
+              />
+            </Grid>
+            <Grid item>On</Grid>
+          </Grid>
+        </Typography>
       </FormControl>
     </Wrapper>
   );
