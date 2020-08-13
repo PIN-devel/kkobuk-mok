@@ -86,7 +86,7 @@ const ChannelsToolbar = (props) => {
         {/* <Button className={classes.importButton}>Import</Button>
         <Button className={classes.exportButton}>Export</Button> */}
         <Button
-          color="primary"
+          className={classes.customButton}
           variant="contained"
           onClick={() => {
             handleClickOpen();

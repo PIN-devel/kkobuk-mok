@@ -18,6 +18,7 @@ import useStyles from "./styles";
 
 import axios from "axios";
 import Cookies from "js-cookie";
+import { ThemeProvider } from "styled-components";
 
 const ChannelCard = (props) => {
   const { className, channel, ...rest } = props;
@@ -54,31 +55,28 @@ const ChannelCard = (props) => {
   };
 
   return (
-    <Card {...rest} className={clsx(classes.root, className)}>
-      <Button
+    <Card style={{cursor:"pointer"}} {...rest} className={clsx(classes.root, className)} onClick={() => {entranceChannel();}}>
+      {/* <Button
         onClick={() => {
           entranceChannel();
         }}
       >
         입장하기
-      </Button>
-      <CardContent>
-        <div className={classes.imageContainer}>
+      </Button> */}
+      <CardContent className={classes.cardContent}>
+        {/* <div className={classes.imageContainer}>
           <img
             alt="channel"
             className={classes.image}
             // src={channelData.imageUrl}
             src={channel.imageUrl}
           />
-        </div>
-        <Typography align="center" gutterBottom variant="h4">
-          {/* {channel.title} */}
-          채널이름 : {/* {channelData.name} */}
+        </div> */}
+        <Typography className={classes.typography} style={{margin:"20px"}} align="center" gutterBottom variant="h4">
           {channel.name}
         </Typography>
-        <Typography align="center" variant="body1">
-          {/* {channelData.description} */}
-          채널 : {channel.description}
+        <Typography className={classes.typography} variant="body2" color="textSecondary" component="p">
+          {channel.description}
         </Typography>
       </CardContent>
       <Divider />
@@ -86,14 +84,14 @@ const ChannelCard = (props) => {
         <Grid container justify="space-between">
           <Grid className={classes.statsItem} item>
             <AccessTimeIcon className={classes.statsIcon} />
-            <Typography display="inline" variant="body2">
-              여기는 이 채널 평균 점수
+            <Typography className={classes.typography} display="inline" variant="body2">
+            {channel.created_at.slice(0,19)}
             </Typography>
           </Grid>
           <Grid className={classes.statsItem} item>
             {/* <GetAppIcon className={classes.statsIcon} /> */}
-            <Typography display="inline" variant="body2">
-              {channel.member_num} members
+            <Typography className={classes.typography} display="inline" variant="body2">
+              <i class="fas fa-users"></i> {channel.member_num}
             </Typography>
           </Grid>
         </Grid>
