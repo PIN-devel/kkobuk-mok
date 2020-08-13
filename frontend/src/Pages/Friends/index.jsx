@@ -28,7 +28,7 @@ const Friends = () => {
     },
   };
 
-  const tableHead = ["이름", "이메일", "오늘의 점수", "주간 점수", "친구 삭제"];
+  const tableHead = ["이름", "이메일", "오늘의 점수", "주간 점수", ""];
 
   useEffect(() => {
     Axios.get(`${SERVER_URL}/accounts/friend/`, config)
@@ -63,14 +63,14 @@ const Friends = () => {
         <div className={classes.root}>
           <Grid container className={classes.friendHeader}>
             <Grid item xs={12}>
-              <Box bgcolor="black" color="white">
-                <div className={classes.friendHeaderText}>친구 목록</div>
+              <Box bgcolor="white" color="black">
+                <div className={classes.friendHeaderText}>Friends list</div>
                 <Grid container spacing={3}>
                   <Grid item xs></Grid>
-                  <Grid item xs={1}>
+                  <Grid item xs={1.2}>
                     <SentFriendRequests />
                   </Grid>
-                  <Grid item xs={1}>
+                  <Grid item xs={1.2}>
                     <ResponsiveDialog
                       sentRequests={sentRequests}
                       setSentRequests={setSentRequests}

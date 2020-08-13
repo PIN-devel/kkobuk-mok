@@ -64,17 +64,16 @@ export default function ResponsiveDialog(props) {
   return (
     <div>
       <Button
-        variant="outlined"
-        color="inherit"
+        color="secondary"
         onClick={() => {
           handleClickOpen();
         }}
       >
-        친구 찾기
+        친구 찾기 <br></br> <i class="fas fa-search"></i>
       </Button>
       <Dialog
         fullScreen={fullScreen}
-        maxWidth="md"
+        maxWidth="sm"
         fullWidth="True"
         open={open}
         onClose={() => {
@@ -107,7 +106,7 @@ export default function ResponsiveDialog(props) {
             color="primary"
             autoFocus
           >
-            끄기
+            CLOSE
           </Button>
         </DialogActions>
       </Dialog>

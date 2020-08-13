@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: "35vh",
   },
   paper: {
     padding: theme.spacing(2),
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "32px",
     textAlign: "center",
     fontWeight: "1000",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    fontFamily: "'Nanum Gothic', 'sans-serif', 'Helvetica', 'Arial'",
     textDecoration: "none",
   },
 }));

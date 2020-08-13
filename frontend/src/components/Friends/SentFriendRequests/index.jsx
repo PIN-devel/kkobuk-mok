@@ -58,16 +58,15 @@ const SentFriendRequests = (props) => {
   return (
     <div>
       <Button
-        variant="outlined"
-        color="inherit"
+        color="secondary"
         onClick={() => {
           handleOpen();
         }}
       >
-        보낸 요청
+        보낸 요청 <br/><i class="far fa-paper-plane"></i>
       </Button>
       <Dialog
-        maxWidth="md"
+        maxWidth="sm"
         fullWidth="True"
         fullScreen={fullScreen}
         open={modalOpen}
