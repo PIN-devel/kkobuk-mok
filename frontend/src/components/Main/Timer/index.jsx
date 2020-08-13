@@ -30,20 +30,22 @@ const Timer = () => {
   const {
     TotalTime,
     WorkTime,
+    setWorkTime,
     BreakTime,
+    setBreakTime,
     spentTime,
     currentStatus,
     haveCycle,
     setHaveCycle,
+    TotalHour,
+    setTotalHour,
+    TotalMin,
+    setTotalMin,
   } = useContext(MainContext);
   const classes = useStyles();
   const [mySpentHour, setMySpentHour] = useState(0);
   const [mySpentMin, setMySpentMin] = useState(0);
   const [mySpentSec, setMySpentSec] = useState(0);
-  const [myTotalHour, setMyTotalHour] = useState(0);
-  const [myTotalMin, setMyTotalMin] = useState(0);
-  const [myWorkTime, setMyWorkTime] = useState(0);
-  const [myBreakTime, setMyBreakTime] = useState(0);
   const [myStatus, setMystatus] = useState(1);
 
   const token = Cookies.get("token");
@@ -52,18 +54,6 @@ const Timer = () => {
       Authorization: `Jwt ${token}`,
     },
   };
-
-  useEffect(() => {
-    const hour = parseInt(TotalTime / 60);
-    const min = TotalTime % 60;
-    setMystatus(currentStatus);
-    if (currentStatus !== 1) {
-      setMyTotalHour(hour);
-      setMyTotalMin(min);
-      setMyWorkTime(WorkTime);
-      setMyBreakTime(BreakTime);
-    }
-  }, []);
 
   useEffect(() => {
     const hour = parseInt(spentTime / 3600);
@@ -75,38 +65,38 @@ const Timer = () => {
   }, [spentTime]);
 
   const handleMyTotalHour = (e) => {
-    setMyTotalHour(e);
+    setTotalHour(e);
   };
 
   const handleMyTotalMin = (e) => {
-    setMyTotalMin(e);
+    setTotalMin(e);
   };
 
   const handleMyWorkTime = (e) => {
-    setMyWorkTime(e);
+    setWorkTime(e);
   };
 
   const handleMyBreakTime = (e) => {
-    setMyBreakTime(e);
+    setBreakTime(e);
   };
 
   const handleCycle = (bool) => {
     setHaveCycle(bool);
     if (!bool) {
-      setMyWorkTime(0);
-      setMyBreakTime(0);
+      setWorkTime(0);
+      setBreakTime(0);
     }
   };
 
   const start = () => {
     if (haveCycle) {
-      if (myWorkTime === 0 || myBreakTime === 0) {
+      if (WorkTime === 0 || BreakTime === 0) {
         alert("업무시간과 쉬는시간을 설정해주세요!");
       } else {
         const body = {
-          total_time: myTotalHour * 60 + myTotalMin,
-          work_time: myWorkTime,
-          break_time: myBreakTime,
+          total_time: TotalHour * 60 + TotalMin,
+          work_time: WorkTime,
+          break_time: BreakTime,
         };
         axios
           .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
@@ -122,7 +112,7 @@ const Timer = () => {
       }
     } else {
       const body = {
-        total_time: myTotalHour * 60 + myTotalMin,
+        total_time: TotalHour * 60 + TotalMin,
         work_time: 0,
         break_time: 0,
       };
@@ -217,7 +207,7 @@ const Timer = () => {
               <Select
                 labelId="Stopwatch-Hour-label"
                 id="Stopwatch-Hour"
-                value={myTotalHour}
+                value={TotalHour}
                 onChange={(event) => {
                   handleMyTotalHour(event.target.value);
                 }}
@@ -246,7 +236,7 @@ const Timer = () => {
               <Select
                 labelId="Stopwatch-Minute-label"
                 id="Stopwatch-Minute"
-                value={myTotalMin}
+                value={TotalMin}
                 onChange={(event) => {
                   handleMyTotalMin(event.target.value);
                 }}
@@ -275,7 +265,7 @@ const Timer = () => {
               <Select
                 labelId="Stopwatch-Worktime-label"
                 id="Stopwatch-Worktime"
-                value={myWorkTime}
+                value={WorkTime}
                 onChange={(event) => {
                   handleMyWorkTime(event.target.value);
                 }}
@@ -305,7 +295,7 @@ const Timer = () => {
                 labelId="Stopwatch-Break-label"
                 id="Stopwatch-Break"
                 disabled={!haveCycle}
-                value={myBreakTime}
+                value={BreakTime}
                 onChange={(event) => {
                   handleMyBreakTime(event.target.value);
                 }}
@@ -371,7 +361,23 @@ const Timer = () => {
           ) : (
             ""
           )}
-          {currentStatus === 3 ? <h3>휴식시간</h3> : ""}
+          {currentStatus === 3 ? (
+            <div>
+              <h3>휴식시간</h3>
+              <Button
+                variant="contained"
+                color="primary"
+                className="reset-button"
+                onClick={() => {
+                  reset();
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
 
           {currentStatus === 4 ? (
             <div>

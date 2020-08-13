@@ -139,6 +139,8 @@ export default function SignUp() {
     const numGender = Number(gender);
     if (name === "") {
       alert("이름을 입력해주세요!");
+    } else if (email === "") {
+      alert("이메일을 작성해주세요!");
     } else if (password !== passwordConfirm) {
       alert("비밀번호를 확인해주세요");
     } else if (password.length < 8) {
