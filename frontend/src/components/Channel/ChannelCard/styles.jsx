@@ -1,7 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    backgroundColor: "#fafefe",
+    marginBottom: "25vh"
+  },
   imageContainer: {
     height: 64,
     width: 64,
@@ -23,6 +26,16 @@ const useStyles = makeStyles((theme) => ({
   statsIcon: {
     color: theme.palette.icon,
     marginRight: theme.spacing(1),
+  },
+  typography: {
+    fontFamily: "Nanum Gothic",
+    color: "#495057",
+  },
+  cardContent: {
+    padding: "45px 40px",
+  },
+  customButton: {
+    backgroundColor: "#343a40"
   },
 }));
 
