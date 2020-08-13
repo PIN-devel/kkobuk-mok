@@ -34,7 +34,7 @@ const SentFriendRequests = (props) => {
   const handleClose = () => {
     setModalOpen(false);
   };
-  const tableHead = ["이름", "이메일", "요청 취소"];
+  const tableHead = ["이름", "이메일", ""];
 
   useEffect(() => {
     axios
@@ -58,7 +58,7 @@ const SentFriendRequests = (props) => {
   return (
     <div>
       <Button
-        color="secondary"
+        color="primary"
         onClick={() => {
           handleOpen();
         }}
@@ -76,7 +76,7 @@ const SentFriendRequests = (props) => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          <h3>내가 보낸 친구 요청</h3>
+          <h3 style={{marginBottom: "0", textAlign:"center"}}>My requests</h3>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -97,7 +97,7 @@ const SentFriendRequests = (props) => {
             color="primary"
             autoFocus
           >
-            끄기
+            CLOSE
           </Button>
         </DialogActions>
       </Dialog>

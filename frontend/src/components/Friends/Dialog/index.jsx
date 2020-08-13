@@ -64,7 +64,7 @@ export default function ResponsiveDialog(props) {
   return (
     <div>
       <Button
-        color="secondary"
+        color="primary"
         onClick={() => {
           handleClickOpen();
         }}

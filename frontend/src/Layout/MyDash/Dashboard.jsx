@@ -155,15 +155,15 @@ export default function Dashboard(props) {
             noWrap
             className={classes.title}
           >
-            꼬북
+            KKOBUK
           </Typography>
-          <Button
+          {/* <Button
             onClick={() => {
               tester();
             }}
           >
             테스트
-          </Button>
+          </Button> */}
           <IconButton
             aria-controls="simple-menu"
             aria-haspopup="true"
