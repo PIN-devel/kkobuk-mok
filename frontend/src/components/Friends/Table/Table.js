@@ -18,7 +18,7 @@ import Axios from "axios";
 const useStyles = makeStyles(styles);
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#9e9fae",
     color: theme.palette.common.white,
   },
   body: {
@@ -130,7 +130,7 @@ export default function CustomTable(props) {
                         deleteFriend(prop[0]);
                       }}
                     >
-                      친구 삭제
+                      <i class="fas fa-user-alt-slash"></i>
                     </Button>
                   </TableCell>
                 ) : (
