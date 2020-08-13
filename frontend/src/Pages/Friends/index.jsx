@@ -12,6 +12,9 @@ import { FriendContext } from "../../contexts/FriendContext";
 import Axios from "axios";
 import Cookies from "js-cookie";
 
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+
 const Friends = () => {
   const { SERVER_URL } = useContext(AuthContext);
   const classes = useStyles();
@@ -62,26 +65,47 @@ const Friends = () => {
           setRequestMade,
         }}
       >
-        <Card>
-          <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>친구 목록</h4>
-            <p className={classes.cardCategoryWhite}>친구들과 으쌰으쌰</p>
-            <SentFriendRequests />
-          </CardHeader>
-          <CardBody>
-            <ResponsiveDialog
-              sentRequests={sentRequests}
-              setSentRequests={setSentRequests}
-            />
-            <Table
-              tableHeaderColor="primary"
-              tableHead={tableHead}
-              tableData={friends}
-              setTableData={setFriends}
-              dataType={1}
-            />
-          </CardBody>
-        </Card>
+        <div className={classes.root}>
+          <Grid container>
+            <Grid item xs></Grid>
+            <Grid item xs={6}>
+              <div className={classes.friendHeaderText}>친구 목록</div>
+            </Grid>
+            <Grid item xs></Grid>
+          </Grid>
+
+          <Grid container spacing={3}>
+            <Grid item xs></Grid>
+            <Grid item xs={1}>
+              <Paper className={classes.paper}>
+                <SentFriendRequests />
+              </Paper>
+            </Grid>
+            <Grid item xs={1}>
+              <Paper className={classes.paper}>
+                <ResponsiveDialog
+                  sentRequests={sentRequests}
+                  setSentRequests={setSentRequests}
+                />
+              </Paper>
+            </Grid>
+            <Grid item xs={1}></Grid>
+          </Grid>
+
+          <Grid container>
+            <Grid item xs={1} />
+            <Grid item xs>
+              <Table
+                tableHeaderColor="primary"
+                tableHead={tableHead}
+                tableData={friends}
+                setTableData={setFriends}
+                dataType={1}
+              />
+            </Grid>
+            <Grid item xs={1} />
+          </Grid>
+        </div>
       </FriendContext.Provider>
     </Layout>
   );
