@@ -24,6 +24,14 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.icon,
     marginRight: theme.spacing(1),
   },
+  small: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+  },
+  large: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
 }));
 
 export default useStyles;
