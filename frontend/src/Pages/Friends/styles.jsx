@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   friendHeaderText: {
-    padding: "32px",
+    padding: "50px 0px 10px 0px",
     fontSize: "32px",
     textAlign: "center",
     fontWeight: "1000",

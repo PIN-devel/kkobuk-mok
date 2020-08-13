@@ -18,7 +18,7 @@ import Axios from "axios";
 const useStyles = makeStyles(styles);
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "#9e9fae",
+    backgroundColor: "#ced4da",
     color: theme.palette.common.white,
   },
   body: {
@@ -125,7 +125,7 @@ export default function CustomTable(props) {
                 {dataType === 1 ? (
                   <TableCell className={classes.tableCell} key={key}>
                     <Button
-                      color="primary"
+                      color="black"
                       onClick={() => {
                         deleteFriend(prop[0]);
                       }}
