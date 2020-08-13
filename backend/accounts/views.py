@@ -324,9 +324,10 @@ def sensing_save(request):
     # 공부 중일 때만 자세 값 저장
     if p.user.current_state == 2:
         # 예외처리
-        if isinstance(posture_level, int) and isinstance(temperature, float) and isinstance(humidity, float):
-            Sensing.objects.create(user=p.user, posture_level=posture_level, temperature=temperature, humidity=humidity)
-    
+        try:
+            Sensing.objects.create(user=p.user, posture_level=int(posture_level), temperature=float(temperature), humidity=float(humidity))
+        except:
+            print("아두이노에서 온 값이 이상한 것 같아요")
     if p.user.current_state != 1: # timesetting 테이블 만들어진 상태
         if TimeSetting.objects.filter(user=p.user).exists():
             t = TimeSetting.objects.filter(user=p.user).order_by('-pk')[0]

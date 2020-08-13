@@ -12,7 +12,7 @@ import { AuthContext } from "./contexts/AuthContext";
 import Cookies from "js-cookie";
 
 function App() {
-  const SERVER_URL = "http://3.35.17.150:8000";
+  const SERVER_URL = "https://i3b109.p.ssafy.io";
   // const SERVER_URL = "http://localhost:8000";
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
   const [channelIn, setChannelIn] = useState(null);
