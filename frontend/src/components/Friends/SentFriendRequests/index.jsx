@@ -59,12 +59,12 @@ const SentFriendRequests = (props) => {
     <div>
       <Button
         variant="outlined"
-        color="primary"
+        color="inherit"
         onClick={() => {
           handleOpen();
         }}
       >
-        보낸 친구 요청
+        보낸 요청
       </Button>
       <Dialog
         fullScreen={fullScreen}
