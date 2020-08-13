@@ -15,6 +15,8 @@ const Progress = () => {
   const { currentScoreData } = useContext(MainContext);
   // const [myData, setMyData] = useState([]);
 
+  console.log("스코어 데이터");
+  console.log(currentScoreData);
   // useEffect(() => {
   //   const newList = currentScoreData;
   //   setMyData(newList);

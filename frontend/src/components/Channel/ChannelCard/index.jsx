@@ -43,8 +43,8 @@ const ChannelCard = (props) => {
     axios
       .post(url, {}, config)
       .then((res) => {
-        // console.log("채널 카드 성공");
-        // console.log(res.data.data);
+        console.log("채널 카드에서 입장할 때 받아오는 채널 정보");
+        console.log(res.data);
         handleSetChannelIn(res.data.data);
       })
       .catch((err) => {
