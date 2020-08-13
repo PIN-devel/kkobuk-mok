@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -16,6 +16,15 @@ import styles from "./tableStyle.js";
 import Axios from "axios";
 
 const useStyles = makeStyles(styles);
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    textAlign: "center",
+  },
+}))(TableCell);
 
 export default function CustomTable(props) {
   const { SERVER_URL } = useContext(AuthContext);
@@ -91,12 +100,12 @@ export default function CustomTable(props) {
             <TableRow className={classes.tableHeadRow}>
               {tableHead.map((prop, key) => {
                 return (
-                  <TableCell
+                  <StyledTableCell
                     className={classes.tableCell + " " + classes.tableHeadCell}
                     key={key}
                   >
                     {prop}
-                  </TableCell>
+                  </StyledTableCell>
                 );
               })}
             </TableRow>

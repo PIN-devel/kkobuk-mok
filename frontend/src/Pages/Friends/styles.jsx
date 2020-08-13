@@ -1,35 +1,22 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const styles = {
-  cardCategoryWhite: {
-    "&,& a,& a:hover,& a:focus": {
-      color: "rgba(255,255,255,.62)",
-      margin: "0",
-      fontSize: "14px",
-      marginTop: "0",
-      marginBottom: "0",
-    },
-    "& a,& a:hover,& a:focus": {
-      color: "#FFFFFF",
-    },
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
   },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
+  friendHeaderText: {
+    padding: "32px",
+    fontSize: "32px",
+    textAlign: "center",
+    fontWeight: "1000",
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
     textDecoration: "none",
-    "& small": {
-      color: "#777",
-      fontSize: "65%",
-      fontWeight: "400",
-      lineHeight: "1",
-    },
   },
-};
-
-const useStyles = makeStyles(styles);
+}));
 
 export default useStyles;
