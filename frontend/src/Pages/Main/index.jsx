@@ -24,6 +24,8 @@ const Main = () => {
   const [spentTime, setSpentTime] = useState(0);
   const [currentStatus, setCurrentStatus] = useState(1);
   const [TotalTime, setTotalTime] = useState(0);
+  const [TotalHour, setTotalHour] = useState(0);
+  const [TotalMin, setTotalMin] = useState(0);
   const [WorkTime, setWorkTime] = useState(0);
   const [BreakTime, setBreakTime] = useState(0);
   const [DeHumid, setDeHumid] = useState(0);
@@ -67,7 +69,12 @@ const Main = () => {
         setDeHumid(res.data.data.desired_humidity);
         setIsAuto(res.data.data.auto_setting);
         setIsSilent(res.data.data.slient_mode);
-        setTotalTime(res.data.data.time.total_time);
+        const myTime = res.data.data.time.total_time;
+        setTotalTime(myTime);
+        const hour = parseInt(myTime / 60);
+        const min = myTime % 60;
+        setTotalHour(hour);
+        setTotalMin(min);
         setWorkTime(res.data.data.time.work_time);
         if (res.data.data.time.work_time) {
           setHaveCycle(true);
@@ -110,40 +117,48 @@ const Main = () => {
     };
   }, []);
 
-  if (!isLoaded) {
-    return <h1>Loading...</h1>;
-  }
+  // if (!isLoaded) {
+  //   return <h1>Loading...</h1>;
+  // }
 
   return (
     <Layout>
-      <MainContext.Provider
-        value={{
-          currentScore,
-          currentHu,
-          currentTemp,
-          currentScoreData,
-          spentTime,
-          currentStatus,
-          TotalTime,
-          WorkTime,
-          BreakTime,
-          DeHumid,
-          setDeHumid,
-          isAuto,
-          setIsAuto,
-          isSilent,
-          setIsSilent,
-          isHumidiOn,
-          setIsHumidiOn,
-          haveCycle,
-          setHaveCycle,
-        }}
-      >
-        <Wrapper>
-          <CurrentStatus />
-          <ControlPanel />
-        </Wrapper>
-      </MainContext.Provider>
+      {isLoaded && (
+        <MainContext.Provider
+          value={{
+            currentScore,
+            currentHu,
+            currentTemp,
+            currentScoreData,
+            spentTime,
+            currentStatus,
+            TotalTime,
+            WorkTime,
+            setWorkTime,
+            BreakTime,
+            setBreakTime,
+            DeHumid,
+            setDeHumid,
+            isAuto,
+            setIsAuto,
+            isSilent,
+            setIsSilent,
+            isHumidiOn,
+            setIsHumidiOn,
+            haveCycle,
+            setHaveCycle,
+            TotalHour,
+            setTotalHour,
+            TotalMin,
+            setTotalMin,
+          }}
+        >
+          <Wrapper>
+            <CurrentStatus />
+            <ControlPanel />
+          </Wrapper>
+        </MainContext.Provider>
+      )}
     </Layout>
   );
 };
