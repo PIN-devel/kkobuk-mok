@@ -67,6 +67,8 @@ const SentFriendRequests = (props) => {
         보낸 요청
       </Button>
       <Dialog
+        maxWidth="md"
+        fullWidth="True"
         fullScreen={fullScreen}
         open={modalOpen}
         onClose={() => {
