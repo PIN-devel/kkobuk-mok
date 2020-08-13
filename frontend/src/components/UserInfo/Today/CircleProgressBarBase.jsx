@@ -20,6 +20,7 @@ const CircleProgressBarBase = ({
   trailStrokeColor,
   trailSpaced,
   speed,
+  numinside,
 }) => {
   const [progressBar, setProgressBar] = useState(0);
   const pace = percentage / speed;
@@ -65,7 +66,7 @@ const CircleProgressBarBase = ({
 
         <g className="chart-text">
           <text x="50%" y="50%" className="chart-number">
-            {progressBar}
+            {numinside}
           </text>
           <text x="50%" y="50%" className="chart-label">
             {innerText}

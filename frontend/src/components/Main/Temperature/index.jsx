@@ -1,18 +1,23 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Wrapper } from "./styles";
-import Typography from "@material-ui/core/Typography";
 import { MainContext } from "../../../contexts/MainContext";
 
 const Temperature = (props) => {
   const { currentTemp } = useContext(MainContext);
-  // const [myTemp, setMyTemp] = useState(0);
-  // useEffect(() => {
-  //   const newT = currentTemp;
-  //   setMyTemp(newT);
-  // }, [currentTemp]);
+  const [myTemp, setMyTemp] = useState(0);
+
+  useEffect(() => {
+    setMyTemp(currentTemp);
+  }, [currentTemp]);
+
   return (
-    <Wrapper>
-      <Typography>현재 온도 : {currentTemp} 도</Typography>
+    <Wrapper myTemp={myTemp} currentTemp={currentTemp}>
+      <div className="container">
+        <div className="progress2 progress-moved">
+          <div className="progress-bar2"></div>
+        </div>
+        <span>{currentTemp}°C</span>
+      </div>
     </Wrapper>
   );
 };

@@ -2,7 +2,11 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
-  .dodo {
-    padding-top: 33px;
-  }
+`;
+
+export const TStatus = styled.img`
+  display: flex;
+  padding-left: 10%;
+  width: 90%;
+  height: 90%;
 `;

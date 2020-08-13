@@ -106,6 +106,7 @@ const HControl = () => {
         config
       )
       .then((res) => {
+        alert("습도가 설정되었습니다");
         console.log(res);
         console.log("습도 설정 성공");
       })
@@ -119,34 +120,25 @@ const HControl = () => {
     setMyDeHumid(DeHumid);
   }, []);
 
+  const styles = {
+    root: {
+      height: 500,
+      width: 200,
+    },
+  };
+
   return (
     <Wrapper>
       <FormControl component="fieldset">
-        <FormLabel className="nameOf" component="legend">
-          알림 소리
-        </FormLabel>
-        <Typography component="div">
-          <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Off</Grid>
-            <Grid item>
-              <Switch
-                checked={!isSilent}
-                onChange={(e) => {
-                  setIsSilent(!isSilent);
-                  handleSound(!e.target.checked);
-                }}
-              />
+        <Grid container>
+          <Grid item xs={6} container className="4boxes">
+            <Grid item xs={12} className="titles">
+              <h3>자동 가습</h3>
             </Grid>
-            <Grid item>On</Grid>
-          </Grid>
-        </Typography>
-        <FormLabel className="nameOf" component="legend">
-          자동 가습
-        </FormLabel>
-        <Typography component="div">
-          <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Off</Grid>
-            <Grid item>
+            <Grid item xs={2} className="offW">
+              <h3>off</h3>
+            </Grid>
+            <Grid item xs={8} className="mySwitch">
               <Switch
                 checked={isAuto}
                 color="primary"
@@ -156,44 +148,48 @@ const HControl = () => {
                 }}
               />
             </Grid>
-            <Grid item>On</Grid>
+            <Grid item xs={2} className="onW">
+              <h3>on</h3>
+            </Grid>
           </Grid>
-        </Typography>
-        <FormLabel className="nameOf" component="legend">
-          희망 습도
-        </FormLabel>
-        <Grid container>
-          <Grid item xs={8}>
-            <input
-              type="number"
-              name="DeHumid"
-              min="0"
-              max="100"
-              defaultValue={DeHumid}
-              className="HInput"
-              onChange={(e) => {
-                handleDeHumid(e.target.value);
-              }}
-            />
+          <Grid item xs={6} container className="4boxes">
+            <Grid item xs={12} className="titles">
+              <h3>희망 습도</h3>
+            </Grid>
+            <Grid item xs={8} className="myInputBox">
+              <input
+                type="number"
+                name="DeHumid"
+                min="0"
+                size="50"
+                max="100"
+                defaultValue={DeHumid}
+                className="HInput"
+                onChange={(e) => {
+                  handleDeHumid(e.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  submitDeHumid();
+                }}
+              >
+                설정
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <Button
-              onClick={() => {
-                submitDeHumid();
-              }}
-            >
-              설정
-            </Button>
-          </Grid>
-        </Grid>
-
-        <FormLabel className="nameOf" component="legend">
-          가습기
-        </FormLabel>
-        <Typography component="div">
-          <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Off</Grid>
-            <Grid item>
+          <Grid item xs={6} container className="4boxes">
+            <Grid item xs={12} className="titles">
+              <h3>가습기</h3>
+            </Grid>
+            <Grid item xs={2} className="offW">
+              <h3>off</h3>
+            </Grid>
+            <Grid item xs={8} className="mySwitch">
               <Switch
                 disabled={isAuto}
                 checked={isHumidiOn}
@@ -203,9 +199,31 @@ const HControl = () => {
                 }}
               />
             </Grid>
-            <Grid item>On</Grid>
+            <Grid item xs={2} className="onW">
+              <h3>on</h3>
+            </Grid>
           </Grid>
-        </Typography>
+          <Grid item xs={6} container className="4boxes">
+            <Grid item xs={12} className="titles">
+              <h3>알림 소리</h3>
+            </Grid>
+            <Grid item xs={2} className="offW">
+              <h3>off</h3>
+            </Grid>
+            <Grid item xs={8} className="mySwitch">
+              <Switch
+                checked={!isSilent}
+                onChange={(e) => {
+                  setIsSilent(!isSilent);
+                  handleSound(!e.target.checked);
+                }}
+              />
+            </Grid>
+            <Grid item xs={2} className="onW">
+              <h3>on</h3>
+            </Grid>
+          </Grid>
+        </Grid>
       </FormControl>
     </Wrapper>
   );

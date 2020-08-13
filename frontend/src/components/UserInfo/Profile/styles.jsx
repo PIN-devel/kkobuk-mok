@@ -10,10 +10,6 @@ export const Wrapper = styled.div`
   }
   .Today {
     text-align: center;
-    .chartTitle {
-      margin-top: 200px;
-    }
-  }
   @media (max-width: 640px) {
     flex-direction: column;
   }

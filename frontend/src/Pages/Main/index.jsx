@@ -34,6 +34,7 @@ const Main = () => {
   const [isHumidiOn, setIsHumidiOn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [haveCycle, setHaveCycle] = useState(false);
+  const [isTurtleOn, setIsTurtleOn] = useState(true);
 
   const scoreDataRef = useRef(currentScoreData);
   scoreDataRef.current = currentScoreData;
@@ -88,6 +89,12 @@ const Main = () => {
         console.log(err.response);
       });
   };
+
+  // function getRandomInt(min, max) {
+  //   min = Math.ceil(min);
+  //   max = Math.floor(max);
+  //   return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  // }
 
   const getInfo = () => {
     axios
@@ -151,6 +158,7 @@ const Main = () => {
             setTotalHour,
             TotalMin,
             setTotalMin,
+            isTurtleOn,
           }}
         >
           <Wrapper>

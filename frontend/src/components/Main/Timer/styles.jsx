@@ -23,4 +23,9 @@ export const Wrapper = styled.div`
   .resume-button {
     margin-left: 35%;
   }
+  .cycleW {
+    padding-left: 15%;
+    font-size: 1rem;
+    font-weight: 1000;
+  }
 `;
