@@ -74,6 +74,8 @@ export default function ResponsiveDialog(props) {
       </Button>
       <Dialog
         fullScreen={fullScreen}
+        maxWidth="md"
+        fullWidth="True"
         open={open}
         onClose={() => {
           handleClose();
