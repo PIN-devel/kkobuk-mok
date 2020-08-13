@@ -17,7 +17,6 @@ const Main = () => {
     },
   };
 
-  const [currentImg, setCurrentImg] = useState();
   const [currentScore, setCurrentScore] = useState(0);
   const [currentHu, setCurrentHu] = useState(0);
   const [currentTemp, setCurrentTemp] = useState(0);
@@ -25,11 +24,17 @@ const Main = () => {
   const [spentTime, setSpentTime] = useState(0);
   const [currentStatus, setCurrentStatus] = useState(1);
   const [TotalTime, setTotalTime] = useState(0);
+  const [TotalHour, setTotalHour] = useState(0);
+  const [TotalMin, setTotalMin] = useState(0);
   const [WorkTime, setWorkTime] = useState(0);
   const [BreakTime, setBreakTime] = useState(0);
   const [DeHumid, setDeHumid] = useState(0);
   const [isAuto, setIsAuto] = useState(0);
-  const [isSoundOn, setIsSoundOn] = useState(false);
+  const [isSilent, setIsSilent] = useState(false);
+  const [isHumidiOn, setIsHumidiOn] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [haveCycle, setHaveCycle] = useState(false);
+  const [isTurtleOn, setIsTurtleOn] = useState(true);
 
   const scoreDataRef = useRef(currentScoreData);
   scoreDataRef.current = currentScoreData;
@@ -57,27 +62,50 @@ const Main = () => {
   // user: 9
   // work_time: 0
 
+  const getInitialInfo = () => {
+    axios
+      .get(`${SERVER_URL}/accounts/maininfo/`, config)
+      .then((res) => {
+        console.log("최초값 수령 성공");
+        setDeHumid(res.data.data.desired_humidity);
+        setIsAuto(res.data.data.auto_setting);
+        setIsSilent(res.data.data.slient_mode);
+        const myTime = res.data.data.time.total_time;
+        setTotalTime(myTime);
+        const hour = parseInt(myTime / 60);
+        const min = myTime % 60;
+        setTotalHour(hour);
+        setTotalMin(min);
+        setWorkTime(res.data.data.time.work_time);
+        if (res.data.data.time.work_time) {
+          setHaveCycle(true);
+        }
+        setBreakTime(res.data.data.time.break_time);
+        setIsHumidiOn(res.data.data.humidifier_on_off);
+        setIsLoaded(true);
+      })
+      .catch((err) => {
+        console.log("최초값 수령 실패");
+        console.log(err.response);
+      });
+  };
+
+  // function getRandomInt(min, max) {
+  //   min = Math.ceil(min);
+  //   max = Math.floor(max);
+  //   return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  // }
+
   const getInfo = () => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
       .then((res) => {
         setCurrentTemp(res.data.data.temperature);
         setCurrentHu(res.data.data.humidity);
-        // const St = res.data.data.user_state;
-        // setCurrentStatus(St);
-        // if (St !== 1) {
-        //   setSpentTime(res.data.data.spent_time);
-        // } else {
-        //   setSpentTime(0);
-        // }
-        setDeHumid(res.data.data.desired_humidity);
         setCurrentStatus(res.data.data.user_state);
         setSpentTime(res.data.data.spent_time);
         setCurrentScore(res.data.data.posture_level);
         setCurrentScoreData(res.data.data.posture_avg);
-        setTotalTime(res.data.data.time.total_time);
-        setWorkTime(res.data.data.time.work_time);
-        setBreakTime(res.data.data.time.break_time);
         console.log("데이터 받아오는 중");
         console.log(res.data.data);
       })
@@ -88,6 +116,7 @@ const Main = () => {
   };
 
   useEffect(() => {
+    getInitialInfo();
     getInfo();
     const tick = setInterval(getInfo, 1000);
     return function cleanup() {
@@ -95,33 +124,49 @@ const Main = () => {
     };
   }, []);
 
+  // if (!isLoaded) {
+  //   return <h1>Loading...</h1>;
+  // }
+
   return (
     <Layout>
-      <MainContext.Provider
-        value={{
-          currentImg,
-          currentScore,
-          currentHu,
-          currentTemp,
-          currentScoreData,
-          spentTime,
-          currentStatus,
-          TotalTime,
-          WorkTime,
-          BreakTime,
-          DeHumid,
-          setDeHumid,
-          isAuto,
-          setIsAuto,
-          isSoundOn,
-          setIsSoundOn,
-        }}
-      >
-        <Wrapper>
-          <CurrentStatus />
-          <ControlPanel />
-        </Wrapper>
-      </MainContext.Provider>
+      {isLoaded && (
+        <MainContext.Provider
+          value={{
+            currentScore,
+            currentHu,
+            currentTemp,
+            currentScoreData,
+            spentTime,
+            currentStatus,
+            TotalTime,
+            WorkTime,
+            setWorkTime,
+            BreakTime,
+            setBreakTime,
+            DeHumid,
+            setDeHumid,
+            isAuto,
+            setIsAuto,
+            isSilent,
+            setIsSilent,
+            isHumidiOn,
+            setIsHumidiOn,
+            haveCycle,
+            setHaveCycle,
+            TotalHour,
+            setTotalHour,
+            TotalMin,
+            setTotalMin,
+            isTurtleOn,
+          }}
+        >
+          <Wrapper>
+            <CurrentStatus />
+            <ControlPanel />
+          </Wrapper>
+        </MainContext.Provider>
+      )}
     </Layout>
   );
 };

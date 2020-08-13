@@ -4,7 +4,7 @@ import { string } from "prop-types";
 import CircleProgressBarBase from "./CircleProgressBarBase";
 
 const CircleProgressBar = styled(CircleProgressBarBase)`
-  max-width: ${(props) => props.maxSize};
+  max-width: 400px;
   height: 100px;
   margin-top: 0;
   vertical-align: middle;

@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import DisplayComponent from "./DisplayComponent";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -12,6 +11,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Wrapper } from "./styles";
 import { MainContext } from "../../../contexts/MainContext";
+import FormLabel from "@material-ui/core/FormLabel";
+import Switch from "@material-ui/core/Switch";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -28,18 +30,22 @@ const Timer = () => {
   const {
     TotalTime,
     WorkTime,
+    setWorkTime,
     BreakTime,
+    setBreakTime,
     spentTime,
     currentStatus,
+    haveCycle,
+    setHaveCycle,
+    TotalHour,
+    setTotalHour,
+    TotalMin,
+    setTotalMin,
   } = useContext(MainContext);
   const classes = useStyles();
   const [mySpentHour, setMySpentHour] = useState(0);
   const [mySpentMin, setMySpentMin] = useState(0);
   const [mySpentSec, setMySpentSec] = useState(0);
-  const [myTotalHour, setMyTotalHour] = useState(0);
-  const [myTotalMin, setMyTotalMin] = useState(0);
-  const [myWorkTime, setMyWorkTime] = useState(0);
-  const [myBreakTime, setMyBreakTime] = useState(0);
   const [myStatus, setMystatus] = useState(1);
 
   const token = Cookies.get("token");
@@ -48,16 +54,6 @@ const Timer = () => {
       Authorization: `Jwt ${token}`,
     },
   };
-
-  useEffect(() => {
-    const hour = parseInt(TotalTime / 60);
-    const min = TotalTime % 60;
-    setMystatus(currentStatus);
-    setMyTotalHour(hour);
-    setMyTotalMin(min);
-    setMyWorkTime(WorkTime);
-    setMyBreakTime(BreakTime);
-  }, [spentTime]);
 
   useEffect(() => {
     const hour = parseInt(spentTime / 3600);
@@ -69,38 +65,69 @@ const Timer = () => {
   }, [spentTime]);
 
   const handleMyTotalHour = (e) => {
-    setMyTotalHour(e);
+    setTotalHour(e);
   };
 
   const handleMyTotalMin = (e) => {
-    setMyTotalMin(e);
+    setTotalMin(e);
   };
 
   const handleMyWorkTime = (e) => {
-    setMyWorkTime(e);
+    setWorkTime(e);
   };
 
   const handleMyBreakTime = (e) => {
-    setMyBreakTime(e);
+    setBreakTime(e);
+  };
+
+  const handleCycle = (bool) => {
+    setHaveCycle(bool);
+    if (!bool) {
+      setWorkTime(0);
+      setBreakTime(0);
+    }
   };
 
   const start = () => {
-    const body = {
-      total_time: myTotalHour * 60 + myTotalMin,
-      work_time: myWorkTime,
-      break_time: myBreakTime,
-    };
-    axios
-      .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
-      .then((res) => {
-        console.log("시작!");
-        console.log(res);
-        setMystatus(2);
-      })
-      .catch((err) => {
-        console.log("시작실패");
-        console.log(err.response);
-      });
+    if (haveCycle) {
+      if (WorkTime === 0 || BreakTime === 0) {
+        alert("업무시간과 쉬는시간을 설정해주세요!");
+      } else {
+        const body = {
+          total_time: TotalHour * 60 + TotalMin,
+          work_time: WorkTime,
+          break_time: BreakTime,
+        };
+        axios
+          .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
+          .then((res) => {
+            console.log("시작!");
+            console.log(res);
+            setMystatus(2);
+          })
+          .catch((err) => {
+            console.log("시작실패");
+            console.log(err.response);
+          });
+      }
+    } else {
+      const body = {
+        total_time: TotalHour * 60 + TotalMin,
+        work_time: 0,
+        break_time: 0,
+      };
+      axios
+        .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
+        .then((res) => {
+          console.log("시작!");
+          console.log(res);
+          setMystatus(2);
+        })
+        .catch((err) => {
+          console.log("시작실패");
+          console.log(err.response);
+        });
+    }
   };
 
   const stop = () => {
@@ -147,13 +174,33 @@ const Timer = () => {
 
   return (
     <Wrapper>
-      <Grid container spacing={2}>
-        <Grid item xs={12} className="timer">
-          <DisplayComponent
-            hour={mySpentHour}
-            min={mySpentMin}
-            sec={mySpentSec}
-          />
+      <Grid container spacing={3}>
+        <Grid item xs={9} className="timer">
+          <span>{mySpentHour >= 10 ? mySpentHour : "0" + mySpentHour}</span>
+          &nbsp;:&nbsp;
+          <span>{mySpentMin >= 10 ? mySpentMin : "0" + mySpentMin}</span>
+          &nbsp;:&nbsp;
+          <span>{mySpentSec >= 10 ? mySpentSec : "0" + mySpentSec}</span>
+        </Grid>
+        <Grid item xs={3} className="cycle-button">
+          <FormLabel component="legend" className="cycleW">
+            사이클
+          </FormLabel>
+          <Typography component="div">
+            <Grid component="label" container alignItems="center" spacing={1}>
+              <Grid item>Off</Grid>
+              <Grid item>
+                <Switch
+                  checked={haveCycle}
+                  color="primary"
+                  onChange={(e) => {
+                    handleCycle(e.target.checked);
+                  }}
+                />
+              </Grid>
+              <Grid item>On</Grid>
+            </Grid>
+          </Typography>
         </Grid>
         <Grid item xs={12} container spacing={2} className="">
           <Grid item xs={12} md={3}>
@@ -162,7 +209,7 @@ const Timer = () => {
               <Select
                 labelId="Stopwatch-Hour-label"
                 id="Stopwatch-Hour"
-                value={myTotalHour}
+                value={TotalHour}
                 onChange={(event) => {
                   handleMyTotalHour(event.target.value);
                 }}
@@ -191,7 +238,7 @@ const Timer = () => {
               <Select
                 labelId="Stopwatch-Minute-label"
                 id="Stopwatch-Minute"
-                value={myTotalMin}
+                value={TotalMin}
                 onChange={(event) => {
                   handleMyTotalMin(event.target.value);
                 }}
@@ -199,6 +246,7 @@ const Timer = () => {
                 disabled={currentStatus === 1 ? false : true}
               >
                 <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
                 <MenuItem value={15}>15</MenuItem>
@@ -219,14 +267,15 @@ const Timer = () => {
               <Select
                 labelId="Stopwatch-Worktime-label"
                 id="Stopwatch-Worktime"
-                value={myWorkTime}
+                value={WorkTime}
                 onChange={(event) => {
                   handleMyWorkTime(event.target.value);
                 }}
                 label="Work"
-                disabled={currentStatus === 1 ? false : true}
+                disabled={currentStatus === 1 && haveCycle ? false : true}
               >
                 <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
                 <MenuItem value={15}>15</MenuItem>
@@ -247,14 +296,16 @@ const Timer = () => {
               <Select
                 labelId="Stopwatch-Break-label"
                 id="Stopwatch-Break"
-                value={myBreakTime}
+                disabled={!haveCycle}
+                value={BreakTime}
                 onChange={(event) => {
                   handleMyBreakTime(event.target.value);
                 }}
                 label="Break"
-                disabled={currentStatus === 1 ? false : true}
+                disabled={currentStatus === 1 && haveCycle ? false : true}
               >
                 <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
                 <MenuItem value={15}>15</MenuItem>
@@ -312,7 +363,23 @@ const Timer = () => {
           ) : (
             ""
           )}
-          {currentStatus === 3 ? <h3>휴식시간</h3> : ""}
+          {currentStatus === 3 ? (
+            <div>
+              <h3>휴식시간</h3>
+              <Button
+                variant="contained"
+                color="primary"
+                className="reset-button"
+                onClick={() => {
+                  reset();
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
 
           {currentStatus === 4 ? (
             <div>

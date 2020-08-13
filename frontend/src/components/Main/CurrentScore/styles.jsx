@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
+  padding-left: 10%;
+  padding-top: 10%;
   .container {
-    margin-left: 100px;
     width: 350px;
     height: 350px;
     display: flex;
@@ -44,9 +45,9 @@ export const Wrapper = styled.div`
     animation: scaleIn 4s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
   }
 
-  .whiteCircle {
+  .purpleCircle {
     border-radius: 50%;
-    background-color: white;
+    background-color: purple;
     width: 200px;
     height: 200px;
     position: absolute;

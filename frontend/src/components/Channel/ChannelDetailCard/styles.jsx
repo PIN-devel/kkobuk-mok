@@ -1,10 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: "#fafefe",
-    marginBottom: "25vh"
-  },
+  root: {},
   imageContainer: {
     height: 64,
     width: 64,
@@ -27,15 +24,13 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.icon,
     marginRight: theme.spacing(1),
   },
-  typography: {
-    fontFamily: "Nanum Gothic",
-    color: "#495057",
+  small: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
   },
-  cardContent: {
-    padding: "45px 40px",
-  },
-  customButton: {
-    backgroundColor: "#343a40"
+  large: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
   },
 }));
 
