@@ -233,7 +233,11 @@ def main_info(request):
     temperature = 0
     humidity = 0
     posture_avg = []
-    time = {}
+    time = {
+        'total_time': 0,
+        'work_time': 0,
+        'break_time': 0
+    }
     spent_time = 0
 
     now = datetime.now(timezone.utc)
