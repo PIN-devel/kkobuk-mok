@@ -60,7 +60,7 @@ export default function CustomTable(props) {
   };
 
   const deleteFriend = (F_id) => {
-    Axios.delete(`${SERVER_URL}/accounts/friend/${F_id}/`, null, config)
+    Axios.delete(`${SERVER_URL}/accounts/friend/${F_id}/`, config)
       .then((res) => {
         console.log(res.data);
         console.log("요청 성공");

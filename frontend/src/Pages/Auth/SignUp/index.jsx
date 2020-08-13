@@ -137,8 +137,9 @@ export default function SignUp() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const numGender = Number(gender);
-
-    if (password !== passwordConfirm) {
+    if (name === "") {
+      alert("이름을 입력해주세요!");
+    } else if (password !== passwordConfirm) {
       alert("비밀번호를 확인해주세요");
     } else if (password.length < 8) {
       alert("비밀번호는 8자리 이상 입력해주세요");

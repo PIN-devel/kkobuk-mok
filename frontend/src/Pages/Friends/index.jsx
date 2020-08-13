@@ -34,6 +34,7 @@ const Friends = () => {
     Axios.get(`${SERVER_URL}/accounts/friend/`, config)
       .then((res) => {
         console.log("친구들 불러오기 성공");
+        console.log(res.data);
         const friends = res.data.data.friends.map((person) => {
           return [
             person.id,
