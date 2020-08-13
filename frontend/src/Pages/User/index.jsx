@@ -37,6 +37,7 @@ const User = () => {
       <Wrapper>
         <Profile
           name={me.name}
+          image={me.image}
           email={me.email}
           friends={me.friends}
           today={me.posture[0].score}

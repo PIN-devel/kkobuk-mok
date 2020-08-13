@@ -13,19 +13,30 @@ import { MainContext } from "../../../contexts/MainContext";
 
 const Progress = () => {
   const { currentScoreData } = useContext(MainContext);
-  // const [myData, setMyData] = useState([]);
+  const [myData, setMyData] = useState([]);
 
-  console.log("스코어 데이터");
-  console.log(currentScoreData);
-  // useEffect(() => {
-  //   const newList = currentScoreData;
-  //   setMyData(newList);
-  // }, [currentScoreData]);
+  const changeScore = (n) => {
+    if (n == 0) {
+      return 0;
+    } else {
+      return 4 - n;
+    }
+  };
+
+  useEffect(() => {
+    const newList = currentScoreData.map((data) => {
+      return {
+        time: data.time,
+        score: changeScore(data.score),
+      };
+    });
+    setMyData(newList);
+  }, [currentScoreData]);
 
   return (
     <ResponsiveContainer height={260} width="90%">
       <LineChart
-        data={currentScoreData}
+        data={myData}
         margin={{
           top: 5,
           right: 30,

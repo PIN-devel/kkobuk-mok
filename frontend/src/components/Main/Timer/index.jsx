@@ -183,7 +183,9 @@ const Timer = () => {
           <span>{mySpentSec >= 10 ? mySpentSec : "0" + mySpentSec}</span>
         </Grid>
         <Grid item xs={3} className="cycle-button">
-          <FormLabel component="legend">사이클</FormLabel>
+          <FormLabel component="legend" className="cycleW">
+            사이클
+          </FormLabel>
           <Typography component="div">
             <Grid component="label" container alignItems="center" spacing={1}>
               <Grid item>Off</Grid>

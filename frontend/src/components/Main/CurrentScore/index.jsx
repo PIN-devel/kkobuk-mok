@@ -18,7 +18,7 @@ const CurrentScore = (props) => {
       setMyClass("blueCircle");
     } else {
       setMyWord("대기");
-      setMyClass("blueCircle");
+      setMyClass("purpleCircle");
     }
   }, [currentScore]);
   return (

@@ -16,11 +16,28 @@ const useStyles = makeStyles({
 
 const Profile = (props) => {
   const { SERVER_URL } = useContext(AuthContext);
+
+  const changeScore = (n) => {
+    if (n == 0) {
+      return 0;
+    } else {
+      return 4 - n;
+    }
+  };
+
+  const findPercentage = (n) => {
+    if (n == 0) {
+      return 0;
+    } else {
+      return (3 - n) * 50;
+    }
+  };
+
   return (
     <Wrapper>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={2}>
-          <Image src={Bono} />
+          <Image src={props.image} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <div className="profileInfo">
@@ -32,7 +49,11 @@ const Profile = (props) => {
           </div>
         </Grid>
         <Grid item xs={12} sm={5} className="Today">
-          <CircleProgressBar percentage={props.today} speed={10} />
+          <CircleProgressBar
+            numinside={changeScore(props.today)}
+            percentage={findPercentage(props.today)}
+            speed={10}
+          />
         </Grid>
       </Grid>
     </Wrapper>

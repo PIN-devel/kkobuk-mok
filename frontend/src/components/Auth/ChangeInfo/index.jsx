@@ -165,23 +165,28 @@ const ChangeInfo = () => {
   };
 
   const ImageHandler = (e) => {
-    setNewImage(e.target.files[0]);
+    setNewImage(e);
   };
 
+  const a = new FormData();
+
   const EditImage = () => {
-    // axios
-    //   .put(`${SERVER_URL}/accounts/${userID}`, {
-    //     ...user,
-    //     image: newImage,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     alert("프로필 이미지가 변경되었습니다");
-    //   })
-    //   .catch((err) => {
-    //     alert("프로필 이미지 변경 실패");
-    //     console.log(err);
-    //   });
+    const formData = new FormData();
+    formData.append("image", newImage);
+    if (newImage) {
+      axios
+        .put(`${SERVER_URL}/accounts/${userID}`, formData, config)
+        .then((res) => {
+          console.log(res);
+          alert("프로필 이미지가 변경되었습니다");
+        })
+        .catch((err) => {
+          alert("프로필 이미지 변경 실패");
+          console.log(err.response);
+        });
+    } else {
+      alert("이미지를 업로드해주세요!");
+    }
   };
 
   const deleteAccount = () => {
@@ -207,6 +212,24 @@ const ChangeInfo = () => {
     <div style={modalStyle} className={classes.paper}>
       <div>
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <input
+              type="file"
+              onChange={(e) => {
+                ImageHandler(e.target.files[0]);
+              }}
+            />
+            <Button
+              className={classes.margin}
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                EditImage();
+              }}
+            >
+              이미지 업로드
+            </Button>
+          </Grid>
           <Grid item xs={12}>
             <TextField
               variant="outlined"
