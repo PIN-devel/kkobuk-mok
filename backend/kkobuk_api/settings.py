@@ -45,6 +45,7 @@ ALLOWED_HOSTS = [
     'i3b109.p.ssafy.io',
     '3.35.17.150',
     'localhost',
+    'kkobuk.tk',
 ]
 
 
