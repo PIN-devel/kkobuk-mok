@@ -302,7 +302,17 @@ def main_info(request):
         'desired_humidity': request.user.desired_humidity,
         'auto_setting': request.user.auto_setting,
         'humidifier_on_off': request.user.humidifier_on_off,
-        'slient_mode': request.user.slient_mode,
+        'silent_mode': request.user.silent_mode,
+        'theme': request.user.theme,
+    }
+    return Response({"status": "OK", "data": data})
+
+@api_view(['POST'])
+def theme_change(request):
+    theme = request.data.get('theme')
+    request.user.theme = int(theme)
+    data = {
+        'theme': theme
     }
     return Response({"status": "OK", "data": data})
 
@@ -315,7 +325,8 @@ def initial_info(request):
         'auto_setting': p.user.auto_setting,
         'user_state': p.user.current_state,
         'humidifier_on_off': p.user.humidifier_on_off,
-        'slient_mode': p.user.slient_mode,
+        'silent_mode': p.user.silent_mode,
+        'theme': p.user.theme,
     }
     return Response({"status": "OK", "data": data})
 
@@ -358,7 +369,8 @@ def sensing_save(request):
         "auto_setting": p.user.auto_setting,
         "user_state": p.user.current_state,
         'humidifier_on_off': p.user.humidifier_on_off,
-        'slient_mode': p.user.slient_mode,
+        'silent_mode': p.user.silent_mode,
+        'theme': p.user.theme,
     }
     return Response({"status": "OK", "data": data})
 
