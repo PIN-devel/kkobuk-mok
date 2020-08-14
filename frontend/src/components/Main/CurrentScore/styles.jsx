@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
+  padding-left: 10%;
+  padding-top: 10%;
   .container {
-    margin-left: 100px;
     width: 350px;
     height: 350px;
     display: flex;
@@ -14,9 +15,39 @@ export const Wrapper = styled.div`
     border-radius: 50%;
   }
 
-  .circle {
+  .blueCircle {
     border-radius: 50%;
     background-color: deepskyblue;
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    opacity: 0;
+    animation: scaleIn 4s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
+  }
+
+  .yellowCircle {
+    border-radius: 50%;
+    background-color: yellow;
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    opacity: 0;
+    animation: scaleIn 4s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
+  }
+
+  .redCircle {
+    border-radius: 50%;
+    background-color: red;
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    opacity: 0;
+    animation: scaleIn 4s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
+  }
+
+  .purpleCircle {
+    border-radius: 50%;
+    background-color: purple;
     width: 200px;
     height: 200px;
     position: absolute;
@@ -31,10 +62,10 @@ export const Wrapper = styled.div`
     border-radius: 50%;
     background-color: white;
     .myscore {
-      margin-left: 45px;
-      margin-top: 30px;
+      margin-left: 40px;
+      margin-top: 60px;
       text-align: center center;
-      font-size: 130px;
+      font-size: 80px;
     }
   }
   @keyframes scaleIn {

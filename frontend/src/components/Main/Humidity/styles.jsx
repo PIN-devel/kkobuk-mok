@@ -1,26 +1,30 @@
-import React from "react";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
   @keyframes grow {
     from {
-      width: 0%;
+      width: ${(props) => props.myHu}%;
     }
     to {
-      width: ${(props) => props.value}%;
+      width: ${(props) => props.currentHu}%;
     }
+  }
+  .word {
+    padding-left: 42%;
   }
   .container {
     position: relative;
-    width: 50vw;
+    border-radius: 0.4rem;
+    width: 100%;
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
-    .words {
-      display: flex;
-      justify-content: space-between;
-    }
+  }
+  .myDiv {
+    padding: 6px;
+    background: #26323d;
+    border-radius: 0.4rem;
   }
   input {
     display: none;
@@ -32,7 +36,6 @@ export const Wrapper = styled.div`
     height: 40px;
     background: transparent;
     border-radius: 0.4rem;
-    border: 2px solid white;
     overflow: hidden;
     box-shadow: -2px 0 8px 0 rgba(white, 0.6);
     div {
@@ -60,7 +63,7 @@ export const Wrapper = styled.div`
   }
   span {
     display: inline-block;
-    color: #000;
+    color: #4f9cc0;
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1.5px;
@@ -68,9 +71,5 @@ export const Wrapper = styled.div`
     &:last-child {
       float: right;
     }
-  }
-  .mybox {
-    border-width: low;
-    border-color: gray;
   }
 `;

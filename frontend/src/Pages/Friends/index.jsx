@@ -1,49 +1,102 @@
-import React, { createContext, useState } from "react";
-// import FriendAppBar from "../../components/Friends/FriendsAppBar/";
+import React, { useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import Axios from "axios";
 
-// import React from "react";
-// // @material-ui/core components
-// // core components
-// import GridItem from "components/Grid/GridItem.js";
-// import GridContainer from "components/Grid/GridContainer.js";
-import Table from "../../components/Friends/Table/Table.js";
-import Card from "../../components/Friends/Card/Card.js";
-import CardHeader from "../../components/Friends/Card/CardHeader.js";
-import CardBody from "../../components/Friends/Card/CardBody.js";
 import Layout from "../../Layout/MyDash/Dashboard";
-import ResponsiveDialog from "../../components/Friends/Dialog";
 import useStyles from "./styles";
+import Table from "../../components/Friends/Table/Table.js";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+
+import ResponsiveDialog from "../../components/Friends/Dialog";
+import SentFriendRequests from "../../components/Friends/SentFriendRequests";
+
+import { AuthContext } from "../../contexts/AuthContext";
+import { FriendContext } from "../../contexts/FriendContext";
 
 const Friends = () => {
+  const { SERVER_URL } = useContext(AuthContext);
   const classes = useStyles();
   // const [searchFriendOpen, setSearchFriendOpen] = useState(false);
+  const [friends, setFriends] = useState([]);
+  const [sentRequests, setSentRequests] = useState([]);
+  const [requestMade, setRequestMade] = useState(0);
+  const token = Cookies.get("token");
+  const config = {
+    headers: {
+      Authorization: `Jwt ${token}`,
+    },
+  };
 
-  const tableHead = ["이름", "랭크", "오늘의 점수", "일주일 점수"];
-  // const myFriendsList
+  const tableHead = ["이름", "이메일", "오늘의 점수", "주간 점수", ""];
+
+  useEffect(() => {
+    Axios.get(`${SERVER_URL}/accounts/friend/`, config)
+      .then((res) => {
+        console.log("친구들 불러오기 성공");
+        console.log(res.data);
+        const friends = res.data.data.friends.map((person) => {
+          return [
+            person.id,
+            person.name,
+            person.email,
+            person.posture[0],
+            person.posture[1],
+          ];
+        });
+        setFriends(friends);
+      })
+      .catch((err) => {
+        console.log("친구들 불러오기 실패");
+        console.log(err.response);
+      });
+  }, []);
 
   return (
-    // <friendsContext.Provider value={(searchFriendOpen,setSearchFriendOpen )}>
-    //         {</friendsContext.Provider>}
     <Layout>
-      <Card>
-        <CardHeader color="primary">
-          <h4 className={classes.cardTitleWhite}>친구 목록</h4>
-          <p className={classes.cardCategoryWhite}>친구들과 으쌰으쌰</p>
-        </CardHeader>
-        <CardBody>
-          <ResponsiveDialog />
-          <Table
-            tableHeaderColor="primary"
-            tableHead={tableHead}
-            tableData={[
-              ["호준", "골드", "3", "1"],
-              ["인남", "골드", "3", "1"],
-              ["주현", "플레", "4", "1"],
-              ["수미", "언랭", "0", "1"],
-            ]}
-          />
-        </CardBody>
-      </Card>
+      <FriendContext.Provider
+        value={{
+          requestMade,
+          setRequestMade,
+        }}
+      >
+        <div className={classes.root}>
+          <Grid container className={classes.friendHeader}>
+            <Grid item xs={12}>
+              <Box bgcolor="white" color="black">
+                <div className={classes.friendHeaderText}>Friends list</div>
+                <Grid container spacing={3}>
+                  <Grid item xs></Grid>
+                  <Grid item xs={1.2}>
+                    <SentFriendRequests />
+                  </Grid>
+                  <Grid item xs={1.2}>
+                    <ResponsiveDialog
+                      sentRequests={sentRequests}
+                      setSentRequests={setSentRequests}
+                    />
+                  </Grid>
+                  <Grid item xs={1}></Grid>
+                </Grid>
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid container>
+            <Grid item xs={1} />
+            <Grid item xs>
+              <Table
+                tableHeaderColor="black"
+                tableHead={tableHead}
+                tableData={friends}
+                setTableData={setFriends}
+                dataType={1}
+              />
+            </Grid>
+            <Grid item xs={1} />
+          </Grid>
+        </div>
+      </FriendContext.Provider>
     </Layout>
   );
 };

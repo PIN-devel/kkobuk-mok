@@ -38,12 +38,14 @@ const tableStyle = (theme) => ({
     backgroundColor: "transparent",
     borderSpacing: "0",
     borderCollapse: "collapse",
+    fontFamily: "Nanum Gothic",
   },
   tableHeadCell: {
     color: "inherit",
     ...defaultFont,
     "&, &$tableCell": {
-      fontSize: "1em",
+      fontSize: "1.2em",
+      fontFamily: "Nanum Gothic",
     },
   },
   tableCell: {
@@ -52,6 +54,8 @@ const tableStyle = (theme) => ({
     padding: "12px 8px",
     verticalAlign: "middle",
     fontSize: "0.8125rem",
+    textAlign: "center",
+    fontFamily: "Nanum Gothic",
   },
   tableResponsive: {
     width: "100%",

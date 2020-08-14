@@ -116,10 +116,24 @@ export default function PrimarySearchAppBar() {
       keepMounted
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
-      onClose={handleMenuClose}
+      onClose={() => {
+        handleMenuClose();
+      }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+        }}
+      >
+        Profile
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+        }}
+      >
+        My account
+      </MenuItem>
     </Menu>
   );
 
@@ -132,7 +146,9 @@ export default function PrimarySearchAppBar() {
       keepMounted
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
+      onClose={() => {
+        handleMobileMenuClose();
+      }}
     >
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
@@ -150,7 +166,11 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem
+        onClick={() => {
+          handleProfileMenuOpen();
+        }}
+      >
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -211,7 +231,9 @@ export default function PrimarySearchAppBar() {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={() => {
+                handleProfileMenuOpen();
+              }}
               color="inherit"
             >
               <AccountCircle />
@@ -222,7 +244,9 @@ export default function PrimarySearchAppBar() {
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
+              onClick={() => {
+                handleMobileMenuOpen();
+              }}
               color="inherit"
             >
               <MoreIcon />

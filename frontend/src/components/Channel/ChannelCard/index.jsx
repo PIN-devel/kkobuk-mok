@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardContent,
@@ -15,54 +14,68 @@ import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 import { AuthContext } from "../../../contexts/AuthContext";
+import useStyles from "./styles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  imageContainer: {
-    height: 64,
-    width: 64,
-    margin: "0 auto",
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: "5px",
-    overflow: "hidden",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  image: {
-    width: "100%",
-  },
-  statsItem: {
-    display: "flex",
-    alignItems: "center",
-  },
-  statsIcon: {
-    color: theme.palette.icon,
-    marginRight: theme.spacing(1),
-  },
-}));
+import axios from "axios";
+import Cookies from "js-cookie";
+import { ThemeProvider } from "styled-components";
 
 const ChannelCard = (props) => {
   const { className, channel, ...rest } = props;
   const classes = useStyles();
 
-  const { channelIn, setChannelIn } = useContext(AuthContext);
+  const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
+
+  // 채널 디테일 가져오는 것
+  const [channelData, setChannelData] = useState({});
+
+  // 채널 입장
+  const token = Cookies.get("token");
+  const config = {
+    headers: {
+      Authorization: `jwt ${token}`,
+    },
+  };
   const entranceChannel = () => {
-    setChannelIn(channel);
-    // 여기 인자로 channel 정보 받고 setChannel에 그 채널 넣어주자
+    const url = `${SERVER_URL}/rooms/${channel.id}/`;
+    const handleSetChannelIn = (channel) => {
+      setChannelIn(channel);
+    };
+    axios
+      .post(url, {}, config)
+      .then((res) => {
+        console.log("채널 카드에서 입장할 때 받아오는 채널 정보");
+        console.log(res.data);
+        handleSetChannelIn(res.data.data);
+      })
+      .catch((err) => {
+        // console.log("채널 입장 에러");
+        console.log(err.response);
+      });
   };
 
   return (
-    <Card {...rest} className={clsx(classes.root, className)}>
-      <Button onClick={entranceChannel}>입장하기</Button>
-      <CardContent>
-        <div className={classes.imageContainer}>
-          <img alt="channel" className={classes.image} src={channel.imageUrl} />
-        </div>
-        <Typography align="center" gutterBottom variant="h4">
-          {channel.title}
+    <Card style={{cursor:"pointer"}} {...rest} className={clsx(classes.root, className)} onClick={() => {entranceChannel();}}>
+      {/* <Button
+        onClick={() => {
+          entranceChannel();
+        }}
+      >
+        입장하기
+      </Button> */}
+      <CardContent className={classes.cardContent}>
+        {/* <div className={classes.imageContainer}>
+          <img
+            alt="channel"
+            className={classes.image}
+            // src={channelData.imageUrl}
+            src={channel.imageUrl}
+          />
+        </div> */}
+        <Typography className={classes.typography} style={{margin:"20px"}} align="center" gutterBottom variant="h4">
+          {channel.name}
         </Typography>
-        <Typography align="center" variant="body1">
+        <Typography className={classes.typography} variant="body2" color="textSecondary" component="p">
           {channel.description}
         </Typography>
       </CardContent>
@@ -71,14 +84,14 @@ const ChannelCard = (props) => {
         <Grid container justify="space-between">
           <Grid className={classes.statsItem} item>
             <AccessTimeIcon className={classes.statsIcon} />
-            <Typography display="inline" variant="body2">
-              여기는 이 채널 평균 점수
+            <Typography className={classes.typography} display="inline" variant="body2">
+            {channel.created_at.slice(0,19)}
             </Typography>
           </Grid>
           <Grid className={classes.statsItem} item>
             {/* <GetAppIcon className={classes.statsIcon} /> */}
-            <Typography display="inline" variant="body2">
-              {channel.members} Member
+            <Typography className={classes.typography} display="inline" variant="body2">
+              <i class="fas fa-users"></i> {channel.member_num}
             </Typography>
           </Grid>
         </Grid>

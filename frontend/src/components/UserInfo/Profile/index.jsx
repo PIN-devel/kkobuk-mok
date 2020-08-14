@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Bono from "../../../assets/bono1.jpg";
-import { Wrapper, InsideWrapper, Image } from "./styles";
-import { Link, Button, Grid } from "@material-ui/core";
+import { Wrapper, Image } from "./styles";
+import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import CircleProgressBar from "../Today";
+import ChangeInfo from "../../Auth/ChangeInfo";
+import { AuthContext } from "../../../contexts/AuthContext";
+
 const useStyles = makeStyles({
   buttonStyle: {
     border: 10,
@@ -12,46 +15,45 @@ const useStyles = makeStyles({
 });
 
 const Profile = (props) => {
-  const classes = useStyles();
-  const isMe = true;
-  const isFriend = true;
-  const { myLast, myFirst, myEmail, myKey, myFriends } = {
-    myLast: "김",
-    myFirst: "싸피",
-    myEmail: "SSAFFFFFY@turtle.com",
-    myKey: "EZ1E-PD14-UZS5-HKPJ",
-    myFriends: ["동식", "수미", "호준", "인남"],
+  const { SERVER_URL } = useContext(AuthContext);
+
+  const changeScore = (n) => {
+    if (n == 0) {
+      return 0;
+    } else {
+      return 4 - n;
+    }
   };
+
+  const findPercentage = (n) => {
+    if (n == 0) {
+      return 0;
+    } else {
+      return (3 - n) * 50;
+    }
+  };
+
   return (
     <Wrapper>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={2}>
-          <Image src={Bono} />
+          <Image src={props.image} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <div className="profileInfo">
-            <h3>
-              이름: {myLast}
-              {myFirst}
-            </h3>
-            <h3>이메일: {myEmail}</h3>
-            <h3>제품키: {myKey}</h3>
-            <h3>현재 {myFriends.length}명의 친구들과 교류하고 있습니다</h3>
-            <div className="profileButton">
-              {isMe ? (
-                <Button className={classes.buttonStyle}>
-                  <span>정보 변경</span>
-                </Button>
-              ) : isFriend ? (
-                <Button>친구 신청</Button>
-              ) : (
-                <Button>친구 삭제</Button>
-              )}
-            </div>
+            <h3>이름: {props.name}</h3>
+            <h3>이메일: {props.email}</h3>
+            {/* <h3>제품키: {props.mykey}</h3> */}
+            <h3>현재 {props.friends.length}명의 친구들과 교류하고 있습니다</h3>
+            <ChangeInfo />
           </div>
         </Grid>
         <Grid item xs={12} sm={5} className="Today">
-          <CircleProgressBar percentage={75} speed={10} />
+          <CircleProgressBar
+            numinside={changeScore(props.today)}
+            percentage={findPercentage(props.today)}
+            speed={10}
+          />
         </Grid>
       </Grid>
     </Wrapper>

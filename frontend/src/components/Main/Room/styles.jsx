@@ -1,11 +1,19 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
+  border-style: outset;
+  padding: 10px;
+  border-radius: 30px;
+  .Title {
+    display: flex;
+    padding-left: 35%;
+    font-size: 2rem;
+  }
 `;
 
-export const Image = styled.img`
+export const RoomTitle = styled.img`
   display: flex;
-  height: 100px;
-  width: 100px;
+  padding-left: 20%;
+  height: 100%;
+  width: 80%;
 `;

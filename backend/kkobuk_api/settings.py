@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os, json
 from django.core.exceptions import ImproperlyConfigured
 
+# jwt
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,9 +39,14 @@ def get_secret(setting, secret=secret):
 SECRET_KEY = get_secret('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'i3b109.p.ssafy.io',
+    '3.35.17.150',
+    'localhost',
+    'kkobuk.tk',
+]
 
 
 # Application definition
@@ -75,9 +82,13 @@ INSTALLED_APPS = [
     # my app
     'accounts',
     'rooms',
+
+    # cors
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -114,12 +125,15 @@ WSGI_APPLICATION = 'kkobuk_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE' : 'django.db.backends.mysql',
-        'NAME' : 'test', # database name
-        'USER' : 'root', # root
-        'PASSWORD' : get_secret('DB_PASSWORD') # root password
-        #'HOST' : '####' default localhost
-        #'POST' : '####' defautl 3306
-    }
+        'NAME' : 'kkobuk_back', # database name
+        'USER' : 'ssafy', # root
+        'PASSWORD' : get_secret('DB_PASSWORD'), # root password
+        'HOST' : 'i3b109.p.ssafy.io',
+        'POST' : '3306',
+    },
+	'OPTIONS': {
+        'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+    },
 }
 
 
@@ -161,8 +175,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, '../frontend/build/static'),
+    os.path.join(BASE_DIR, '../frontend/build/images'),
 )
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -170,9 +187,15 @@ AUTH_USER_MODEL = 'accounts.User'
 SITE_ID = 3
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ]
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+    ),
+    'EXCEPTION_HANDLER': 'accounts.utils.custom_exception_handler'
 }
 OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
@@ -211,8 +234,21 @@ EMAIL_USE_SSL = False
 EMAIL_PORT = 587
 DEFAULT_FROM_MAIL = EMAIL_HOST_USER
 
-# 이미지 경로
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# jwt
+JWT_AUTH = {
+    'JWT_SECRET_KEY': get_secret('SECRET_KEY'),
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': timedelta(days=3),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=1),
+}
+REST_USE_JWT = True
+# ACCOUNT_LOGOUT_ON_GET = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
+

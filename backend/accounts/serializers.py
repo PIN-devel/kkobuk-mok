@@ -13,8 +13,7 @@ from allauth.account.utils import setup_user_email
 
 class CustomRegisterSerializer(serializers.Serializer):
     email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
-    first_name = serializers.CharField(required=True, write_only=True)
-    last_name = serializers.CharField(required=True, write_only=True)
+    name = serializers.CharField(required=True, write_only=True)
     password1 = serializers.CharField(required=True, write_only=True)
     password2 = serializers.CharField(required=True, write_only=True)
     gender = serializers.IntegerField(required=True, write_only=True)
@@ -40,8 +39,7 @@ class CustomRegisterSerializer(serializers.Serializer):
 
     def get_cleaned_data(self):
         return {
-            'first_name': self.validated_data.get('first_name', ''),
-            'last_name': self.validated_data.get('last_name', ''),
+            'name': self.validated_data.get('name', ''),
             'password1': self.validated_data.get('password1', ''),
             'password2': self.validated_data.get('password2', ''),
             'email': self.validated_data.get('email', ''),
@@ -62,7 +60,7 @@ class CustomRegisterSerializer(serializers.Serializer):
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id','email','last_name','first_name', 'image')
+        fields = ('id','email','name', 'image', 'current_state')
         
 class TimeSettingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -71,11 +69,12 @@ class TimeSettingSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     friends = UserListSerializer(many=True)
-    time_setting = TimeSettingSerializer()
+
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'last_name', 'first_name', 'gender', 'birth_date', 'time_setting', 'desired_humidity', 'auto_setting', 'room', 'image','friends')
-        read_only_fields = ('id', 'email', 'room')
+        fields = ('id', 'email', 'name', 'gender', 'birth_date', 'desired_humidity', 'humidifier_on_off', 'slient_mode',
+         'auto_setting', 'room', 'image','friends', 'current_state')
+        read_only_fields = ('id', 'email', 'room', 'friends', 'current_state')
 
 class FriendRequestSenderListSerializer(serializers.ModelSerializer):
     sender = UserListSerializer()
@@ -83,10 +82,16 @@ class FriendRequestSenderListSerializer(serializers.ModelSerializer):
         model = FriendRequest
         fields = ('sender',)
 
+class FriendRequestReceiverListSerializer(serializers.ModelSerializer):
+    receiver = UserListSerializer()
+    class Meta:
+        model = FriendRequest
+        fields = ('receiver',)
+
 
 # 추후 모델링 결정되면, 방 멤버들 정보 어떤거 보여줄지 넣으면 됨
-class MemberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ('id', 'email', 'last_name', 'first_name', 'gender', 'image')
-        read_only_fields = ('id', 'email')
+# class MemberSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = get_user_model()
+#         fields = ('id', 'email', 'name', 'gender', 'image', 'current_state')
+#         read_only_fields = ('id', 'email')

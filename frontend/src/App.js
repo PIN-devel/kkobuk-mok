@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import "./App.css";
-
-// import { Route, Switch } from "react-router";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import User from "./Pages/User";
 import Friends from "./Pages/Friends";
@@ -10,18 +7,40 @@ import Main from "./Pages/Main";
 import SignIn from "./Pages/Auth/SignIn";
 import SignUp from "./Pages/Auth/SignUp";
 import ContactUs from "./Pages/About/ContactUs";
+import Terms from "./Pages/About/Terms";
+import AboutMe from "./Pages/About/AboutMe";
 import Page404 from "./Pages/Page404";
-
 import { AuthContext } from "./contexts/AuthContext";
+import Cookies from "js-cookie";
 
 function App() {
-  const SERVER_URL = "http://i3b109.p.ssafy.io";
+  // const SERVER_URL = "http://3.35.17.150:8000";
+  const SERVER_URL = "https://i3b109.p.ssafy.io";
+  // const SERVER_URL = "http://localhost:8000";
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
   const [channelIn, setChannelIn] = useState(null);
+
+  useEffect(() => {
+    console.log("유이펙 발동");
+    const userID = Cookies.get("myUserId");
+    if (userID) {
+      if (!auth) {
+        console.log("로그인처리함!");
+        setAuth(true);
+      }
+    }
+  }, []);
+
   return (
     <div className="App">
       <AuthContext.Provider
-        value={{ auth, setAuth, SERVER_URL, channelIn, setChannelIn }}
+        value={{
+          auth,
+          setAuth,
+          SERVER_URL,
+          channelIn,
+          setChannelIn,
+        }}
       >
         <BrowserRouter>
           <Switch>
@@ -33,6 +52,8 @@ function App() {
             <Route exact path="/Friends" component={Friends} />
             <Route exact path="/Channel" component={Channel} />
             <Route exact path="/ContactUs" component={ContactUs} />
+            <Route exact path="/AboutMe" component={AboutMe} />
+            {/* <Route exact path="/Terms" component={Terms} /> */}
             <Route exact path="/not-found" component={Page404} />
             <Redirect to="not-found/" />;
           </Switch>

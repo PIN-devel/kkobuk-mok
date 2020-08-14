@@ -1,21 +1,27 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { MainContext } from "../../../contexts/MainContext";
 import { Wrapper } from "./styles";
 
-const value = 70;
+const Humidity = () => {
+  const { currentHu } = useContext(MainContext);
+  const [myHu, setMyHu] = useState(0);
 
-const Humidity = (props) => {
+  useEffect(() => {
+    setMyHu(currentHu);
+  }, [currentHu]);
+
   return (
-    <Wrapper value={value}>
+    <Wrapper myHu={myHu} currentHu={currentHu}>
       <div className="container">
-        <input type="checkbox" id="humid" />
-        <label for="humid" className="mybox">
-          <div className="fill"></div>
-        </label>
-        <div className="words">
-          <span>0%</span>
-          <span className="current">습도: {value}%</span>
-          <span>100%</span>
+        <div className="myDiv">
+          <input type="checkbox" className="water" />
+          <label for="water">
+            <div className="fill"></div>
+          </label>
         </div>
+        <span>0%</span>
+        <span className="word">{currentHu}%</span>
+        <span className="progress">100%</span>
       </div>
     </Wrapper>
   );
