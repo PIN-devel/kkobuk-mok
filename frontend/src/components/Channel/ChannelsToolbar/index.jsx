@@ -59,12 +59,12 @@ const ChannelsToolbar = (props) => {
     axios
       .post(url, channelData, config)
       .then((res) => {
-        console.log("채널 생성 성공");
+        // console.log("채널 생성 성공");
         // console.log(res.data.data);
         handleSetChannelIn(res.data.data);
       })
       .catch((err) => {
-        console.log("채널 생성 에러!!");
+        // console.log("채널 생성 에러!!");
         console.log(err.response);
       });
   };
