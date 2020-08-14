@@ -34,7 +34,7 @@ export default function SignUp() {
   const [gender, setGender] = useState("1");
   const [birthDate, setBirthDate] = useState("2000-01-01");
   const [confirmedPKey, setConfirmedPKey] = useState(false);
-  const { setAuth, SERVER_URL } = useContext(AuthContext);
+  const { auth, setAuth, SERVER_URL } = useContext(AuthContext);
 
   const history = useHistory();
 
@@ -69,7 +69,9 @@ export default function SignUp() {
       .then((res) => {
         console.log(res);
         alert("회원가입되셨습니다");
+        alert("여기 고칠것");
         history.push("user/");
+        alert("회원가입 축하");
       })
       .catch((err) => {
         console.log("회원가입 실패");
@@ -159,7 +161,7 @@ export default function SignUp() {
     }
   };
 
-  return (
+  const signUp = (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -167,7 +169,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          KkobuK
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -179,7 +181,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="name"
-                label="Name"
+                label="아이디"
                 autoFocus
                 value={name}
                 onChange={(e) => {
@@ -193,7 +195,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="이메일"
                 name="email"
                 autoComplete="email"
                 value={email}
@@ -212,7 +214,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="비밀번호"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -232,7 +234,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="check"
-                label="Check Password"
+                label="비밀번호 확인"
                 type="password"
                 id="check"
                 autoComplete="current-password"
@@ -325,7 +327,7 @@ export default function SignUp() {
               </Grid>
             </Grid>
             <Grid item xs={12} sm={3}>
-              <FormLabel>Gender</FormLabel>
+              <FormLabel>성별</FormLabel>
             </Grid>
             <Grid item xs={12} sm={7}>
               <FormControl component="fieldset">
@@ -338,21 +340,13 @@ export default function SignUp() {
                     handleSetGender(e.target.value === "female" ? "1" : "0");
                   }}
                 >
-                  <FormControlLabel
-                    value="1"
-                    control={<Radio />}
-                    label="Female"
-                  />
-                  <FormControlLabel
-                    value="0"
-                    control={<Radio />}
-                    label="Male"
-                  />
+                  <FormControlLabel value="1" control={<Radio />} label="여" />
+                  <FormControlLabel value="0" control={<Radio />} label="남" />
                 </RadioGroup>
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={3}>
-              <FormLabel>Birthday</FormLabel>
+              <FormLabel>생년월일</FormLabel>
             </Grid>
             <Grid item xs={12} sm={9}>
               <form className={classes.container} noValidate>
@@ -379,12 +373,12 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            회원가입
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/" variant="body2">
-                Already have an account? Sign in
+                로그인 후 이용하러가기
               </Link>
             </Grid>
           </Grid>
@@ -392,4 +386,10 @@ export default function SignUp() {
       </div>
     </Container>
   );
+
+  if (!auth) {
+    return signUp;
+  } else {
+    return <Redirect to="Current/" />;
+  }
 }

@@ -6,9 +6,10 @@ import Wrapper from "./styles";
 import Cookies from "js-cookie";
 import Axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
+import { Redirect } from "react-router-dom";
 
 const User = () => {
-  const { SERVER_URL } = useContext(AuthContext);
+  const { auth, SERVER_URL } = useContext(AuthContext);
   const [me, setMe] = useState(null);
   const token = Cookies.get("token");
   const userID = Cookies.get("myUserId");
@@ -29,23 +30,26 @@ const User = () => {
       });
   }, []);
 
-  if (!me) {
-    return <h1>Loading...</h1>;
+  if (!auth) {
+    return <Redirect to="/" />;
+  } else {
+    return (
+      me && (
+        <Layout>
+          <Wrapper>
+            <Profile
+              name={me.name}
+              image={me.image}
+              email={me.email}
+              friends={me.friends}
+              today={me.posture[0].score}
+            />
+            <Graphs data={me.posture.slice(1, 8)} />
+          </Wrapper>
+        </Layout>
+      )
+    );
   }
-  return (
-    <Layout>
-      <Wrapper>
-        <Profile
-          name={me.name}
-          image={me.image}
-          email={me.email}
-          friends={me.friends}
-          today={me.posture[0].score}
-        />
-        <Graphs data={me.posture.slice(1, 8)} />
-      </Wrapper>
-    </Layout>
-  );
 };
 
 export default User;

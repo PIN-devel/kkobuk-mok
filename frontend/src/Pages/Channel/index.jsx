@@ -1,21 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-
+import { Redirect } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import ChannelList from "../../components/Channel/ChannelList";
 import ChannelDetail from "../../components/Channel/ChannelDetail";
 import SearchComponent from "../../components/Search";
-// import { SearchContext } from "../../contexts/SearchContext";
-
 import Layout from "../../Layout/MyDash/Dashboard";
-
 import axios from "axios";
 import Cookies from "js-cookie";
 
 const Channel = () => {
   // console.log("채널컴포 렌더링");
   // 입장 채널
-  const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
+  const { auth, channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
   //검색 키워드
   const [searchData, setSearchData] = useState("");
   // 채널 리스트
@@ -61,23 +57,27 @@ const Channel = () => {
     console.log("출입 중");
   }, [channelIn]);
 
-  return (
-    <Layout>
-      {/* <SearchContext.Provider value={{ searchData, setSearchData }}> */}
-      {!channelIn ? (
-        <div>
-          <SearchComponent
-            searchData={searchData}
-            setSearchData={setSearchData}
-          />
-          <ChannelList channels={channels} page={page} setPage={setPage} />
-        </div>
-      ) : (
-        <ChannelDetail channel={channelIn} />
-      )}
-      {/* </SearchContext.Provider> */}
-    </Layout>
-  );
+  if (!auth) {
+    return <Redirect to="/" />;
+  } else {
+    return (
+      <Layout>
+        {/* <SearchContext.Provider value={{ searchData, setSearchData }}> */}
+        {!channelIn ? (
+          <div>
+            <SearchComponent
+              searchData={searchData}
+              setSearchData={setSearchData}
+            />
+            <ChannelList channels={channels} page={page} setPage={setPage} />
+          </div>
+        ) : (
+          <ChannelDetail channel={channelIn} />
+        )}
+        {/* </SearchContext.Provider> */}
+      </Layout>
+    );
+  }
 };
 
 export default Channel;
