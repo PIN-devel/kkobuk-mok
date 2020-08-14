@@ -8,6 +8,7 @@ import SignIn from "./Pages/Auth/SignIn";
 import SignUp from "./Pages/Auth/SignUp";
 import ContactUs from "./Pages/About/ContactUs";
 import Terms from "./Pages/About/Terms";
+import AboutMe from "./Pages/About/AboutMe";
 import Page404 from "./Pages/Page404";
 import { AuthContext } from "./contexts/AuthContext";
 import Cookies from "js-cookie";
@@ -51,7 +52,8 @@ function App() {
             <Route exact path="/Friends" component={Friends} />
             <Route exact path="/Channel" component={Channel} />
             <Route exact path="/ContactUs" component={ContactUs} />
-            <Route exact path="/Terms" component={Terms} />
+            <Route exact path="/AboutMe" component={AboutMe} />
+            {/* <Route exact path="/Terms" component={Terms} /> */}
             <Route exact path="/not-found" component={Page404} />
             <Redirect to="not-found/" />;
           </Switch>

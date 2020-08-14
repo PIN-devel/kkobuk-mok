@@ -106,6 +106,7 @@ export default function Dashboard(props) {
         Cookies.remove("myUserId");
         setAuth(false);
         console.log("Logout success!!");
+        window.location.replace("https://i3b109.p.ssafy.io");
       })
       .catch((err) => {
         console.log(err);
@@ -199,9 +200,9 @@ export default function Dashboard(props) {
             aria-haspopup="true"
             variant="contained"
             color="inherit"
-            onClick={(e) => {
-              handleClick2(e.currentTarget);
-            }}
+            // onClick={(e) => {
+            //   handleClick2(e.currentTarget);
+            // }}
           >
             <Badge badgeContent={friendRequests.length} color="secondary">
               <NotificationsIcon />
