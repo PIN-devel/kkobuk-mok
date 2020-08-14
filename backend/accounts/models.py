@@ -39,7 +39,7 @@ class User(AbstractUser):
     humidifier_on_off = models.BooleanField(default=False)
 
     # 무음모드
-    slient_mode = models.BooleanField(default=False)
+    silent_mode = models.BooleanField(default=False)
     
     birth_date = models.DateField(null=True)
 
@@ -56,6 +56,9 @@ class User(AbstractUser):
     room = models.ForeignKey(Room, null=True, on_delete=models.CASCADE, related_name='members')
 
     current_state = models.IntegerField(default=1) # 1-아무것도 안함 2-공부중 3-휴식중, 4-일시정지
+
+    # 알림 소리 테마
+    theme = models.IntegerField(default=1)
 
 class FriendRequest(models.Model):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sending')
