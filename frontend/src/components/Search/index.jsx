@@ -11,7 +11,7 @@ const SearchComponent = (props) => {
   // const { searchData, setSearchData } = useContext(SearchContext);
   const { searchData, setSearchData } = props;
 
-  console.log("검색 컴포 렌더");
+  // console.log("검색 컴포 렌더");
 
   const implSearch = () => {
     setSearchData(searchValue);

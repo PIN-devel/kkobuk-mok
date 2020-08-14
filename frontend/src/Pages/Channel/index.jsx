@@ -7,11 +7,19 @@ import SearchComponent from "../../components/Search";
 import Layout from "../../Layout/MyDash/Dashboard";
 import axios from "axios";
 import Cookies from "js-cookie";
+import localStorage from "local-storage";
 
 const Channel = () => {
-  // console.log("채널컴포 렌더링");
   // 입장 채널
   const { auth, channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
+
+  // 채널 들어간게 없으면 새로고침 때문일 수 있으니 확인하기
+  useEffect(() => {
+    if (!channelIn && localStorage.get("myChannel")) {
+      setChannelIn(localStorage.get("myChannel"));
+    }
+  }, []);
+
   //검색 키워드
   const [searchData, setSearchData] = useState("");
   // 채널 리스트
@@ -39,12 +47,11 @@ const Channel = () => {
     axios
       .get(SERVER_URL + "/rooms", config)
       .then((res) => {
-        console.log("채널들 가져옴");
         // console.log(res);
         handleSetChannels(res.data.data);
       })
       .catch((err) => {
-        console.log("Channel 에러!!");
+        // console.log("Channel 에러!!");
         console.log(err.response);
       });
   };
@@ -54,7 +61,6 @@ const Channel = () => {
   // 채널 출입 다시 렌더링 해줘야할 듯
   useEffect(() => {
     getChannels(); // 이거 다시...
-    console.log("출입 중");
   }, [channelIn]);
 
   if (!auth) {
