@@ -12,13 +12,13 @@ import {
 
 const ChannelChart = (props) => {
   const { member } = props;
-  console.log(member.posture);
+  // console.log(member);
 
   return (
     <div>
       <ResponsiveContainer height={260} width="90%">
         <LineChart
-          data={member.posture}
+          data={member && member.posture}
           margin={{
             top: 5,
             right: 30,
