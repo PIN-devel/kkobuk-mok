@@ -34,7 +34,7 @@ const Main = () => {
   const [isHumidiOn, setIsHumidiOn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [haveCycle, setHaveCycle] = useState(false);
-  const [isTurtleOn, setIsTurtleOn] = useState(true);
+  const [initialTheme, setInitialTheme] = useState("밥");
 
   const scoreDataRef = useRef(currentScoreData);
   scoreDataRef.current = currentScoreData;
@@ -69,7 +69,7 @@ const Main = () => {
         console.log("최초값 수령 성공");
         setDeHumid(res.data.data.desired_humidity);
         setIsAuto(res.data.data.auto_setting);
-        setIsSilent(res.data.data.slient_mode);
+        setIsSilent(res.data.data.silent_mode);
         const myTime = res.data.data.time.total_time;
         setTotalTime(myTime);
         const hour = parseInt(myTime / 60);
@@ -82,6 +82,7 @@ const Main = () => {
         }
         setBreakTime(res.data.data.time.break_time);
         setIsHumidiOn(res.data.data.humidifier_on_off);
+        setInitialTheme(res.data.data.theme);
         setIsLoaded(true);
       })
       .catch((err) => {
@@ -158,7 +159,7 @@ const Main = () => {
             setTotalHour,
             TotalMin,
             setTotalMin,
-            isTurtleOn,
+            initialTheme,
           }}
         >
           <Wrapper>

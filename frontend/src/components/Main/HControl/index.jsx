@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Wrapper } from "./styles";
+import { Wrapper, TurtleSign } from "./styles";
 import { MainContext } from "../../../contexts/MainContext";
 import { AuthContext } from "../../../contexts/AuthContext";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -11,6 +11,8 @@ import { Button, TextField } from "@material-ui/core";
 import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import SleepT from "../../../assets/sleepboard.png";
+import ReadyT from "../../../assets/readyboard.png";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -24,6 +26,7 @@ const HControl = () => {
     setIsSilent,
     isHumidiOn,
     setIsHumidiOn,
+    initialTheme,
   } = useContext(MainContext);
 
   const { SERVER_URL } = useContext(AuthContext);
@@ -38,6 +41,10 @@ const HControl = () => {
   };
 
   const handleAuto = (bool) => {
+    if (bool && isHumidiOn) {
+      setIsHumidiOn(false);
+      handleHumidi(false);
+    }
     axios
       .put(`${SERVER_URL}/accounts/${userID}/`, { auto_setting: bool }, config)
       .then((res) => {
@@ -57,7 +64,7 @@ const HControl = () => {
   const handleSound = (bool) => {
     console.log(bool);
     axios
-      .put(`${SERVER_URL}/accounts/${userID}/`, { slient_mode: bool }, config)
+      .put(`${SERVER_URL}/accounts/${userID}/`, { silent_mode: bool }, config)
       .then((res) => {
         console.log(res);
         if (bool) {
@@ -73,7 +80,11 @@ const HControl = () => {
   };
 
   const handleDeHumid = (deH) => {
-    setMyDeHumid(deH);
+    if (isNaN(deH)) {
+      alert("숫자만 입력 가능합니다");
+    } else {
+      setMyDeHumid(deH);
+    }
   };
 
   const handleHumidi = (bool) => {
@@ -98,7 +109,7 @@ const HControl = () => {
   };
 
   const submitDeHumid = () => {
-    const newV = myDeHumid;
+    const newV = Number(myDeHumid);
     axios
       .put(
         `${SERVER_URL}/accounts/${userID}/`,
@@ -106,7 +117,7 @@ const HControl = () => {
         config
       )
       .then((res) => {
-        alert("습도가 설정되었습니다");
+        alert("희망 습도가 설정되었습니다");
         console.log(res);
         console.log("습도 설정 성공");
       })
@@ -116,115 +127,142 @@ const HControl = () => {
       });
   };
 
+  const handleMuTheme = (sel) => {
+    axios
+      .post(`${SERVER_URL}/accounts/theme/change/`, { theme: sel }, config)
+      .then((res) => {
+        console.log("테마변경 성공");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("테마변경 실패");
+        console.log(err.response);
+      });
+  };
+
   useEffect(() => {
     setMyDeHumid(DeHumid);
   }, []);
 
-  const styles = {
-    root: {
-      height: 500,
-      width: 200,
-    },
-  };
-
   return (
     <Wrapper>
-      <FormControl component="fieldset">
-        <Grid container>
-          <Grid item xs={6} container className="4boxes">
-            <Grid item xs={12} className="titles">
+      <Grid container>
+        <Grid item xs={12}>
+          <TurtleSign src={SleepT} />
+        </Grid>
+        <Grid container className="happy">
+          <Grid item xs={4} container className="3boxes">
+            <Grid item xs={12} className="titles topL">
               <h3>자동 가습</h3>
             </Grid>
-            <Grid item xs={2} className="offW">
-              <h3>off</h3>
-            </Grid>
-            <Grid item xs={8} className="mySwitch">
-              <Switch
-                checked={isAuto}
-                color="primary"
-                onChange={(e) => {
-                  setIsAuto(!isAuto);
-                  handleAuto(e.target.checked);
-                }}
-              />
-            </Grid>
-            <Grid item xs={2} className="onW">
-              <h3>on</h3>
+            <Grid item xs={12} className="mySwitch">
+              <div className="theSwitch">
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={isAuto}
+                    onChange={(e) => {
+                      setIsAuto(!isAuto);
+                      handleAuto(e.target.checked);
+                    }}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
             </Grid>
           </Grid>
-          <Grid item xs={6} container className="4boxes">
+          <Grid item xs={4} container className="3boxes">
+            <Grid item xs={12} className="titles">
+              <h3 className="myTitleW">가습기</h3>
+            </Grid>
+            <Grid item xs={12} className="mySwitch">
+              <div className="theSwitch">
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={isHumidiOn}
+                    disabled={isAuto}
+                    onChange={(e) => {
+                      setIsHumidiOn(!isHumidiOn);
+                      handleHumidi(e.target.checked);
+                    }}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+            </Grid>
+          </Grid>
+          <Grid item xs={4} container className="3boxes">
+            <Grid item xs={12} className="titles topR">
+              <h3>알림</h3>
+            </Grid>
+            <Grid item xs={12} className="mySwitch">
+              <div className="theSwitch">
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={!isSilent}
+                    onChange={(e) => {
+                      setIsSilent(!isSilent);
+                      handleSound(!e.target.checked);
+                    }}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+            </Grid>
+          </Grid>
+          <Grid item xs={6} container className="2boxes">
             <Grid item xs={12} className="titles">
               <h3>희망 습도</h3>
             </Grid>
-            <Grid item xs={8} className="myInputBox">
-              <input
-                type="number"
-                name="DeHumid"
-                min="0"
-                size="50"
-                max="100"
-                defaultValue={DeHumid}
-                className="HInput"
-                onChange={(e) => {
-                  handleDeHumid(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  submitDeHumid();
-                }}
-              >
-                설정
-              </Button>
+            <Grid item xs={12} className="SelBox">
+              <div className="NumBox">
+                <input
+                  type="text"
+                  className="SpecialOne"
+                  value={myDeHumid}
+                  maxLength={2}
+                  onChange={(e) => {
+                    handleDeHumid(e.target.value);
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="SpecialButton"
+                  onClick={() => {
+                    submitDeHumid();
+                  }}
+                >
+                  적용
+                </Button>
+              </div>
             </Grid>
           </Grid>
-          <Grid item xs={6} container className="4boxes">
+          <Grid item xs={6} container className="2boxes">
             <Grid item xs={12} className="titles">
-              <h3>가습기</h3>
+              <h3>알림 테마</h3>
             </Grid>
-            <Grid item xs={2} className="offW">
-              <h3>off</h3>
-            </Grid>
-            <Grid item xs={8} className="mySwitch">
-              <Switch
-                disabled={isAuto}
-                checked={isHumidiOn}
-                onChange={(e) => {
-                  setIsHumidiOn(!isHumidiOn);
-                  handleHumidi(e.target.checked);
-                }}
-              />
-            </Grid>
-            <Grid item xs={2} className="onW">
-              <h3>on</h3>
-            </Grid>
-          </Grid>
-          <Grid item xs={6} container className="4boxes">
-            <Grid item xs={12} className="titles">
-              <h3>알림 소리</h3>
-            </Grid>
-            <Grid item xs={2} className="offW">
-              <h3>off</h3>
-            </Grid>
-            <Grid item xs={8} className="mySwitch">
-              <Switch
-                checked={!isSilent}
-                onChange={(e) => {
-                  setIsSilent(!isSilent);
-                  handleSound(!e.target.checked);
-                }}
-              />
-            </Grid>
-            <Grid item xs={2} className="onW">
-              <h3>on</h3>
+            <Grid item xs={12} className="SelBox">
+              <div className="ThemeBox">
+                <select
+                  id="myTheme"
+                  defaultValue={initialTheme}
+                  onChange={(e) => {
+                    handleMuTheme(e.target.value);
+                  }}
+                >
+                  <option value={1}>공포</option>
+                  <option value={2}>유머</option>
+                  <option value={3}>뭐있나</option>
+                  <option value={4}>몰라</option>
+                </select>
+              </div>
             </Grid>
           </Grid>
         </Grid>
-      </FormControl>
+      </Grid>
     </Wrapper>
   );
 };
