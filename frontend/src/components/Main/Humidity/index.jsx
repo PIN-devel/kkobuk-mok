@@ -15,7 +15,7 @@ const Humidity = () => {
       <div className="container">
         <div className="myDiv">
           <input type="checkbox" className="water" />
-          <label for="water">
+          <label forhtml="water">
             <div className="fill"></div>
           </label>
         </div>

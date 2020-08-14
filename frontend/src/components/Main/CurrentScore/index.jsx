@@ -4,8 +4,8 @@ import { MainContext } from "../../../contexts/MainContext";
 
 const CurrentScore = (props) => {
   const { currentScore } = useContext(MainContext);
-  const [myWord, setMyWord] = useState("");
-  const [myClass, setMyClass] = useState("whiteCircle");
+  const [myWord, setMyWord] = useState("대기");
+  const [myClass, setMyClass] = useState("purpleCircle");
   useEffect(() => {
     if (currentScore === 3) {
       setMyWord("위험");
