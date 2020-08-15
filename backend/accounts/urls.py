@@ -29,6 +29,9 @@ urlpatterns = [
     path('timer/restart/', views.timer_restart),
     path('timer/stop/', views.timer_stop),
 
+    # 제품키 등록
+    path('productkey/', views.product_key),
+
     path('', views.list),
     path('<int:user_id>/', views.detail_or_delete_or_update),
 ]

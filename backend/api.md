@@ -44,3 +44,4 @@
 | 타이머 재시작 | post | /accounts/timer/restart/ | token | user_state, time(현재 timesetting 데이터) | |
 | 타이머 중지 | post | /accounts/timer/stop/ | token | user_state, time(현재 timesetting 데이터) | |
 |  |  |  |  |  | |
+| 제품키 등록 | post | /accounts/productkey/ | token(관리자만 등록 가능), product_key | | |
