@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, FormHelperText } from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  PButton: {
+    display: "flex",
+    justifyContent: "center",
+  }
 }));
 
 const ChangeInfo = () => {
@@ -55,6 +59,12 @@ const ChangeInfo = () => {
       Authorization: `Jwt ${token}`,
     },
   };
+  const newConfig = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Jwt ${token}`,
+    },
+  }
 
   const handleOldP = (e) => {
     setOld_Password(e);
@@ -168,14 +178,17 @@ const ChangeInfo = () => {
     setNewImage(e);
   };
 
-  const a = new FormData();
-
   const EditImage = () => {
-    const formData = new FormData();
+    const formData = new FormData();    
+    console.log(formData)
     formData.append("image", newImage);
-    if (newImage) {
+    console.log(newImage)
+    for (let key of formData.entries()) {
+      console.log(`${key}`);
+    }
+    if (formData !== {}) {
       axios
-        .put(`${SERVER_URL}/accounts/${userID}`, formData, config)
+        .put(`${SERVER_URL}/accounts/${userID}/`, formData, newConfig)
         .then((res) => {
           console.log(res);
           alert("프로필 이미지가 변경되었습니다");
@@ -220,7 +233,6 @@ const ChangeInfo = () => {
               }}
             />
             <Button
-              className={classes.margin}
               variant="contained"
               color="primary"
               onClick={() => {
@@ -296,7 +308,7 @@ const ChangeInfo = () => {
               비밀번호 변경
             </Button>
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={6} md={3}>
             <TextField
               variant="outlined"
               required
@@ -313,7 +325,7 @@ const ChangeInfo = () => {
               -
             </TextField>
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={6} md={3}>
             <TextField
               variant="outlined"
               required
@@ -330,7 +342,7 @@ const ChangeInfo = () => {
               -
             </TextField>
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={6} md={3}>
             <TextField
               variant="outlined"
               required
@@ -347,7 +359,7 @@ const ChangeInfo = () => {
               -
             </TextField>
           </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={6} md={3}>
             <TextField
               variant="outlined"
               required
@@ -363,7 +375,7 @@ const ChangeInfo = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12}>
             {confirmedPKey ? (
               <Button
                 className={classes.margin}

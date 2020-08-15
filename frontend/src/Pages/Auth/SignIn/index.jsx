@@ -100,11 +100,15 @@ export default function SignIn() {
   const history = useHistory();
 
   const errorMessage = (error) => {
-    Object.keys(error).map((key) => {
-      if (typeof error[key] !== "number") {
-        alert(error[key]);
-      }
-    });
+    if (
+      Object.keys(error).find((e) => {
+        return e === "email";
+      })
+    ) {
+      alert(error["email"]);
+    } else {
+      alert("이메일 혹은 비밀번호를 확인해주세요");
+    }
   };
   const login = (loginData) => {
     const url = `${SERVER_URL}/rest-auth/login/`;
@@ -182,9 +186,9 @@ export default function SignIn() {
   const Forgot = (
     <div style={modalStyle} className={classes.paper2}>
       {/* <div> */}
-      <h2 id="simple-modal-title">Find</h2>
+      {/* <h2 id="simple-modal-title">Find</h2> */}
       <form noValidate autoComplete="off">
-        {mode === 0 && <div>선택하세요</div>}
+        {mode === 0 && <div>이메일 혹은 비밀번호를 선택하세요</div>}
         {mode === 1 && (
           <div>
             <TextField
@@ -234,14 +238,14 @@ export default function SignIn() {
           onClick={() => handleMode(1)}
           variant="outlined"
         >
-          ID
+          이메일
         </Button>
         <Button
           className={classes.form}
           onClick={() => handleMode(2)}
           variant="outlined"
         >
-          Password
+          비밀번호
         </Button>
       </form>
     </div>
@@ -269,7 +273,7 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="아이디를 입력해 주세요"
+              label="이메일을 입력해 주세요"
               name="email"
               autoComplete="email"
               autoFocus
@@ -316,7 +320,7 @@ export default function SignIn() {
                     handleOpen();
                   }}
                 >
-                  아이디 / 비밀번호 찾기
+                  이메일 / 비밀번호 찾기
                 </Link>
                 <Modal
                   open={openModal}

@@ -181,7 +181,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="name"
-                label="아이디"
+                label="이름"
                 autoFocus
                 value={name}
                 onChange={(e) => {

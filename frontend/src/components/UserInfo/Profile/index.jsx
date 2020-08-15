@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 
 const Profile = (props) => {
   const { SERVER_URL } = useContext(AuthContext);
-
+  console.log(props);
   const changeScore = (n) => {
     if (n == 0) {
       return 0;
@@ -37,7 +37,7 @@ const Profile = (props) => {
     <Wrapper>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={2}>
-          <Image src={props.image} />
+          <Image src={`${SERVER_URL}${props.image}`} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <div className="profileInfo">

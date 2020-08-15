@@ -149,7 +149,7 @@ export default function Dashboard(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
+          {/* <Typography
             component="h1"
             variant="h6"
             color="inherit"
@@ -157,7 +157,11 @@ export default function Dashboard(props) {
             className={classes.title}
           >
             KKOBUK
-          </Typography>
+          </Typography> */}
+          {/* <div className={(classes.title, classes.image)}> </div> */}
+          <div className={classes.title}>
+            <img src="/images/kkobuk_logo.PNG" alt="kkobuk" />
+          </div>
           {/* <Button
             onClick={() => {
               tester();
