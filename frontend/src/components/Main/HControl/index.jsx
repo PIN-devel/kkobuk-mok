@@ -132,6 +132,7 @@ const HControl = () => {
       .post(`${SERVER_URL}/accounts/theme/change/`, { theme: sel }, config)
       .then((res) => {
         console.log("테마변경 성공");
+        console.log(sel);
         console.log(res);
       })
       .catch((err) => {
