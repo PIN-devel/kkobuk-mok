@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
+  display: flex;
   border-style: outset;
-  padding: 10px;
   border-radius: 30px;
+  width: 85%;
+  height: 100%;
   .Title {
     display: flex;
     padding-left: 35%;

@@ -6,11 +6,11 @@ import useStyles from "./styles";
 
 import axios from "axios";
 import Cookies from "js-cookie";
-import ChannelChat from "../ChannelChat";
 import UserCard from "../UserCard";
 
 import ChannelDetailCard from "../ChannelDetailCard";
 import ChannelCard from "../ChannelCard";
+import localStorage from "local-storage";
 
 const ChannelDetail = (props) => {
   const { channel } = props;
@@ -29,17 +29,18 @@ const ChannelDetail = (props) => {
   const exitChannel = () => {
     const url = `${SERVER_URL}/rooms/${channel.id}/`;
     const handleSetChannelIn = () => {
+      localStorage.remove("myChannel");
       setChannelIn(null);
     };
     axios
       .post(url, {}, config)
       .then((res) => {
-        console.log("채널 나가기 성공");
+        // console.log("채널 나가기 성공");
         // console.log(res.data.data);
         handleSetChannelIn();
       })
       .catch((err) => {
-        console.log("채널 나가기 에러");
+        // console.log("채널 나가기 에러");
         console.log(err.response);
       });
   };
@@ -71,10 +72,10 @@ const ChannelDetail = (props) => {
       clearInterval(cycle);
     };
   }, []);
-  console.log("채널 넘어온 정보");
-  console.log(channel);
-  console.log("채널디테일정보");
-  console.log(channelData);
+  // console.log("채널 넘어온 정보");
+  // console.log(channel);
+  // console.log("channelData");
+  // console.log(channelData);
 
   return (
     <div className={classes.root}>
