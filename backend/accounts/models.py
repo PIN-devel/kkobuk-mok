@@ -73,4 +73,4 @@ class Sensing(models.Model):
 
 class Product(models.Model):
     product_key = models.CharField(max_length=200)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
