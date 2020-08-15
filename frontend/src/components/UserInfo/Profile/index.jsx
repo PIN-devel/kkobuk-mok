@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 
 const Profile = (props) => {
   const { SERVER_URL } = useContext(AuthContext);
-
+  console.log(props);
   const changeScore = (n) => {
     if (n == 0) {
       return 0;
