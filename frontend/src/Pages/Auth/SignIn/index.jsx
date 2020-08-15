@@ -72,7 +72,13 @@ export default function SignIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email, password });
+    if (!email) {
+      alert("이메일을 입력해주세요");
+    } else if (!password) {
+      alert("비밀번호를 입력해주세요");
+    } else {
+      login({ email, password });
+    }
   };
 
   const handleSetEmail = (email) => {
@@ -93,6 +99,13 @@ export default function SignIn() {
 
   const history = useHistory();
 
+  const errorMessage = (error) => {
+    Object.keys(error).map((key) => {
+      if (typeof error[key] !== "number") {
+        alert(error[key]);
+      }
+    });
+  };
   const login = (loginData) => {
     const url = `${SERVER_URL}/rest-auth/login/`;
     const handleSetAuth = (auth, userId) => {
@@ -112,8 +125,9 @@ export default function SignIn() {
         handleSetAuth(true, res.data.user.pk);
       })
       .catch((err) => {
-        console.log("로그인 에러!!");
-        console.log(err.response);
+        // console.log("로그인 에러!!");
+        // console.log(err.response.data);
+        errorMessage(err.response.data);
       });
   };
 
@@ -126,7 +140,7 @@ export default function SignIn() {
         setModalStatus(1);
       })
       .catch((err) => {
-        console.log(err.response);
+        // console.log(err.response);
         alert("등록되지 않은 제품키입니다");
       });
   };
@@ -137,12 +151,12 @@ export default function SignIn() {
     axios
       .post(`${SERVER_URL}/rest-auth/password/reset/`, data)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         alert("메일을 확인해주세요");
         setModalStatus(2);
       })
       .catch((err) => {
-        console.log(err.response);
+        // console.log(err.response);
         alert("등록되지 않은 이메일입니다");
       });
   };
@@ -240,11 +254,13 @@ export default function SignIn() {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
+          <br />
+          <br />
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            KkobuK
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <TextField
@@ -253,7 +269,7 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="아이디를 입력해 주세요"
               name="email"
               autoComplete="email"
               autoFocus
@@ -269,7 +285,7 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="비밀번호를 입력해 주세요"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -279,10 +295,10 @@ export default function SignIn() {
               }}
             />
 
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+              label=""
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -290,7 +306,7 @@ export default function SignIn() {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              로그인
             </Button>
             <Grid container>
               <Grid item xs>
@@ -300,7 +316,7 @@ export default function SignIn() {
                     handleOpen();
                   }}
                 >
-                  Forgot email or password?
+                  아이디 / 비밀번호 찾기
                 </Link>
                 <Modal
                   open={openModal}
@@ -313,7 +329,7 @@ export default function SignIn() {
               </Grid>
               <Grid item>
                 <Link href="/Signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"회원 가입"}
                 </Link>
               </Grid>
             </Grid>

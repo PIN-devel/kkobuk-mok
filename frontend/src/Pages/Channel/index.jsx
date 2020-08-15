@@ -1,21 +1,25 @@
 import React, { useState, useContext, useEffect } from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-
+import { Redirect } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import ChannelList from "../../components/Channel/ChannelList";
 import ChannelDetail from "../../components/Channel/ChannelDetail";
 import SearchComponent from "../../components/Search";
-// import { SearchContext } from "../../contexts/SearchContext";
-
 import Layout from "../../Layout/MyDash/Dashboard";
-
 import axios from "axios";
 import Cookies from "js-cookie";
+import localStorage from "local-storage";
 
 const Channel = () => {
-  // console.log("채널컴포 렌더링");
   // 입장 채널
-  const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
+  const { auth, channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
+
+  // 채널 들어간게 없으면 새로고침 때문일 수 있으니 확인하기
+  useEffect(() => {
+    if (!channelIn && localStorage.get("myChannel")) {
+      setChannelIn(localStorage.get("myChannel"));
+    }
+  }, []);
+
   //검색 키워드
   const [searchData, setSearchData] = useState("");
   // 채널 리스트
@@ -43,12 +47,11 @@ const Channel = () => {
     axios
       .get(SERVER_URL + "/rooms", config)
       .then((res) => {
-        console.log("채널들 가져옴");
         // console.log(res);
         handleSetChannels(res.data.data);
       })
       .catch((err) => {
-        console.log("Channel 에러!!");
+        // console.log("Channel 에러!!");
         console.log(err.response);
       });
   };
@@ -58,26 +61,29 @@ const Channel = () => {
   // 채널 출입 다시 렌더링 해줘야할 듯
   useEffect(() => {
     getChannels(); // 이거 다시...
-    console.log("출입 중");
   }, [channelIn]);
 
-  return (
-    <Layout>
-      {/* <SearchContext.Provider value={{ searchData, setSearchData }}> */}
-      {!channelIn ? (
-        <div>
-          <SearchComponent
-            searchData={searchData}
-            setSearchData={setSearchData}
-          />
-          <ChannelList channels={channels} page={page} setPage={setPage} />
-        </div>
-      ) : (
-        <ChannelDetail channel={channelIn} />
-      )}
-      {/* </SearchContext.Provider> */}
-    </Layout>
-  );
+  if (!auth) {
+    return <Redirect to="/" />;
+  } else {
+    return (
+      <Layout>
+        {/* <SearchContext.Provider value={{ searchData, setSearchData }}> */}
+        {!channelIn ? (
+          <div>
+            <SearchComponent
+              searchData={searchData}
+              setSearchData={setSearchData}
+            />
+            <ChannelList channels={channels} page={page} setPage={setPage} />
+          </div>
+        ) : (
+          <ChannelDetail channel={channelIn} />
+        )}
+        {/* </SearchContext.Provider> */}
+      </Layout>
+    );
+  }
 };
 
 export default Channel;

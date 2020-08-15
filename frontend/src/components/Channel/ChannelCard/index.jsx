@@ -19,6 +19,7 @@ import useStyles from "./styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ThemeProvider } from "styled-components";
+import localStorage from "local-storage";
 
 const ChannelCard = (props) => {
   const { className, channel, ...rest } = props;
@@ -39,13 +40,14 @@ const ChannelCard = (props) => {
   const entranceChannel = () => {
     const url = `${SERVER_URL}/rooms/${channel.id}/`;
     const handleSetChannelIn = (channel) => {
+      localStorage.set("myChannel", channel);
       setChannelIn(channel);
     };
     axios
       .post(url, {}, config)
       .then((res) => {
-        console.log("채널 카드에서 입장할 때 받아오는 채널 정보");
-        console.log(res.data);
+        // console.log("채널 카드에서 입장할 때 받아오는 채널 정보");
+        // console.log(res.data);
         handleSetChannelIn(res.data.data);
       })
       .catch((err) => {
@@ -55,7 +57,14 @@ const ChannelCard = (props) => {
   };
 
   return (
-    <Card style={{cursor:"pointer"}} {...rest} className={clsx(classes.root, className)} onClick={() => {entranceChannel();}}>
+    <Card
+      style={{ cursor: "pointer" }}
+      {...rest}
+      className={clsx(classes.root, className)}
+      onClick={() => {
+        entranceChannel();
+      }}
+    >
       {/* <Button
         onClick={() => {
           entranceChannel();
@@ -72,10 +81,21 @@ const ChannelCard = (props) => {
             src={channel.imageUrl}
           />
         </div> */}
-        <Typography className={classes.typography} style={{margin:"20px"}} align="center" gutterBottom variant="h4">
+        <Typography
+          className={classes.typography}
+          style={{ margin: "20px" }}
+          align="center"
+          gutterBottom
+          variant="h4"
+        >
           {channel.name}
         </Typography>
-        <Typography className={classes.typography} variant="body2" color="textSecondary" component="p">
+        <Typography
+          className={classes.typography}
+          variant="body2"
+          color="textSecondary"
+          component="p"
+        >
           {channel.description}
         </Typography>
       </CardContent>
@@ -84,14 +104,22 @@ const ChannelCard = (props) => {
         <Grid container justify="space-between">
           <Grid className={classes.statsItem} item>
             <AccessTimeIcon className={classes.statsIcon} />
-            <Typography className={classes.typography} display="inline" variant="body2">
-            {channel.created_at.slice(0,19)}
+            <Typography
+              className={classes.typography}
+              display="inline"
+              variant="body2"
+            >
+              {channel.created_at.slice(0, 19)}
             </Typography>
           </Grid>
           <Grid className={classes.statsItem} item>
             {/* <GetAppIcon className={classes.statsIcon} /> */}
-            <Typography className={classes.typography} display="inline" variant="body2">
-              <i class="fas fa-users"></i> {channel.member_num}
+            <Typography
+              className={classes.typography}
+              display="inline"
+              variant="body2"
+            >
+              <i className="fas fa-users"></i> {channel.member_num}
             </Typography>
           </Grid>
         </Grid>
@@ -100,9 +128,9 @@ const ChannelCard = (props) => {
   );
 };
 
-ChannelCard.propTypes = {
-  className: PropTypes.string,
-  product: PropTypes.object.isRequired,
-};
+// ChannelCard.propTypes = {
+//   className: PropTypes.string,
+//   product: PropTypes.object.isRequired,
+// };
 
 export default ChannelCard;

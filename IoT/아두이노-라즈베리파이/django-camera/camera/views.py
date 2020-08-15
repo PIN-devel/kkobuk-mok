@@ -13,9 +13,16 @@ import tensorflow.keras
 from PIL import Image, ImageOps
 import numpy as np
 
-SERVER_URL = 'http://3.35.17.150'
+
+SERVER_URL = 'http://3.35.17.150:8000'
+
+
 init_res = requests.post(SERVER_URL+'/accounts/initialinfo/',data={"product_key":"1111-1111-1111-1111"})
 pre_user_state = init_res.json()['data']['user_state']
+
+add_data={'level':pre_user_state}
+with open('./data.json', 'w', encoding='utf-8') as make_file:
+    json.dump(add_data, make_file, indent="\t")
 
 arduino = serial.Serial("/dev/ttyACM0",9600)
 np.set_printoptions(suppress=True)
@@ -56,38 +63,61 @@ def take_pic(request):
             idx=i+1
     
     cmd = "MC"+str(idx)
+    print('cmd: ',cmd)
     arduino.write(cmd.encode())
     if arduino.readable():
         tmp = arduino.readline()
+        print('MCres',tmp.decode())
         motor = tmp.decode('utf-8')[:len(tmp)-3]
     arduino.write('SR'.encode())
     if arduino.readable():
         tmp = arduino.readline()
+        print('SRres',tmp.decode())
         sensor = tmp.decode('utf-8')[2:len(tmp)-3]
-    
+        print('sensor:',sensor)
     tem,hum=sensor.split(',')
     # product_key, posture_level, temperature, humidity
     
     res = requests.post(SERVER_URL+'/accounts/sensingsave/',data={"posture_level":int(motor[2:]),"product_key":"1111-1111-1111-1111","temperature":float(tem),"humidity":float(hum)})
+    print(res.text)
     user_state = res.json()['data']['user_state'] # 1 - 아무것도 안함 2 - 공부중 3 - 휴식중 4 - 일시정지
     auto_setting = res.json()['data']['auto_setting']
     desired_humidity = res.json()['data']['desired_humidity']
 
     # 가습기 제어
     if user_state == 2 and auto_setting: # 공부중이면서 가습기 auto setting mode일 경우
-        if desired_humidity > hum:
+        if float(desired_humidity) > float(hum):
             arduino.write('RON'.encode())
+            if arduino.readable():
+                tmp = arduino.readline()
+                print('Rres',tmp.decode())
         else:
             arduino.write('ROF'.encode())
+            if arduino.readable():
+                tmp = arduino.readline()
+                print('Rres',tmp.decode())
     else:
         arduino.write('ROF'.encode())
+        if arduino.readable():
+            tmp = arduino.readline()
+            print('Rres',tmp.decode())
 
+
+    
+    with open('./data.json', 'r') as f:
+        local_data = json.loads(f.read())
+    
+    pre_user_state = local_data['level']
     # 알람
     if (pre_user_state == 2 and user_state == 3) or (pre_user_state == 3 and user_state == 2):
         arduino.write('SP'.encode())
+        if arduino.readable():
+            tmp = arduino.readline()
+            print('Rres',tmp.decode())
+    add_data={'level':user_state}
+    with open('./data.json', 'w', encoding='utf-8') as make_file:
+        json.dump(add_data, make_file, indent="\t")
 
-
-    pre_user_state = user_state
 
     print("1싸이클 종료 :", time.time() - start)
     return Response({})

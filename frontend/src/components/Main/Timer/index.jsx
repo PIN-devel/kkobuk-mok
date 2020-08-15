@@ -175,35 +175,34 @@ const Timer = () => {
   return (
     <Wrapper>
       <Grid container spacing={3}>
-        <Grid item xs={9} className="timer">
+        <Grid item xs={12} sm={9} className="timer">
           <span>{mySpentHour >= 10 ? mySpentHour : "0" + mySpentHour}</span>
           &nbsp;:&nbsp;
           <span>{mySpentMin >= 10 ? mySpentMin : "0" + mySpentMin}</span>
           &nbsp;:&nbsp;
           <span>{mySpentSec >= 10 ? mySpentSec : "0" + mySpentSec}</span>
         </Grid>
-        <Grid item xs={3} className="cycle-button">
-          <FormLabel component="legend" className="cycleW">
-            사이클
-          </FormLabel>
-          <Typography component="div">
-            <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item>Off</Grid>
-              <Grid item>
-                <Switch
+        <Grid item xs={12} sm={3} container className="cycle-button">
+          <Grid item xs={12} className="Ctitle">
+            <span>사이클</span>
+          </Grid>
+          <Grid item xs={12} className="mySwitch">
+            <div className="theSwitch">
+              <label className="switch">
+                <input
+                  type="checkbox"
                   checked={haveCycle}
-                  color="primary"
                   onChange={(e) => {
                     handleCycle(e.target.checked);
                   }}
                 />
-              </Grid>
-              <Grid item>On</Grid>
-            </Grid>
-          </Typography>
+                <span className="slider"></span>
+              </label>
+            </div>
+          </Grid>
         </Grid>
         <Grid item xs={12} container spacing={2} className="">
-          <Grid item xs={12} md={3}>
+          <Grid item md={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="Stopwatch-Hour-label">Hour</InputLabel>
               <Select
@@ -232,7 +231,7 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item md={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="Stopwatch-Minute-label">Minute</InputLabel>
               <Select
@@ -261,7 +260,7 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item md={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="Stopwatch-Worktime-label">Work</InputLabel>
               <Select
@@ -290,7 +289,7 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item md={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="Stopwatch-Break-label">Break</InputLabel>
               <Select
@@ -324,6 +323,7 @@ const Timer = () => {
         <Grid item xs={12} className="buttons">
           {currentStatus === 1 ? (
             <Button
+              size="large"
               variant="contained"
               color="primary"
               className="start-button"
@@ -331,7 +331,7 @@ const Timer = () => {
                 start();
               }}
             >
-              Start
+              시작
             </Button>
           ) : (
             ""
@@ -340,6 +340,7 @@ const Timer = () => {
           {currentStatus === 2 ? (
             <div>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
                 className="stop-button"
@@ -347,9 +348,10 @@ const Timer = () => {
                   stop();
                 }}
               >
-                Stop
+                일시정지
               </Button>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
                 className="reset-button"
@@ -357,7 +359,7 @@ const Timer = () => {
                   reset();
                 }}
               >
-                Reset
+                초기화
               </Button>
             </div>
           ) : (
@@ -367,6 +369,7 @@ const Timer = () => {
             <div>
               <h3>휴식시간</h3>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
                 className="reset-button"
@@ -374,7 +377,7 @@ const Timer = () => {
                   reset();
                 }}
               >
-                Reset
+                초기화
               </Button>
             </div>
           ) : (
@@ -384,6 +387,7 @@ const Timer = () => {
           {currentStatus === 4 ? (
             <div>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
                 className="resume-button"
@@ -391,9 +395,10 @@ const Timer = () => {
                   resume();
                 }}
               >
-                Resume
+                계속하기
               </Button>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
                 className="reset-button"
@@ -401,7 +406,7 @@ const Timer = () => {
                   reset();
                 }}
               >
-                Reset
+                초기화
               </Button>
             </div>
           ) : (

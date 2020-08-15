@@ -94,6 +94,8 @@ def detail_or_in_or_out(request, room_id):
             if room.member_num == 0:
                 room.delete()
         else:
+            if request.user.room: # 이미 참여하고 있는 방 존재 시 막아주기
+                return Response({"status": "FAIL", "error_msg": "이미 참여중인 방이 있습니다."}, status=status.HTTP_409_CONFLICT)
             request.user.room = room
             request.user.save()
             room.member_num += 1

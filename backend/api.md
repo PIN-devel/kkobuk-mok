@@ -6,7 +6,7 @@
 | 로그인           | post         | /rest-auth/login/                                    | email, password                                              | token                                                        | O                                                       |
 | 로그아웃         | post         | /rest-auth/logout/                                   | token                                                        |                                                              | O |
 | 비밀번호 변경    | post         | /rest-auth/password/change/                          | token, new_password1, new_password2, old_password            | 기존 비밀번호 다를 경우-> 400<br />성공 -> detail 메세지     | O    |
-| 유저 조회        | get          | /accounts/?kw='수미'&order_by='point'&period="month" | token                                                        |                                                              | O |
+| 유저 조회        | get          | /accounts/?kw='수미'&order_by='point'&period="month" | token                                                 |                                                              | O |
 | 유저 상세 조회   | get          | /accounts/<user_id>/                                 | token                                                        | data 없을 경우 -> 404<br />성공 -> data                      | --                   |
 | 회원정보 수정    | put          | /accounts/<user_id>/                                 | token, 수정할 data                                           | token 안보낼때 -> 401<br />본인 계정이 아닐 때 -> 403<br />성공 -> 수정된 유저 data | O |
 | 회원 탈퇴        | delete       | /accounts/<user_id>/                                 | token                                                        | token 안보낼때 -> 401<br />본인 계정이 아닐 때 -> 403<br />성공 -> 삭제된 유저 data | O |
@@ -32,14 +32,16 @@
 | 작업 시간 삭제 | delete       | /accounts/timesetting/ | token | | |
 | 작업 시간 수정 | put | /accounts/timesetting/ | token,total_time,work_time,break_time | | |
 |  |  |  |  | | |
-| 메인페이지 정보 | get | /accounts/maininfo/ | token | 현재 posture_level, temperature, humidity, posture_avg(최근까지 시간 별 자세 통계), user_state, time(현재 timesetting 값), desired_humidity |                     |
+| 메인페이지 정보 | get | /accounts/maininfo/ | token | 현재 posture_level, temperature, humidity, posture_avg(최근까지 시간 별 자세 통계), user_state, time(현재 timesetting 값), spent_time, desired_humidity, auto_setting, humidifier_on_off, silent_mode, theme |                     |
+| 소리 테마 변경 | post | /accounts/theme/change/ | token, theme(1~4) | 변경된 theme | |
 |  |  |  |  |  |  |
 | 라즈베리파이 |  |  |  |  |  |
-| 초기화 설정 값 | post | /accounts/initialinfo/ | product_key | desired_humidity, auto_setting, user_state |  |
-| 센싱값 저장 | post | /accounts/sensingsave/ | product_key, posture_level, temperature, humidity | desired_humidity, auto_setting, user_state |  |
+| 초기화 설정 값 | post | /accounts/initialinfo/ | product_key | desired_humidity, auto_setting, user_state, humidifier_on_off, silent_mode, theme |  |
+| 센싱값 저장 | post | /accounts/sensingsave/ | product_key, posture_level, temperature, humidity | desired_humidity, auto_setting, user_state, humidifier_on_off, silent_mode, theme |  |
 |  |  |  |  |  | |
 | 타이머 시작 | post | /accounts/timer/start/ | token, total_time, work_time, break_time | user_state, time(현재 timesetting 데이터) | |
 | 타이머 일시정지 | post | /accounts/timer/pause/ | token | user_state, time(현재 timesetting 데이터) | |
 | 타이머 재시작 | post | /accounts/timer/restart/ | token | user_state, time(현재 timesetting 데이터) | |
 | 타이머 중지 | post | /accounts/timer/stop/ | token | user_state, time(현재 timesetting 데이터) | |
 |  |  |  |  |  | |
+| 제품키 등록 | post | /accounts/productkey/ | token(관리자만 등록 가능), product_key | | |
