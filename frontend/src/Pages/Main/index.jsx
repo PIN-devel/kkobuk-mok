@@ -7,9 +7,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MainContext } from "../../contexts/MainContext";
+import { Redirect } from "react-router-dom";
 
 const Main = () => {
-  const { SERVER_URL } = useContext(AuthContext);
+  const { auth, SERVER_URL } = useContext(AuthContext);
   const token = Cookies.get("token");
   const config = {
     headers: {
@@ -129,47 +130,51 @@ const Main = () => {
   //   return <h1>Loading...</h1>;
   // }
 
-  return (
-    <Layout>
-      {isLoaded && (
-        <MainContext.Provider
-          value={{
-            currentScore,
-            currentHu,
-            currentTemp,
-            currentScoreData,
-            spentTime,
-            currentStatus,
-            TotalTime,
-            WorkTime,
-            setWorkTime,
-            BreakTime,
-            setBreakTime,
-            DeHumid,
-            setDeHumid,
-            isAuto,
-            setIsAuto,
-            isSilent,
-            setIsSilent,
-            isHumidiOn,
-            setIsHumidiOn,
-            haveCycle,
-            setHaveCycle,
-            TotalHour,
-            setTotalHour,
-            TotalMin,
-            setTotalMin,
-            initialTheme,
-          }}
-        >
-          <Wrapper>
-            <CurrentStatus />
-            <ControlPanel />
-          </Wrapper>
-        </MainContext.Provider>
-      )}
-    </Layout>
-  );
+  if (!auth) {
+    return <Redirect to="/" />;
+  } else {
+    return (
+      <Layout>
+        {isLoaded && (
+          <MainContext.Provider
+            value={{
+              currentScore,
+              currentHu,
+              currentTemp,
+              currentScoreData,
+              spentTime,
+              currentStatus,
+              TotalTime,
+              WorkTime,
+              setWorkTime,
+              BreakTime,
+              setBreakTime,
+              DeHumid,
+              setDeHumid,
+              isAuto,
+              setIsAuto,
+              isSilent,
+              setIsSilent,
+              isHumidiOn,
+              setIsHumidiOn,
+              haveCycle,
+              setHaveCycle,
+              TotalHour,
+              setTotalHour,
+              TotalMin,
+              setTotalMin,
+              initialTheme,
+            }}
+          >
+            <Wrapper>
+              <CurrentStatus />
+              <ControlPanel />
+            </Wrapper>
+          </MainContext.Provider>
+        )}
+      </Layout>
+    );
+  }
 };
 
 export default Main;
