@@ -311,6 +311,7 @@ def main_info(request):
 def theme_change(request):
     theme = request.data.get('theme')
     request.user.theme = int(theme)
+    request.user.save()
     data = {
         'theme': theme
     }
@@ -456,3 +457,15 @@ def timer_stop(request):
         return Response({"status": "OK", "data": data})
     else:
         return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)  
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def product_key(request):
+    if request.user.is_superuser:
+        product_key = request.data.get('product_key')
+        if Product.objects.filter(product_key=product_key).exists():
+            return Response({"status": "FAIL", "error_msg": "이미 존재하는 제품키입니다"}, status=status.HTTP_400_BAD_REQUEST) 
+        Product.objects.create(product_key=product_key)
+        return Response({"status": "OK"})
+    else:
+        return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN) 
