@@ -42,7 +42,7 @@ def take_pic(request):
     # user_state 1 - 아무것도 안함 2 - 공부중 3 - 휴식중 4 - 일시정지
     pre_user_state = cache.get('user_state')
 
-    if pre_user_state==2:
+    if pre_user_state == 2:
         #start = time.time()
         img_src= 'static/image/image.jpg'
         camera = PiCamera()
@@ -103,7 +103,8 @@ def take_pic(request):
         auto_setting = cache.get('auto_setting')
         desired_humidity = cache.get('desired_humidity')
         humidifier_on_off = cache.get('humidifier_on_off')
-        
+        silent_mode = cache.get('silent_mode')
+
         cache.set('humidifier_state',False)
         # 가습기 제어
         if auto_setting: # 공부중이면서 가습기 auto setting mode일 경우
@@ -139,6 +140,13 @@ def take_pic(request):
                     cache.set('humidifier_state',False)
         
         # 알람
+        if not silent_mode:
+            if user_state == 3:
+                arduino.write('SP'.encode())
+                if arduino.readable():
+                    tmp = arduino.readline()
+                    print('Rres',tmp.decode())
+
         if (pre_user_state == 2 and user_state == 3) or (pre_user_state == 3 and user_state == 2):
             arduino.write('SP'.encode())
             if arduino.readable():
@@ -147,8 +155,20 @@ def take_pic(request):
 
         print("1싸이클 종료 :", time.time() - start)
 
-    elif pre_user_state==3:
-        pass
+    elif pre_user_state == 3:
+        SERVER_URL = 'http://3.35.17.150:8000'
+        res = requests.post(SERVER_URL+'/accounts/initialinfo/',data={"product_key":"1111-1111-1111-1111"})
+        data = res.json()['data']
+        cache.set_many(data)
+        user_state = cache.get('user_state')
+        silent_mode = cache.get('silent_mode')
+
+        if user_state == 2 and not silent_mode:
+            arduino.write('SP'.encode())
+            if arduino.readable():
+                tmp = arduino.readline()
+                print('Rres',tmp.decode()) 
+
     return Response({"status":"OK"})
 
 
