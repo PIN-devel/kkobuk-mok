@@ -2,23 +2,30 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
   .container {
     width: 100%;
-    text-align: center;
+    height: 30%;
   }
-  ${(props) => props.myTemp}
   @keyframes progressAnimationStrike {
     from {
-      width: ${(props) => props.myTemp};
+      width: ${(props) => props.myTemp * 2};
     }
     to {
-      width: ${(props) => props.currentTemp}%;
+      width: ${(props) => props.currentTemp * 2}%;
     }
   }
-
+  .word {
+    padding-left: 41%;
+  }
   .progress2 {
     padding: 6px;
+    background: transparent;
     border-radius: 0.4rem;
+    overflow: hidden;
     background: #26323d;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25),
       0 1px rgba(255, 255, 255, 0.08);
@@ -37,7 +44,7 @@ export const Wrapper = styled.div`
   }
 
   .progress-moved .progress-bar2 {
-    width: ${(props) => props.currentTemp}%;
+    width: ${(props) => props.currentTemp * 2}%;
     background-color: #ef476f;
     animation: progressAnimation 6s;
   }
@@ -48,4 +55,15 @@ export const Wrapper = styled.div`
   $light-blue: #7dc8e8;
   $purple: #5856d6;
   $red: #ff2d55;
+  span {
+    display: inline-block;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    color: #ef476f;
+    letter-spacing: 1.5px;
+    margin-top: 0.7rem;
+    &:last-child {
+      float: right;
+    }
+  }
 `;

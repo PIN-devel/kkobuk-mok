@@ -16,7 +16,9 @@ const Temperature = (props) => {
         <div className="progress2 progress-moved">
           <div className="progress-bar2"></div>
         </div>
-        <span>{currentTemp}°C</span>
+        <span>0°C</span>
+        <span className="word">{currentTemp}°C</span>
+        <span className="progress">50°C</span>
       </div>
     </Wrapper>
   );
