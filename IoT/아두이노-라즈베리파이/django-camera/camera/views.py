@@ -36,10 +36,13 @@ def index(request):
     return render(request,'index.html')
 
 
+# main function
 @api_view(['GET'])
 def take_pic(request):
     # user_state 1 - 아무것도 안함 2 - 공부중 3 - 휴식중 4 - 일시정지
-    if cache.get('user_state')==2:
+    pre_user_state = cache.get('user_state')
+
+    if pre_user_state==2:
         #start = time.time()
         img_src= 'static/image/image.jpg'
         camera = PiCamera()
@@ -81,10 +84,9 @@ def take_pic(request):
             tmp = arduino.readline()
             print('SRres',tmp.decode())
             sensor = tmp.decode('utf-8')[2:len(tmp)-3]
-            print('sensor:',sensor)
-        tem,hum=sensor.split(',')
-        # product_key, posture_level, temperature, humidity
+            tem,hum=sensor.split(',')
         
+        # save data
         res = requests.post(
             SERVER_URL+'/accounts/sensingsave/',
             data={
@@ -94,36 +96,48 @@ def take_pic(request):
                 "humidity":float(hum)
                 }
             )
+        cache.set_many(res.json()['data'])
         
         # user_state 1 - 아무것도 안함 2 - 공부중 3 - 휴식중 4 - 일시정지
-        user_state = cache.get('user_state') 
+        user_state = cache.get('user_state')
         auto_setting = cache.get('auto_setting')
         desired_humidity = cache.get('desired_humidity')
-
+        humidifier_on_off = cache.get('humidifier_on_off')
+        
+        cache.set('humidifier_state',False)
         # 가습기 제어
         if auto_setting: # 공부중이면서 가습기 auto setting mode일 경우
             if float(desired_humidity) > float(hum):
-                arduino.write('RON'.encode())
-                if arduino.readable():
-                    tmp = arduino.readline()
-                    print('Rres',tmp.decode())
+                if not cache.get('humidifier_state'):
+                    arduino.write('RON'.encode())
+                    if arduino.readable():
+                        tmp = arduino.readline()
+                        print('Rres',tmp.decode())
+                    cache.set('humidifier_state',True)
+
             else:
-                arduino.write('ROF'.encode())
-                if arduino.readable():
-                    tmp = arduino.readline()
-                    print('Rres',tmp.decode())
+                if cache.get('humidifier_state'):
+                    arduino.write('ROF'.encode())
+                    if arduino.readable():
+                        tmp = arduino.readline()
+                        print('Rres',tmp.decode())
+                    cache.set('humidifier_state',False)
         else:
-            arduino.write('ROF'.encode())
-            if arduino.readable():
-                tmp = arduino.readline()
-                print('Rres',tmp.decode())
-
-
+            if humidifier_on_off:
+                if not cache.get('humidifier_state'):
+                    arduino.write('RON'.encode())
+                    if arduino.readable():
+                        tmp = arduino.readline()
+                        print('Rres',tmp.decode())
+                    cache.set('humidifier_state',True)
+            else:
+                if cache.get('humidifier_state'):
+                    arduino.write('ROF'.encode())
+                    if arduino.readable():
+                        tmp = arduino.readline()
+                        print('Rres',tmp.decode())
+                    cache.set('humidifier_state',False)
         
-        with open('./data.json', 'r') as f:
-            local_data = json.loads(f.read())
-        
-        pre_user_state = local_data['level']
         # 알람
         if (pre_user_state == 2 and user_state == 3) or (pre_user_state == 3 and user_state == 2):
             arduino.write('SP'.encode())
@@ -131,13 +145,9 @@ def take_pic(request):
                 tmp = arduino.readline()
                 print('Rres',tmp.decode())
 
-        add_data={'level':user_state}
-        with open('./data.json', 'w', encoding='utf-8') as make_file:
-            json.dump(add_data, make_file, indent="\t")
-
-
         print("1싸이클 종료 :", time.time() - start)
-    elif cache.get('user_state')==3:
+
+    elif pre_user_state==3:
         pass
     return Response({"status":"OK"})
 
