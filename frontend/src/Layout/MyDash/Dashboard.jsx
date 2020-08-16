@@ -218,6 +218,7 @@ export default function Dashboard(props) {
         exitChannel();
         setAuth(false);
         console.log("Logout success!!");
+        window.location.replace("https://i3b109.p.ssafy.io");
       })
       .catch((err) => {
         console.log(err);
