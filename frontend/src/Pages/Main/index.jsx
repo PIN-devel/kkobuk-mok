@@ -92,20 +92,18 @@ const Main = () => {
       });
   };
 
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
-  }
+  // function getRandomInt(min, max) {
+  //   min = Math.ceil(min);
+  //   max = Math.floor(max);
+  //   return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  // }
 
   const getInfo = () => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
       .then((res) => {
-        // setCurrentTemp(res.data.data.temperature);
-        // setCurrentHu(res.data.data.humidity);
-        setCurrentHu(getRandomInt(40, 80));
-        setCurrentTemp(getRandomInt(20, 34));
+        setCurrentTemp(res.data.data.temperature);
+        setCurrentHu(res.data.data.humidity);
         setCurrentStatus(res.data.data.user_state);
         setSpentTime(res.data.data.spent_time);
         setCurrentScore(res.data.data.posture_level);
