@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
   @keyframes grow {
     from {
       width: ${(props) => props.myHu}%;
@@ -42,6 +46,7 @@ export const Wrapper = styled.div`
       position: absolute;
       top: 0;
       left: 0;
+      border-radius: 0.4rem;
       background: linear-gradient(to bottom, #a3e2ef 35%, #4f9cc0);
       height: 100%;
       width: 0%;

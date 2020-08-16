@@ -27,6 +27,7 @@ const HControl = () => {
     isHumidiOn,
     setIsHumidiOn,
     initialTheme,
+    currentHu,
   } = useContext(MainContext);
 
   const { SERVER_URL } = useContext(AuthContext);
@@ -145,11 +146,18 @@ const HControl = () => {
     setMyDeHumid(DeHumid);
   }, []);
 
+  const FindOutT = (n) => {
+    if (n === 0) {
+      return SleepT;
+    }
+    return ReadyT;
+  };
+
   return (
     <Wrapper>
       <Grid container>
         <Grid item xs={12}>
-          <TurtleSign src={SleepT} />
+          <TurtleSign src={FindOutT(currentHu)} />
         </Grid>
         <Grid container className="happy">
           <Grid item xs={4} container className="3boxes">

@@ -2,13 +2,13 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   padding-left: 10%;
   padding-top: 10%;
   .container {
-    width: 350px;
-    height: 350px;
+    width: 400px;
+    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,7 +29,7 @@ export const Wrapper = styled.div`
 
   .yellowCircle {
     border-radius: 50%;
-    background-color: yellow;
+    background-color: orange;
     width: 200px;
     height: 200px;
     position: absolute;
