@@ -87,6 +87,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
   },
+  // paper: {
+  //   marginRight: theme.spacing(2),
+  // },
   fixedHeight: {
     height: 240,
   },
