@@ -19,7 +19,7 @@ SERVER_URL = 'http://3.35.17.150:8000'
 init_res = requests.post(SERVER_URL+'/accounts/initialinfo/',data={"product_key":"1111-1111-1111-1111"})
 init_data = init_res.json()['data']
 cache.set_many(init_data)
-
+cache.set('warning_cnt',0)
 
 # initialize arduino
 arduino = serial.Serial("/dev/ttyACM0",9600)
@@ -68,6 +68,10 @@ def take_pic(request):
                 max_val=tmpList[i]
                 idx=i+1
         # print("ai예측 종료 :", time.time() - start)
+        if idx == 3:
+            cache.incr('warning_cnt')
+        else:
+            cache.set('warning_cnt',0)
         
         # motor control
         cmd = "MC"+str(idx)
@@ -140,8 +144,8 @@ def take_pic(request):
                         print('Rres',tmp.decode())
                     cache.set('humidifier_state',False)
         
-        # 알람
         if not silent_mode:
+            # 쉬는 시간 알람
             if user_state == 3:
                 cmd = "MS"+str(theme)
                 arduino.write(cmd.encode())
@@ -149,6 +153,13 @@ def take_pic(request):
                     tmp = arduino.readline()
                     print('Rres',tmp.decode())
 
+            # 경고 알람
+            if cache.get('warning_cnt')>3:
+                cmd = "MW"+str(theme)
+                arduino.write(cmd.encode())
+                if arduino.readable():
+                    tmp = arduino.readline()
+                    print('Rres',tmp.decode())
 
         print("1싸이클 종료 :", time.time() - start)
 
@@ -161,6 +172,7 @@ def take_pic(request):
         silent_mode = cache.get('silent_mode')
         theme = cache.get('theme')
 
+        # 쉬는 시간 종료 알람
         if user_state == 2 and not silent_mode:
             cmd = "ME"+str(theme)
             arduino.write(cmd.encode())
