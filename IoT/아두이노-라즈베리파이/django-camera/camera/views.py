@@ -2,44 +2,49 @@ import serial,time
 import requests, json
 
 from django.shortcuts import render
+from django.core.cache import cache
 
 from picamera import PiCamera
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-# from .TeachableMachine.tensorflow import outPrint
 import tensorflow.keras
 from PIL import Image, ImageOps
 import numpy as np
 
 
+
+
+# fetch data
 SERVER_URL = 'http://3.35.17.150:8000'
-
-
 init_res = requests.post(SERVER_URL+'/accounts/initialinfo/',data={"product_key":"1111-1111-1111-1111"})
-pre_user_state = init_res.json()['data']['user_state']
+init_data = init_res.json()['data']
 
-add_data={'level':pre_user_state}
-with open('./data.json', 'w', encoding='utf-8') as make_file:
-    json.dump(add_data, make_file, indent="\t")
+cache.set_many(init_data)
+print(cache.get("auto_setting"))
+print(cache.get("desired_humidity"))
+print(cache.get("humidifier_on_off"))
+# add_data={'level':pre_user_state}
+# with open('./data.json', 'w', encoding='utf-8') as make_file:
+#     json.dump(add_data, make_file, indent="\t")
 
+# initialize arduino
 arduino = serial.Serial("/dev/ttyACM0",9600)
+
+# initialize tensorflow model
 np.set_printoptions(suppress=True)
 model = tensorflow.keras.models.load_model('keras_model.h5')
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-size = (224, 224)
 
-
-
-
+# controller
 def index(request):
     return render(request,'index.html')
 
 @api_view(['GET'])
 def take_pic(request):
 
-    start = time.time()
+    #start = time.time()
     img_src= 'static/image/image.jpg'
     camera = PiCamera()
     camera.resolution = (224, 224)
@@ -47,28 +52,35 @@ def take_pic(request):
     camera.capture(img_src)
     camera.close()
     # print("카메라 촬영 종료 :", time.time() - start)
+    
     image = Image.open(img_src)
+    size = (224, 224)
     image = ImageOps.fit(image, size, Image.ANTIALIAS)
     image_array = np.asarray(image)
     normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
     data[0] = normalized_image_array
     # print("이미지 프로세싱 종료 :", time.time() - start)
+    
     prediction = model.predict(data)
     tmpList = prediction[0]
     # print("ai예측 종료 :", time.time() - start)
+    
     max_val = -1
     for i in range(3):
         if max_val<tmpList[i]:
             max_val=tmpList[i]
             idx=i+1
     
+    # motor control
     cmd = "MC"+str(idx)
     print('cmd: ',cmd)
-    arduino.write(cmd.encode())
+    arduino.write(cmd.encode()) 
     if arduino.readable():
         tmp = arduino.readline()
         print('MCres',tmp.decode())
         motor = tmp.decode('utf-8')[:len(tmp)-3]
+    
+    # get hum, tem data
     arduino.write('SR'.encode())
     if arduino.readable():
         tmp = arduino.readline()
