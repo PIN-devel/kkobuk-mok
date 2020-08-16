@@ -21,10 +21,11 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link, Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
-import Axios from "axios";
+import axios from "axios";
+import localStorage from "local-storage";
 
 export default function Dashboard(props) {
-  const { SERVER_URL, setAuth } = useContext(AuthContext);
+  const { SERVER_URL, setAuth, setChannelIn } = useContext(AuthContext);
   const token = Cookies.get("token");
   const config = {
     headers: {
@@ -70,7 +71,8 @@ export default function Dashboard(props) {
 
   const acceptRequest = (F_id) => {
     console.log("accepted");
-    Axios.post(`${SERVER_URL}/accounts/friend/${F_id}/accept/`, null, config)
+    axios
+      .post(`${SERVER_URL}/accounts/friend/${F_id}/accept/`, null, config)
       .then((res) => {
         console.log("친구 수락 성공");
         const newList = friendRequests.filter(
@@ -85,7 +87,8 @@ export default function Dashboard(props) {
 
   const rejectRequest = (F_id) => {
     console.log("rejected");
-    Axios.post(`${SERVER_URL}//accounts/friend/${F_id}/reject/`, null, config)
+    axios
+      .post(`${SERVER_URL}//accounts/friend/${F_id}/reject/`, null, config)
       .then((res) => {
         console.log("친구 거절 성공");
         const newList = friendRequests.filter(
@@ -98,12 +101,33 @@ export default function Dashboard(props) {
       });
   };
 
+  // 채널 나가기 고르아웃 때 해줘야해
+  const exitChannel = () => {
+    const channelId = localStorage.get("myChannel").id;
+    const url = `${SERVER_URL}/rooms/${channelId}/`;
+    const handleSetChannelIn = () => {
+      localStorage.remove("myChannel");
+      setChannelIn(null);
+    };
+    axios
+      .post(url, {}, config)
+      .then((res) => {
+        handleSetChannelIn();
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  // 로그아웃할 때, 쿠키와 로컬스토리지 날린다
   const Logout = () => {
-    Axios.post(`${SERVER_URL}/rest-auth/logout/`, config)
+    axios
+      .post(`${SERVER_URL}/rest-auth/logout/`, config)
       .then((res) => {
         console.log(res);
         Cookies.remove("token");
         Cookies.remove("myUserId");
+        exitChannel();
         setAuth(false);
         console.log("Logout success!!");
       })
@@ -113,7 +137,8 @@ export default function Dashboard(props) {
   };
 
   useEffect(() => {
-    Axios.get(`${SERVER_URL}/accounts/friend/request/receive/`, config)
+    axios
+      .get(`${SERVER_URL}/accounts/friend/request/receive/`, config)
       .then((res) => {
         console.log("가져오기 성공");
         console.log(res.data.data);

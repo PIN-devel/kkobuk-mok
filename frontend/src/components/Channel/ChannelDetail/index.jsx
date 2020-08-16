@@ -91,7 +91,14 @@ const ChannelDetail = (props) => {
             <Grid item xs={10}></Grid>
             <Grid item xs={2}>
               <Button
-                color="primary"
+                // color="white"
+                style={{
+                  backgroundColor: "#66d9e8",
+                  padding: "4px 4px",
+                  fontSize: "12px",
+                  color: "white",
+                  fontFamily: "Nanum Gothic",
+                }}
                 onClick={() => {
                   exitChannel();
                 }}
