@@ -104,6 +104,7 @@ def take_pic(request):
         desired_humidity = cache.get('desired_humidity')
         humidifier_on_off = cache.get('humidifier_on_off')
         silent_mode = cache.get('silent_mode')
+        theme = cache.get('theme')
 
         cache.set('humidifier_state',False)
         # 가습기 제어
@@ -142,16 +143,12 @@ def take_pic(request):
         # 알람
         if not silent_mode:
             if user_state == 3:
-                arduino.write('SP'.encode())
+                cmd = "MS"+str(theme)
+                arduino.write(cmd.encode())
                 if arduino.readable():
                     tmp = arduino.readline()
                     print('Rres',tmp.decode())
 
-        if (pre_user_state == 2 and user_state == 3) or (pre_user_state == 3 and user_state == 2):
-            arduino.write('SP'.encode())
-            if arduino.readable():
-                tmp = arduino.readline()
-                print('Rres',tmp.decode())
 
         print("1싸이클 종료 :", time.time() - start)
 
@@ -162,9 +159,11 @@ def take_pic(request):
         cache.set_many(data)
         user_state = cache.get('user_state')
         silent_mode = cache.get('silent_mode')
+        theme = cache.get('theme')
 
         if user_state == 2 and not silent_mode:
-            arduino.write('SP'.encode())
+            cmd = "ME"+str(theme)
+            arduino.write(cmd.encode())
             if arduino.readable():
                 tmp = arduino.readline()
                 print('Rres',tmp.decode()) 
