@@ -53,7 +53,7 @@ function App() {
             <Route exact path="/Channel" component={Channel} />
             <Route exact path="/ContactUs" component={ContactUs} />
             <Route exact path="/AboutMe" component={AboutMe} />
-            {/* <Route exact path="/Terms" component={Terms} /> */}
+            <Route exact path="/Terms" component={Terms} />
             <Route exact path="/not-found" component={Page404} />
             <Redirect to="not-found/" />;
           </Switch>
