@@ -296,9 +296,9 @@ export default function Dashboard(props) {
                       onKeyDown={handleListKeyDown}
                     >
                       <MenuItem component={Link} to="/User">
-                        Profile
+                        <i class="fas fa-user-circle" style={{margin:"0 7px 0 0"}}></i>Profile
                       </MenuItem>
-                      <MenuItem onClick={Logout}>Logout</MenuItem>
+                      <MenuItem onClick={Logout}><i class="fas fa-sign-out-alt" style={{margin:"0 7px 0 0"}}></i>Logout</MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -342,35 +342,38 @@ export default function Dashboard(props) {
                     >
                       {friendRequests.length === 0 ? (
                         <MenuItem onClick={handleClose2}>
-                          <h4>친구 요청이 없습니다</h4>
+                          <p style={{margin:"0"}}>친구 요청이 없습니다</p>
                         </MenuItem>
                       ) : (
                         friendRequests.map((req) => {
                           return (
                             <MenuItem>
-                              <Grid container spacing={4}>
-                                <Grid item xs={6}>
-                                  <Typography variant="body1">
-                                    {req.sender.name}님의 친구요청
+                              <Grid container>
+                                <Grid item xs={8}>
+                                  <Typography variant="body1" align="center">
+                                    {req.sender.name}admin님의 친구요청
                                   </Typography>
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={2}>
                                   <Button
+                                    color="primary"
                                     onClick={() => {
                                       acceptRequest(req.sender.id);
                                     }}
                                   >
-                                    수락
+                                    <i class="fas fa-check"></i>
                                   </Button>
+                                </Grid>
+                                <Grid item xs={2}>
                                   <Button
+                                    color="secondary"
                                     onClick={() => {
                                       rejectRequest(req.sender.id);
                                     }}
                                   >
-                                    거절
+                                    <i class="fas fa-times"></i>
                                   </Button>
                                 </Grid>
-                                <Grid item xs={3}></Grid>
                               </Grid>
                             </MenuItem>
                           );

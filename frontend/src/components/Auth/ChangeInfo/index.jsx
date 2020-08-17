@@ -7,8 +7,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
+import Divider from '@material-ui/core/Divider';
 import Cookies from "js-cookie";
 import axios from "axios";
+import { MDBBtn, MDBTypography } from "mdbreact";
 
 function getModalStyle() {
   const top = 50;
@@ -234,22 +236,55 @@ const ChangeInfo = (props) => {
       <div>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <input
+            <div className="input-group">
+              <div className="custom-file">
+                <input
+                  type="file"
+                  className="custom-file-input"
+                  id="inputGroupFile01"
+                  aria-describedby="inputGroupFileAddon01"
+                  onChange={(e) => {
+                    ImageHandler(e.target.files[0]);
+                  }}
+                />
+                <label className="custom-file-label" htmlFor="inputGroupFile01">
+                  Choose file
+                </label>
+              </div>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} className="text-right">
+            {/* <input
               type="file"
               onChange={(e) => {
                 ImageHandler(e.target.files[0]);
               }}
-            />
-            <Button
-              variant="contained"
+            /> */}
+            <MDBBtn
+              color="info"
+              className="m-0 px-3 py-2 z-depth-1"
+              onClick={() => {
+                EditImage();
+              }}
+              >
+              프로필 이미지 변경
+            </MDBBtn>
+            {/* <Button
+              variant="outlined"
               color="primary"
               onClick={() => {
                 EditImage();
               }}
             >
               이미지 업로드
-            </Button>
+            </Button> */}
           </Grid>
+
+          <Grid item xs={12}>
+            <Divider></Divider>
+          </Grid>
+          
           <Grid item xs={12}>
             <TextField
               variant="outlined"
@@ -267,9 +302,9 @@ const ChangeInfo = (props) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              error={new_password1.length < 8 ? true : false}
+              error={new_password1.length < 8 && new_password1.length > 0 ? true : false}
               helperText={
-                new_password1.length < 8 ? "비밀번호는 8자리 이상입니다" : ""
+                new_password1.length < 8 && new_password1.length > 0 ? "비밀번호는 8자리 이상입니다" : ""
               }
               variant="outlined"
               fullWidth
@@ -304,8 +339,18 @@ const ChangeInfo = (props) => {
               }}
             />
           </Grid>
-          <Grid item xs={12}>
-            <Button
+
+          <Grid item xs={12} className="text-right">
+            <MDBBtn
+              color="info"
+              className="m-0 px-3 py-2 z-depth-1"
+              onClick={() => {
+                ChangePass();
+              }}
+              >
+              비밀번호 변경
+            </MDBBtn>
+            {/* <Button
               className={classes.margin}
               variant="contained"
               color="primary"
@@ -314,8 +359,13 @@ const ChangeInfo = (props) => {
               }}
             >
               비밀번호 변경
-            </Button>
+            </Button> */}
           </Grid>
+
+          <Grid item xs={12}>
+            <Divider></Divider>
+          </Grid>
+
           <Grid item xs={6} md={3}>
             <TextField
               variant="outlined"
@@ -383,29 +433,29 @@ const ChangeInfo = (props) => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} className="text-right">
             {confirmedPKey ? (
-              <Button
-                className={classes.margin}
+              <MDBBtn
+                className="m-0 px-3 py-2 z-depth-1"
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={() => {
                   setupPkey();
                 }}
               >
                 제품키 변경
-              </Button>
+              </MDBBtn>
             ) : (
-              <Button
-                className={classes.margin}
+              <MDBBtn
+                className="m-0 px-3 py-2 z-depth-1"
                 variant="contained"
-                color="primary"
+                color="info"
                 onClick={() => {
                   handleSetConfirmedPkey();
                 }}
               >
                 제품키 인증
-              </Button>
+              </MDBBtn>
             )}
           </Grid>
         </Grid>
