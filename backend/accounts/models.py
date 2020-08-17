@@ -74,3 +74,11 @@ class Sensing(models.Model):
 class Product(models.Model):
     product_key = models.CharField(max_length=200)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+
+class Inquery(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    subject = models.CharField(max_length=200)
+    message = models.CharField(max_length=1000)
+    solved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)

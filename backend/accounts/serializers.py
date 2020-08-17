@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from django.contrib.auth import get_user_model
-from .models import FriendRequest, TimeSetting
+from .models import FriendRequest, TimeSetting, Inquery
 
 from allauth.account import app_settings as allauth_settings
 from allauth.utils import email_address_exists
@@ -87,3 +87,8 @@ class FriendRequestReceiverListSerializer(serializers.ModelSerializer):
     class Meta:
         model = FriendRequest
         fields = ('receiver',)
+
+class InquerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inquery
+        fields = '__all__'
