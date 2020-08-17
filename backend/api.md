@@ -18,7 +18,9 @@
 | 방 리스트        | get          | /rooms/                                              | token, query : _page, keyword                 | 방 리스트 data                                               | O                                           |
 | 방 생성          | post         | /rooms/                                              | token, name, (password), description                      | 해당 방 정보 data                                          | O                                       |
 | 방 상세 조회     | get          | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            | O                                         |
-| 방 입장, 퇴장    | post         | /rooms/<rooms_id>/                                   | token                                                        | 해당 방 정보 data                                            | O                                        |
+| 방 입장    | post         | /rooms/<rooms_id>/                                   | token                                                        |                                             | O                                        |
+| 방 퇴장 | delete | /rooms/<rooms_id>/ | token |  |  |
+| 방 참여 여부 체크 | get | /rooms/check/ | token | 참여 중이라면 해당 방 정보 data, 아니라면 null |  |
 |                  |              |                                                      |                                                              |                                                              |                                                              |
 | 친구 리스트 조회     | get          | /accounts/friend/                  | token                                                        |                                                              | O |
 | 친구요청 받은 목록 | get          | /accounts/friend/request/receive/ | token                                                        |                                                              | O |
