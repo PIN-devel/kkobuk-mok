@@ -123,10 +123,10 @@ DATABASES = {
     'default': {
         'ENGINE' : 'django.db.backends.mysql',
         'NAME' : 'kkobuk_back', # database name
-        'USER' : 'ssafy', # root
-        'PASSWORD' : get_secret('DB_PASSWORD'), # root password
-        'HOST' : 'i3b109.p.ssafy.io',
-        'POST' : '3306',
+        'USER' : 'root', # root
+        'PASSWORD' : 'cofflswj5', # root password
+        # 'HOST' : 'i3b109.p.ssafy.io',
+        # 'POST' : '3306',
     },
 	'OPTIONS': {
         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"

@@ -8,8 +8,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 
-from .models import FriendRequest, Product, TimeSetting, Sensing
-from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer, FriendRequestReceiverListSerializer
+from .models import FriendRequest, Product, TimeSetting, Sensing, Inquery
+from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer, FriendRequestReceiverListSerializer, InquerySerializer
 from .helper import email_auth_num
 
 from django.db.models import Sum
@@ -469,3 +469,28 @@ def product_key(request):
         return Response({"status": "OK"})
     else:
         return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN) 
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def inquery_list_create(request):
+    if request.method == 'GET': # 해결 안된 문의사항만
+        if request.user.is_superuser:
+            inquery = Inquery.objects.filter(solved=False)
+            serializer = InquerySerializer(inquery, many=True)
+            return Response({"status": "OK", "data": serializer.data})
+        return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN) 
+    else:
+        serializer = InquerySerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({"status": "OK", "data": serializer.data})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def inquery_solved(request, inquery_id):
+    if request.user.is_superuser:
+        inquery = get_object_or_404(Inquery, id=inquery_id)
+        inquery.solved = not inquery.solved
+        inquery.save()
+        return Response({"status": "OK", "data": {"solved": inquery.solved}})
+    return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN)
