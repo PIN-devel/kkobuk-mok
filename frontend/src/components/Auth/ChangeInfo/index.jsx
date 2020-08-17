@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { UserContext } from "../../../contexts/UserContext";
 import { Button, Grid, FormHelperText } from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -32,11 +33,12 @@ const useStyles = makeStyles((theme) => ({
   PButton: {
     display: "flex",
     justifyContent: "center",
-  }
+  },
 }));
 
-const ChangeInfo = () => {
+const ChangeInfo = (props) => {
   const { SERVER_URL } = useContext(AuthContext);
+  const { afterChange, setAfterChange } = useContext(UserContext);
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
@@ -61,10 +63,10 @@ const ChangeInfo = () => {
   };
   const newConfig = {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
       Authorization: `Jwt ${token}`,
     },
-  }
+  };
 
   const handleOldP = (e) => {
     setOld_Password(e);
@@ -103,6 +105,8 @@ const ChangeInfo = () => {
         setNew_Password1("");
         setNew_Password2("");
         alert("비밀번호가 변경되었습니다");
+        setAfterChange(!afterChange);
+        handleClose();
       })
       .catch((err) => {
         alert("비밀번호 변경 실패");
@@ -159,6 +163,8 @@ const ChangeInfo = () => {
       .then((res) => {
         console.log(res);
         alert("제품키 변경 성공");
+        setAfterChange(!afterChange);
+        handleClose();
       })
       .catch((err) => {
         console.log("제품키 변경 실패");
@@ -179,10 +185,10 @@ const ChangeInfo = () => {
   };
 
   const EditImage = () => {
-    const formData = new FormData();    
-    console.log(formData)
+    const formData = new FormData();
+    // console.log(formData);
     formData.append("image", newImage);
-    console.log(newImage)
+    // console.log(newImage);
     for (let key of formData.entries()) {
       console.log(`${key}`);
     }
@@ -190,12 +196,14 @@ const ChangeInfo = () => {
       axios
         .put(`${SERVER_URL}/accounts/${userID}/`, formData, newConfig)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           alert("프로필 이미지가 변경되었습니다");
+          handleClose();
+          setAfterChange(!afterChange);
         })
         .catch((err) => {
-          alert("프로필 이미지 변경 실패");
-          console.log(err.response);
+          alert("이미지 파일을 선택해주세요");
+          // console.log(err.response);
         });
     } else {
       alert("이미지를 업로드해주세요!");

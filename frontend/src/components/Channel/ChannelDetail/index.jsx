@@ -33,7 +33,7 @@ const ChannelDetail = (props) => {
       setChannelIn(null);
     };
     axios
-      .post(url, {}, config)
+      .delete(url, config)
       .then((res) => {
         // console.log("채널 나가기 성공");
         // console.log(res.data.data);

@@ -197,7 +197,7 @@ export default function Dashboard(props) {
         setChannelIn(null);
       };
       axios
-        .post(url, {}, config)
+        .delete(url, config)
         .then((res) => {
           handleSetChannelIn();
         })
@@ -250,7 +250,7 @@ export default function Dashboard(props) {
           </IconButton>
           <div className={classes.title}>
             <img
-              src="/images/kkobuk_logo.PNG"
+              src="/images/kkobuk_logo.png"
               alt="kkobuk"
               style={{ width: "100px", margin: "10px 0 0 0" }}
             />

@@ -4,13 +4,16 @@ import Graphs from "../../components/UserInfo/Graphs";
 import Layout from "../../Layout/MyDash/Dashboard";
 import Wrapper from "./styles";
 import Cookies from "js-cookie";
-import Axios from "axios";
+import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
+import { UserContext } from "../../contexts/UserContext";
 import { Redirect } from "react-router-dom";
 
 const User = () => {
   const { auth, SERVER_URL } = useContext(AuthContext);
   const [me, setMe] = useState(null);
+  const [afterChange, setAfterChange] = useState(false);
+
   const token = Cookies.get("token");
   const userID = Cookies.get("myUserId");
   const config = {
@@ -19,35 +22,38 @@ const User = () => {
     },
   };
   useEffect(() => {
-    Axios.get(`${SERVER_URL}/accounts/${userID}/`, config)
+    axios
+      .get(`${SERVER_URL}/accounts/${userID}/`, config)
       .then((res) => {
         console.log("유저정보 가져오기 성공");
-        console.log(res.data.data)
+        console.log(res.data.data);
         setMe(res.data.data);
       })
       .catch((err) => {
         console.log("유저정보 가져오기 실패");
         console.log(err.response);
       });
-  }, []);
+  }, [afterChange]);
 
   if (!auth) {
     return <Redirect to="/" />;
   } else {
     return (
       me && (
-        <Layout>
-          <Wrapper>
-            <Profile
-              name={me.name}
-              image={me.image}
-              email={me.email}
-              friends={me.friends}
-              today={me.posture[0].score}
-            />
-            <Graphs data={me.posture.slice(1, 8)} />
-          </Wrapper>
-        </Layout>
+        <UserContext.Provider value={{ afterChange, setAfterChange }}>
+          <Layout>
+            <Wrapper>
+              <Profile
+                name={me.name}
+                image={me.image}
+                email={me.email}
+                friends={me.friends}
+                today={me.posture[0].score}
+              />
+              <Graphs data={me.posture.slice(1, 8)} />
+            </Wrapper>
+          </Layout>
+        </UserContext.Provider>
       )
     );
   }

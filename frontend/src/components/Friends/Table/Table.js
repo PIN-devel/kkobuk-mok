@@ -80,18 +80,12 @@ export default function CustomTable(props) {
       config
     )
       .then((res) => {
-        console.log(res.data);
-        console.log("친구 요청 취소 성공");
         alert("친구 요청이 취소되었습니다");
         const newList = tableData.filter((comp) => comp[0] !== F_id);
         setTableData(newList);
       })
-      .catch((err) => {
-        console.log(err.response);
-        console.log("친구 요청 취소 실패");
-      });
+      .catch((err) => {});
   };
-
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
