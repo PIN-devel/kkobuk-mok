@@ -1,66 +1,15 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  max-width: 1280px;
-  width: 100%;
-  margin: 0 auto;
-  * {
-    transition: all 0.4s;
-  }
-  & .subject {
-    width: 100%;
-    padding: 120px 0;
-    font-size: 44px;
-    font-weight: 500;
+  .form-header{
+    padding: 1rem;
+    margin-top: -3.13rem;
+    margin-bottom: 3rem;
+    background-color: #82b1ff !important;
+    color: #fff;
     text-align: center;
-  }
-  & .info {
-    padding-bottom: 60px;
-    & > div {
-      text-align: center;
-      & .title {
-        padding: 24px 0;
-        font-size: 36px;
-        font-weight: 300;
-        color: #242424;
-      }
-      & .text {
-        font-size: 18px;
-        font-weight: 500;
-        color: #242424;
-      }
-    }
-  }
-  img {
-    width: 200px;
-  }
-  @media (max-width: 960px) {
-    & .subject {
-      padding: 100px 0 !important;
-    }
-    & .info {
-      & > div {
-        padding-bottom: 24px;
-      }
-    }
-  }
-  @media (max-width: 600px) {
-    & .subject {
-      padding: 60px 0 !important;
-      font-size: 32px;
-    }
-    & .info {
-      & > div {
-        padding-bottom: 24px;
-        & .title {
-          padding: 12px 0 !important;
-          font-size: 24px;
-        }
-        & .text {
-          font-size: 16px;
-        }
-      }
-    }
+    border-radius: .125rem;
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
   }
 `;
 
