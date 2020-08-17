@@ -197,7 +197,7 @@ export default function Dashboard(props) {
         setChannelIn(null);
       };
       axios
-        .post(url, {}, config)
+        .delete(url, config)
         .then((res) => {
           handleSetChannelIn();
         })

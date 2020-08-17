@@ -37,6 +37,7 @@ const Channel = () => {
     const url = `${SERVER_URL}/rooms/check`;
     const handleSetChannelIn = (channel) => {
       setChannelIn(channel);
+      localStorage.set("myChannel", channel);
     };
     axios
       .get(url, config)
