@@ -1,12 +1,63 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBIcon, MDBBtn, MDBInput } from "mdbreact";
 import Layout from "../../../Layout/MyDash/Dashboard";
 import Wrapper from "./styles";
+import { AuthContext } from "../../../contexts/AuthContext";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const ContactUs = () => {
+const ContactUs = () => {    
+    const [userName, setUserName] = useState("");
+    const [userEmail, setUserEmail] = useState("");
+    const [subject, setSubject] = useState("");
+    const [message, setMessage] = useState("");
+
+    const token = Cookies.get("token");
+    const config = {
+      headers: {
+        Authorization: `jwt ${token}`,
+      },
+    };
+    const { SERVER_URL } = useContext(AuthContext);
+
+    const registerInquery = () => {
+      const url = `${SERVER_URL}/accounts/inquery/`;
+      const inqueryData = {
+        name: userName,
+        email: userEmail,
+        subject,
+        message,
+      };
+      
+      axios
+        .post(url, inqueryData, config)
+        .then(() => {            
+          setUserName("");
+          setUserEmail("");
+          setSubject("");
+          setMessage("");
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    };
+
+    const handleSetUserName = (e) => {
+        setUserName(e.target.value);
+      };
+    const handleSetUserEmail = (e) => {
+        setUserEmail(e.target.value);
+    };
+    const handleSetSubject = (e) => {
+        setSubject(e.target.value);
+    };
+    const handleSetMessage = (e) => {
+        setMessage(e.target.value);
+    };
+    
     return (
         <Wrapper>
-            <Layout>
+            <Layout>                
                 <section className="my-5">
                     <h2 className="h1-responsive font-weight-bold text-center my-5 pb-5">
                     Contact us
@@ -23,9 +74,6 @@ const ContactUs = () => {
                                 <MDBIcon icon="envelope" /> Write to us
                             </h3>
                             </div>
-                            {/* <p className="dark-grey-text">
-                            We'll write rarely, but only the best content.
-                            </p> */}
                             <div className="md-form">
                             <MDBInput
                                 icon="user"
@@ -33,6 +81,10 @@ const ContactUs = () => {
                                 iconClass="grey-text"
                                 type="text"
                                 id="form-name"
+                                onChange={(e) => {
+                                    handleSetUserName(e);
+                                }}
+                                value={userName}
                             />
                             </div>
                             <div className="md-form">
@@ -42,6 +94,10 @@ const ContactUs = () => {
                                 iconClass="grey-text"
                                 type="text"
                                 id="form-email"
+                                onChange={(e) => {
+                                    handleSetUserEmail(e);
+                                }}
+                                value={userEmail}
                             />
                             </div>
                             <div className="md-form">
@@ -51,6 +107,10 @@ const ContactUs = () => {
                                 iconClass="grey-text"
                                 type="text"
                                 id="form-subject"
+                                onChange={(e) => {
+                                    handleSetSubject(e);
+                                }}
+                                value={subject}
                             />
                             </div>
                             <div className="md-form">
@@ -60,10 +120,17 @@ const ContactUs = () => {
                                 iconClass="grey-text"
                                 type="textarea"
                                 id="form-text"
+                                onChange={(e) => {
+                                    handleSetMessage(e);
+                                }}
+                                value={message}
                             />
                             </div>
                             <div className="text-center">
-                            <MDBBtn color="light-blue">Submit</MDBBtn>
+                            <MDBBtn 
+                                onClick={registerInquery}
+                                color="light-blue">
+                                Submit</MDBBtn>
                             </div>
                         </MDBCardBody>
                         </MDBCard>
@@ -95,7 +162,7 @@ const ContactUs = () => {
                             <MDBBtn tag="a" floating color="light-blue" className="accent-1">
                             <MDBIcon icon="phone" />
                             </MDBBtn>
-                            <p className="mt-2 mb-md-0">042 123 1234</p>
+                            <p className="mt-2 mb-md-0">042-123-1234</p>
                         </MDBCol>
                         <MDBCol md="4">
                             <MDBBtn tag="a" floating color="light-blue" className="accent-1">
