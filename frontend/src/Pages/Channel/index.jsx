@@ -13,13 +13,6 @@ const Channel = () => {
   // 입장 채널
   const { auth, channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
 
-  // 채널 들어간게 없으면 새로고침 때문일 수 있으니 확인하기
-  useEffect(() => {
-    if (!channelIn && localStorage.get("myChannel")) {
-      setChannelIn(localStorage.get("myChannel"));
-    }
-  }, []);
-
   //검색 키워드
   const [searchData, setSearchData] = useState("");
   // 채널 리스트
@@ -38,6 +31,33 @@ const Channel = () => {
       Authorization: `jwt ${token}`,
     },
   };
+
+  // 채널 들어간게 없으면 새로고침 때문일 수 있으니 확인하기
+  const checkChannel = () => {
+    const url = `${SERVER_URL}/rooms/check`;
+    const handleSetChannelIn = (channel) => {
+      setChannelIn(channel);
+    };
+    axios
+      .get(url, config)
+      .then((res) => {
+        handleSetChannelIn(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  useEffect(() => {
+    // if (!channelIn && localStorage.get("myChannel")) {
+    //   setChannelIn(localStorage.get("myChannel"));
+    // }
+    if (!channelIn) {
+      checkChannel();
+    }
+  }, [channelIn]);
+
+  // 검색과 리스트 가져오는것
   const getChannels = (searchData) => {
     // searchData 써서 채널 이름 저거 들어가는거 가지고와
     // 이거 모델에 만들어야함
@@ -59,9 +79,9 @@ const Channel = () => {
   //
 
   // 채널 출입 다시 렌더링 해줘야할 듯
-  useEffect(() => {
-    getChannels(); // 이거 다시...
-  }, [channelIn]);
+  // useEffect(() => {
+  //   getChannels(); // 이거 다시...
+  // }, [channelIn]);
 
   if (!auth) {
     return <Redirect to="/" />;
