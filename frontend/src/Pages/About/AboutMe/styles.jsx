@@ -31,6 +31,28 @@ const styles = {
     paddingBottom: 10,
     textAlign: "center",
   },
+
+  mute: {
+    color: "gray",
+  },
+
+  icon: {
+    color: "#3f51b5",
+  },
+  cardTitle: {
+    background: "linear-gradient(45deg, white, #17a2b8)",
+    color: "white",
+    height: "70px",
+    "line-height": "70px",
+  },
+  cardHeader: {
+    margin: "0",
+    padding: "0",
+    height: "600px",
+  },
+  cardBody: {
+    padding: "36px",
+  },
 };
 
 const useStyles = makeStyles(styles);
