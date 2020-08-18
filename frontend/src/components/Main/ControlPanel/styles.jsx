@@ -1,12 +1,8 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
-  width: 90%;
-  height: 50%;
-  justify-content: center;
   border-style: outset;
-  border-radius: 30px;
-  margin-top: 1%;
-  padding: 25px 5px;
+  border-radius: 20px;
+  margin-bottom: 50px;
+  padding: 25px;
 `;

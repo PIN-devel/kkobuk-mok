@@ -10,13 +10,17 @@ const CurrentStatus = (props) => {
   const { currentHu } = useContext(MainContext);
 
   return (
-    <Wrapper className="outer Ho">
-      <Grid container className="inner ho!">
+    <Wrapper>
+      <Grid container spacing={1} className="hello">
         <Grid item xs={12} md={4}>
           <CurrentScore />
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Room />
+        <Grid item xs={12} md={4} container>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8}>
+            <Room />
+          </Grid>
+          <Grid item xs={2}></Grid>
         </Grid>
         <Grid item xs={12} md={4}>
           <HControl />

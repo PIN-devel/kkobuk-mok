@@ -1,22 +1,15 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
-  width: 90%;
-  height: 400px;
-  justify-content: center;
+  width: 100%;
+  height: 100%;
   .Total {
     border-style: outset;
     border-radius: 30px;
     height: 100%;
-    width: 85%;
-    display: flex;
-    justify-content: center;
+    width: 100%;
   }
   .Top {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: 35%;
   }
@@ -34,9 +27,6 @@ export const Wrapper = styled.div`
     border-bottom-color: black;
   }
   .Mid2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100%;
     width: 33%;
     border-width: 3px;
@@ -76,9 +66,6 @@ export const Wrapper = styled.div`
     border-bottom-color: black;
   }
   .Bot {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: 35%;
   }
