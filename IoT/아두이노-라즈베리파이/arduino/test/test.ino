@@ -110,9 +110,19 @@ void function()
     }
     else if (s_data == "MS1")
     {
+      note(SPEAKER_PIN, Oct6[0], 160);
+      note(SPEAKER_PIN, Oct6[5], 160);
+      note(SPEAKER_PIN, Oct6[9], 160);
+      note(SPEAKER_PIN, 2093, 160);
+      rest(SPEAKER_PIN, 10);
     }
     else if (s_data == "ME1")
     {
+      note(SPEAKER_PIN, 2093, 160);
+      note(SPEAKER_PIN, Oct6[9], 160);
+      note(SPEAKER_PIN, Oct6[5], 160);
+      note(SPEAKER_PIN, Oct6[0], 160);
+      rest(SPEAKER_PIN, 10);
     }
     else if (s_data == "MW1")
     {
@@ -140,9 +150,9 @@ void function()
       staNote(SPEAKER_PIN, Oct6[2], 180);
       rest(SPEAKER_PIN, 180);
 
-      staNote(SPEAKER_PIN, Oct6[2], 180);
       staNote(SPEAKER_PIN, Oct5[11], 180);
-      staNote(SPEAKER_PIN, Oct5[9], 180);
+      staNote(SPEAKER_PIN, Oct5[11], 180);
+      staNote(SPEAKER_PIN, Oct5[11], 180);
       staNote(SPEAKER_PIN, Oct5[11], 360);
       staNote(SPEAKER_PIN, Oct5[9], 180);
       staNote(SPEAKER_PIN, Oct5[11], 180);
@@ -164,26 +174,100 @@ void function()
       staNote(SPEAKER_PIN, Oct6[6], 180);
       staNote(SPEAKER_PIN, Oct6[6], 180);
       staNote(SPEAKER_PIN, Oct6[6], 360);
-      staNote(SPEAKER_PIN, Oct6[4], 180);
+      staNote(SPEAKER_PIN, Oct6[2], 180);
       staNote(SPEAKER_PIN, Oct6[6], 360);
       staNote(SPEAKER_PIN, Oct6[4], 360);
     }
 
     else if (s_data == "MS2")
     {
+      note(SPEAKER_PIN, Oct6[0], 160);
+      note(SPEAKER_PIN, Oct6[5], 160);
+      note(SPEAKER_PIN, Oct6[9], 160);
+      note(SPEAKER_PIN, 2093, 160);
+      rest(SPEAKER_PIN, 10);
     }
     else if (s_data == "ME2")
     {
+      note(SPEAKER_PIN, 2093, 160);
+      note(SPEAKER_PIN, Oct6[9], 160);
+      note(SPEAKER_PIN, Oct6[5], 160);
+      note(SPEAKER_PIN, Oct6[0], 160);
+      rest(SPEAKER_PIN, 10);
     }
     else if (s_data == "MW2")
     {
+      staNote(SPEAKER_PIN, Oct5[9], 160);
+      staNote(SPEAKER_PIN, Oct6[2], 160);
+      staNote(SPEAKER_PIN, Oct6[4], 160);
+      staNote(SPEAKER_PIN, Oct6[6], 160);
+
+      staNote(SPEAKER_PIN, Oct6[4], 320);
+      staNote(SPEAKER_PIN, Oct6[2], 160);
+      staNote(SPEAKER_PIN, Oct6[2], 800);
+      rest(SPEAKER_PIN, 640);
+      staNote(SPEAKER_PIN, Oct5[9], 160);
+      staNote(SPEAKER_PIN, Oct6[2], 160);
+      staNote(SPEAKER_PIN, Oct6[4], 160);
+      staNote(SPEAKER_PIN, Oct6[6], 160);
+
+      staNote(SPEAKER_PIN, Oct6[4], 320);
+      staNote(SPEAKER_PIN, Oct6[2], 160);
+      staNote(SPEAKER_PIN, Oct6[4], 320);
+      staNote(SPEAKER_PIN, Oct6[9], 320);
+      staNote(SPEAKER_PIN, Oct6[6], 800);
+      staNote(SPEAKER_PIN, Oct5[6], 320);
+      staNote(SPEAKER_PIN, Oct6[7], 320);
+
+      staNote(SPEAKER_PIN, Oct6[9], 320);
+      staNote(SPEAKER_PIN, Oct6[9], 160);
+      staNote(SPEAKER_PIN, Oct6[9], 480);
+      staNote(SPEAKER_PIN, Oct6[9], 320);
+      staNote(SPEAKER_PIN, Oct6[9], 320);
+      staNote(SPEAKER_PIN, Oct6[6], 160);
+      staNote(SPEAKER_PIN, Oct6[2], 480);
+      staNote(SPEAKER_PIN, Oct6[6], 160);
+      staNote(SPEAKER_PIN, Oct6[7], 160);
+
+      staNote(SPEAKER_PIN, Oct6[9], 320);
+      staNote(SPEAKER_PIN, Oct6[9], 160);
+      staNote(SPEAKER_PIN, Oct6[9], 480);
+      staNote(SPEAKER_PIN, Oct6[9], 320);
+      staNote(SPEAKER_PIN, Oct6[9], 320);
+      staNote(SPEAKER_PIN, Oct6[6], 160);
+      staNote(SPEAKER_PIN, Oct6[2], 480);
+      staNote(SPEAKER_PIN, Oct6[2], 160);
+      staNote(SPEAKER_PIN, Oct6[4], 160);
+
+      staNote(SPEAKER_PIN, Oct6[6], 320);
+      staNote(SPEAKER_PIN, Oct6[6], 160);
+      staNote(SPEAKER_PIN, Oct6[6], 480);
+      staNote(SPEAKER_PIN, Oct6[6], 320);
+      staNote(SPEAKER_PIN, Oct6[6], 640);
+
+      staNote(SPEAKER_PIN, Oct6[4], 107);
+      staNote(SPEAKER_PIN, Oct6[6], 107);
+      staNote(SPEAKER_PIN, Oct6[4], 107);
+      staNote(SPEAKER_PIN, Oct6[2], 160);
+      staNote(SPEAKER_PIN, Oct5[11], 160);
+      staNote(SPEAKER_PIN, Oct6[2], 480);
     }
 
     else if (s_data == "MS3")
     {
+      note(SPEAKER_PIN, Oct6[0], 160);
+      note(SPEAKER_PIN, Oct6[5], 160);
+      note(SPEAKER_PIN, Oct6[9], 160);
+      note(SPEAKER_PIN, 2093, 160);
+      rest(SPEAKER_PIN, 10);
     }
     else if (s_data == "ME3")
     {
+      note(SPEAKER_PIN, 2093, 160);
+      note(SPEAKER_PIN, Oct6[9], 160);
+      note(SPEAKER_PIN, Oct6[5], 160);
+      note(SPEAKER_PIN, Oct6[0], 160);
+      rest(SPEAKER_PIN, 10);
     }
     else if (s_data == "MW3")
     {
