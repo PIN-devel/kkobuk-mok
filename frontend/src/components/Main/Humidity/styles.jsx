@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
   .container {
     width: 100%;
     height: 30%;
@@ -45,7 +44,7 @@ export const Wrapper = styled.div`
 
   .progress-moved .progress-bar2 {
     width: ${(props) => props.currentHu}%;
-    background-color: #66D3FA;
+    background-color: #66d3fa;
     animation: progressAnimation 6s;
   }
 
@@ -55,15 +54,15 @@ export const Wrapper = styled.div`
   $light-blue: #7dc8e8;
   $purple: #5856d6;
   $red: #ff2d55;
-  span {
-    display: inline-block;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    color: #66D3FA;
-    letter-spacing: 1.5px;
-    margin-top: 0.7rem;
-    &:last-child {
-      float: right;
-    }
+  }
+  .words {
+    display: flex;
+    justify-content: space-between;
+    color: #66d3fa;
+  }
+  .Whole {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;

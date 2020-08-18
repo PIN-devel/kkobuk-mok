@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { Button } from "@material-ui/core";
@@ -181,7 +181,7 @@ const Timer = () => {
         </Grid>
         <Grid item xs={12} md={3} container className="cycle-button">
           <Grid item xs={12} className="Ctitle">
-            <span>휴식 시간</span>
+            <Typography>휴식 시간</Typography>
           </Grid>
           <Grid item xs={12} className="mySwitch">
             <div className="theSwitch">

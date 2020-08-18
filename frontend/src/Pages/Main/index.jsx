@@ -7,6 +7,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MainContext } from "../../contexts/MainContext";
+import { Grid } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 
 const Main = () => {
@@ -109,48 +110,58 @@ const Main = () => {
   // if (!auth) {
   //   return <Redirect to="/" />;
   // } else {
-    return (
-      <Layout>
-        {isLoaded && (
-          <MainContext.Provider
-            value={{
-              currentScore,
-              currentHu,
-              currentTemp,
-              currentScoreData,
-              spentTime,
-              currentStatus,
-              TotalTime,
-              WorkTime,
-              setWorkTime,
-              BreakTime,
-              setBreakTime,
-              DeHumid,
-              setDeHumid,
-              isAuto,
-              setIsAuto,
-              isSilent,
-              setIsSilent,
-              isHumidiOn,
-              setIsHumidiOn,
-              haveCycle,
-              setHaveCycle,
-              TotalHour,
-              setTotalHour,
-              TotalMin,
-              setTotalMin,
-              initialTheme,
-            }}
-          >
-            <Wrapper>
-              <CurrentStatus />
-              <ControlPanel />
-            </Wrapper>
-          </MainContext.Provider>
-        )}
-      </Layout>
-    );
-  }
+  return (
+    <Layout>
+      {isLoaded && (
+        <MainContext.Provider
+          value={{
+            currentScore,
+            currentHu,
+            currentTemp,
+            currentScoreData,
+            spentTime,
+            currentStatus,
+            TotalTime,
+            WorkTime,
+            setWorkTime,
+            BreakTime,
+            setBreakTime,
+            DeHumid,
+            setDeHumid,
+            isAuto,
+            setIsAuto,
+            isSilent,
+            setIsSilent,
+            isHumidiOn,
+            setIsHumidiOn,
+            haveCycle,
+            setHaveCycle,
+            TotalHour,
+            setTotalHour,
+            TotalMin,
+            setTotalMin,
+            initialTheme,
+          }}
+        >
+          <Wrapper>
+            <Grid container spacing={1}>
+              <Grid item xs={1}></Grid>
+              <Grid item xs={10} className="CurS">
+                <CurrentStatus />
+              </Grid>
+              <Grid item xs={1}></Grid>
+              <Grid item xs={1}></Grid>
+              <Grid item xs={10} className="ConP">
+                <ControlPanel />
+              </Grid>
+              <Grid item xs={1}></Grid>
+            </Grid>
+          </Wrapper>
+        </MainContext.Provider>
+      )}
+    </Layout>
+  );
+};
 // };
 
 export default Main;

@@ -1,15 +1,14 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
   .container {
     width: 100%;
     height: 30%;
-    margin-bottom: 10%;
+    padding-bottom: 10%;
   }
   @keyframes progressAnimationStrike {
     from {
@@ -66,5 +65,10 @@ export const Wrapper = styled.div`
     &:last-child {
       float: right;
     }
+  }
+  .words {
+    display: flex;
+    justify-content: space-between;
+    color: #ef476f;
   }
 `;

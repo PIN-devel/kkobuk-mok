@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
-  height: 40%;
-  width: 80%;
+  height: 100%;
+  width: 100%;
+  .hello {
+    height: 100%;
+  }
 `;
