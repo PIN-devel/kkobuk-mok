@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 // core components
 import styles from "./tableStyle.js";
 import Axios from "axios";
+import Friends from "../../../Pages/Friends";
 
 const useStyles = makeStyles(styles);
 const StyledTableCell = withStyles((theme) => ({
@@ -36,7 +37,20 @@ export default function CustomTable(props) {
     tableHeaderColor,
     setTableData,
     dataType,
+    friends,
   } = props; // 1은 친구목록 2는 친구찾기 3은 보낸요청목록
+
+  // 친구 찾기 할 때, 이름으로
+  const friendsId = [];
+  if (friends) {
+    friends.map((friend, key) => {
+      friendsId.push(friend[0]);
+    });
+  }
+  if (dataType === 2) {
+    console.log("333");
+    console.log(tableData);
+  }
 
   const token = Cookies.get("token");
   const config = {
@@ -132,14 +146,21 @@ export default function CustomTable(props) {
                 )}
                 {dataType === 2 ? (
                   <TableCell className={classes.tableCell} key={key}>
-                    <Button
-                      color="primary"
-                      onClick={() => {
-                        addFriend(prop[0]);
-                      }}
-                    >
-                      친구 요청
-                    </Button>
+                    {friendsId.length > 0 &&
+                      (friendsId.find((id) => {
+                        return id === prop[0];
+                      }) ? (
+                        "친구입니다"
+                      ) : (
+                        <Button
+                          color="primary"
+                          onClick={() => {
+                            addFriend(prop[0]);
+                          }}
+                        >
+                          친구 요청
+                        </Button>
+                      ))}
                   </TableCell>
                 ) : (
                   ""

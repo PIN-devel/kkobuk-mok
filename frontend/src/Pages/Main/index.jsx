@@ -67,7 +67,7 @@ const Main = () => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
       .then((res) => {
-        console.log("최초값 수령 성공");
+        // console.log("최초값 수령 성공");
         setDeHumid(res.data.data.desired_humidity);
         setIsAuto(res.data.data.auto_setting);
         setIsSilent(res.data.data.silent_mode);
@@ -87,8 +87,8 @@ const Main = () => {
         setIsLoaded(true);
       })
       .catch((err) => {
-        console.log("최초값 수령 실패");
-        console.log(err.response);
+        // console.log("최초값 수령 실패");
+        // console.log(err.response);
       });
   };
 
@@ -108,12 +108,12 @@ const Main = () => {
         setSpentTime(res.data.data.spent_time);
         setCurrentScore(res.data.data.posture_level);
         setCurrentScoreData(res.data.data.posture_avg);
-        console.log("데이터 받아오는 중");
-        console.log(res.data.data);
+        // console.log("데이터 받아오는 중");
+        // console.log(res.data.data);
       })
       .catch((err) => {
-        console.log("정보 못받는중");
-        console.log(err.response);
+        // console.log("정보 못받는중");
+        // console.log(err.response);
       });
   };
 

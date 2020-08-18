@@ -9,8 +9,13 @@ import {
   Grid,
   Divider,
   Button,
+  Dialog,
+  DialogContent,
+  TextField,
+  DialogActions,
 } from "@material-ui/core";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -27,6 +32,10 @@ const ChannelCard = (props) => {
 
   const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
 
+  // 비번
+  const [pwdOpen, setPwdOpen] = useState(false);
+  const [channelPwd, setChannelPwd] = useState("");
+
   // 채널 디테일 가져오는 것
   const [channelData, setChannelData] = useState({});
 
@@ -37,6 +46,30 @@ const ChannelCard = (props) => {
       Authorization: `jwt ${token}`,
     },
   };
+
+  const handleSetPwdOpen = () => {
+    setPwdOpen(true);
+  };
+  const handleSetPwdClose = () => {
+    setPwdOpen(false);
+  };
+  const handleSetChannelPwd = (pwd) => {
+    setChannelPwd(pwd);
+  };
+
+  const PPP = 1234;
+
+  const confirmPassword = (pwd) => {
+    console.log(typeof pwd);
+    console.log(typeof PPP);
+    const pp = Number(pwd);
+    if (pp === PPP) {
+      entranceChannel();
+    } else {
+      alert("비밀번호가 틀렸습니다.");
+    }
+  };
+
   const entranceChannel = () => {
     const url = `${SERVER_URL}/rooms/${channel.id}/`;
     const handleSetChannelIn = (channel) => {
@@ -52,7 +85,7 @@ const ChannelCard = (props) => {
       })
       .catch((err) => {
         // console.log("채널 입장 에러");
-        console.log(err.response);
+        // console.log(err.response);
       });
   };
 
@@ -62,25 +95,13 @@ const ChannelCard = (props) => {
       {...rest}
       className={clsx(classes.root, className)}
       onClick={() => {
-        entranceChannel();
+        PPP ? handleSetPwdOpen() : entranceChannel();
       }}
     >
-      {/* <Button
-        onClick={() => {
-          entranceChannel();
-        }}
-      >
-        입장하기
-      </Button> */}
+      {PPP && (
+        <LockOutlinedIcon style={{ float: "right", margin: "20px 20px 0 0" }} />
+      )}
       <CardContent className={classes.cardContent}>
-        {/* <div className={classes.imageContainer}>
-          <img
-            alt="channel"
-            className={classes.image}
-            // src={channelData.imageUrl}
-            src={channel.imageUrl}
-          />
-        </div> */}
         <Typography
           className={classes.typography}
           style={{ margin: "20px" }}
@@ -124,6 +145,52 @@ const ChannelCard = (props) => {
           </Grid>
         </Grid>
       </CardActions>
+      <Dialog
+        maxWidth="sm"
+        fullWidth="True"
+        open={pwdOpen}
+        onClose={() => {
+          handleSetPwdClose();
+        }}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogContent>
+          <h4>채널 비밀번호</h4>
+          <TextField
+            variant="outlined"
+            fullWidth
+            id="channelPwd"
+            type="password"
+            name="channelPwd"
+            autoComplete="channelPwd"
+            value={channelPwd}
+            onChange={(e) => {
+              handleSetChannelPwd(e.target.value);
+            }}
+          />
+          <Button
+            className={classes.margin}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              confirmPassword(channelPwd);
+            }}
+          >
+            입장하기
+          </Button>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              handleSetPwdClose();
+            }}
+            color="primary"
+            autoFocus
+          >
+            CLOSE
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };
