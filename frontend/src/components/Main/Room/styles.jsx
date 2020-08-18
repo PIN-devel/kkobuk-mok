@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   height: 100%;
   .Total {
     border-style: outset;
-    border-radius: 30px;
+    border-radius: 10px;
     height: 100%;
     width: 100%;
   }

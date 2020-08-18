@@ -4,50 +4,61 @@ export const Wrapper = styled.div`
   width: 100%;
   .happy {
     border-style: outset;
-    border-radius: 30px;
+    border-radius: 10px;
   }
   .ThemeBox {
     width: 70%;
     height: 100%;
-    padding-bottom: 5%;
+  }
+  .SelBox {
+    display: flex;
+    height: 50%;
+    justify-content: center;
+    align-items: center;
   }
   .mySwitch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .myTitleW {
+    color: white;
     padding-top: 5%;
+    font-size: 1.1vw;
   }
   select {
     width: 90%;
     height: 100%;
     border-radius: 10px;
-    padding-left: 30%;
-    font-size: 1rem;
+    padding-left: 10%;
+    font-size: 1.1vw;
     letter-spacing: 1px;
   }
   .NumBox {
-    width: 100%;
     height: 100%;
-    input {
-      margin-right: 15px;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .SpecialOne {
-    width: 60px;
-    height: 36px;
+    width: 100%;
+    height: 100%;
+    display: flex;
     border-radius: 10px;
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.1vw;
     letter-spacing: 1px;
     outline: none;
   }
   .SpecialButton {
-    width: 60px;
-    height: 36px;
+    width: 100%;
+    height: 95%;
     color: white;
     background-color: #22b8cf;
   }
   option {
     height: 100px;
+    font-size: 1.1vw;
   }
   h3 {
     color: white;
@@ -69,15 +80,10 @@ export const Wrapper = styled.div`
     background: #22b8cf;
   }
   .topL {
-    border-top-left-radius: 30px;
+    border-top-left-radius: 10px;
   }
   .topR {
-    border-top-right-radius: 30px;
-  }
-  .SelBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-top-right-radius: 10px;
   }
   .theSwitch {
     display: flex;

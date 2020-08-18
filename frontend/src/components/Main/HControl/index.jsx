@@ -155,115 +155,118 @@ const HControl = () => {
 
   return (
     <Wrapper>
-      <Grid container>
-        <Grid container className="happy">
-          <Grid item xs={4} container className="3boxes">
-            <Grid item xs={12} className="titles topL">
-            <h3 className="myTitleW">자동 가습</h3>
-            </Grid>
-            <Grid item xs={12} className="mySwitch">
-              <div className="theSwitch">
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={isAuto}
-                    onChange={(e) => {
-                      setIsAuto(!isAuto);
-                      handleAuto(e.target.checked);
-                    }}
-                  />
-                  <span className="slider round"></span>
-                </label>
-              </div>
-            </Grid>
+      <Grid container className="happy">
+        <Grid item xs={4} container className="3boxes">
+          <Grid item xs={12} className="titles topL">
+            <Typography className="myTitleW">자동 가습</Typography>
           </Grid>
-          <Grid item xs={4} container className="3boxes">
-            <Grid item xs={12} className="titles">
-              <h3 className="myTitleW">가습기</h3>
-            </Grid>
-            <Grid item xs={12} className="mySwitch">
-              <div className="theSwitch">
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={isHumidiOn}
-                    disabled={isAuto}
-                    onChange={(e) => {
-                      setIsHumidiOn(!isHumidiOn);
-                      handleHumidi(e.target.checked);
-                    }}
-                  />
-                  <span className="slider round"></span>
-                </label>
-              </div>
-            </Grid>
-          </Grid>
-          <Grid item xs={4} container className="3boxes">
-            <Grid item xs={12} className="titles topR">
-            <h3 className="myTitleW">알림</h3>
-            </Grid>
-            <Grid item xs={12} className="mySwitch">
-              <div className="theSwitch">
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={!isSilent}
-                    onChange={(e) => {
-                      setIsSilent(!isSilent);
-                      handleSound(!e.target.checked);
-                    }}
-                  />
-                  <span className="slider round"></span>
-                </label>
-              </div>
-            </Grid>
-          </Grid>
-          <Grid item xs={6} container className="2boxes">
-            <Grid item xs={12} className="titles">
-            <h3 className="myTitleW">희망 습도</h3>
-            </Grid>
-            <Grid item xs={12} className="SelBox">
-              <div className="NumBox">
+          <Grid item xs={12} className="mySwitch">
+            <div className="theSwitch">
+              <label className="switch">
                 <input
-                  type="text"
-                  className="SpecialOne"
-                  value={myDeHumid}
-                  maxLength={2}
+                  type="checkbox"
+                  checked={isAuto}
                   onChange={(e) => {
-                    handleDeHumid(e.target.value);
+                    setIsAuto(!isAuto);
+                    handleAuto(e.target.checked);
                   }}
                 />
-                <Button
-                  variant="contained"
-                  color="#22b8cf"
-                  className="SpecialButton"
-                  onClick={() => {
-                    submitDeHumid();
-                  }}
-                >
-                  적용
-                </Button>
-              </div>
-            </Grid>
+                <span className="slider round"></span>
+              </label>
+            </div>
           </Grid>
-          <Grid item xs={6} container className="2boxes">
-            <Grid item xs={12} className="titles">
-            <h3 className="myTitleW">알림 테마</h3>
-            </Grid>
-            <Grid item xs={12} className="SelBox">
-              <div className="ThemeBox">
-                <select
-                  id="myTheme"
-                  defaultValue={initialTheme}
+        </Grid>
+        <Grid item xs={4} container className="3boxes">
+          <Grid item xs={12} className="titles">
+            <Typography className="myTitleW">가습기</Typography>
+          </Grid>
+          <Grid item xs={12} className="mySwitch">
+            <div className="theSwitch">
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={isHumidiOn}
+                  disabled={isAuto}
                   onChange={(e) => {
-                    handleMuTheme(e.target.value);
+                    setIsHumidiOn(!isHumidiOn);
+                    handleHumidi(e.target.checked);
                   }}
-                >
-                  <option value={1}>기본</option>
-                  <option value={2}>클래식</option>
-                  <option value={3}>공포</option>
-                </select>
-              </div>
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </Grid>
+        </Grid>
+        <Grid item xs={4} container className="3boxes">
+          <Grid item xs={12} className="titles topR">
+            <Typography className="myTitleW">알림</Typography>
+          </Grid>
+          <Grid item xs={12} className="mySwitch">
+            <div className="theSwitch">
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={!isSilent}
+                  onChange={(e) => {
+                    setIsSilent(!isSilent);
+                    handleSound(!e.target.checked);
+                  }}
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </Grid>
+        </Grid>
+        <Grid item xs={6} container className="2boxes">
+          <Grid item xs={12} className="titles">
+            <Typography className="myTitleW">희망 습도</Typography>
+          </Grid>
+          <Grid item xs={12} className="SelBox" container>
+            <Grid item xs={2} className="NumBox"></Grid>
+            <Grid item xs={4} className="NumBox">
+              <input
+                type="text"
+                className="SpecialOne"
+                value={myDeHumid}
+                maxLength={2}
+                onChange={(e) => {
+                  handleDeHumid(e.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={1} className="NumBox"></Grid>
+            <Grid item xs={4} className="NumBox">
+              <Button
+                variant="contained"
+                color="#22b8cf"
+                className="SpecialButton"
+                onClick={() => {
+                  submitDeHumid();
+                }}
+              >
+                적용
+              </Button>
+            </Grid>
+            <Grid item xs={1} className="NumBox"></Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={6} container className="2boxes">
+          <Grid item xs={12} className="titles">
+            <Typography className="myTitleW">알림 테마</Typography>
+          </Grid>
+          <Grid item xs={12} className="SelBox" container>
+            <Grid item className="ThemeBox">
+              <select
+                id="myTheme"
+                defaultValue={initialTheme}
+                onChange={(e) => {
+                  handleMuTheme(e.target.value);
+                }}
+              >
+                <option value={1}>기본</option>
+                <option value={2}>클래식</option>
+                <option value={3}>공포</option>
+              </select>
             </Grid>
           </Grid>
         </Grid>
