@@ -120,19 +120,6 @@ export default function Dashboard(props) {
     prevOpen2.current = openAuth2;
   }, [openAuth, openAuth2]);
 
-  // const handleClick = (event) => {
-  //   setAnchorEl(event);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
-  // const handleClick2 = (e) => {
-  //   setAnchorEl2(e);
-  // };
-  // const handleClose2 = () => {
-  //   setAnchorEl2(null);
-  // };
-
   const tester = () => {
     console.log(friendRequests);
   };
@@ -141,19 +128,15 @@ export default function Dashboard(props) {
   const [friendRequests, setFriendRequests] = useState([]);
 
   const acceptRequest = (F_id) => {
-    console.log("accepted");
     axios
       .post(`${SERVER_URL}/accounts/friend/${F_id}/accept/`, null, config)
       .then((res) => {
-        console.log("친구 수락 성공");
         const newList = friendRequests.filter(
           (comp) => comp.sender.id !== F_id
         );
         setFriendRequests(newList);
       })
-      .catch((err) => {
-        console.log("친구 수락 실패");
-      });
+      .catch((err) => {});
   };
 
   const rejectRequest = (F_id) => {
@@ -161,29 +144,21 @@ export default function Dashboard(props) {
     axios
       .post(`${SERVER_URL}//accounts/friend/${F_id}/reject/`, null, config)
       .then((res) => {
-        console.log("친구 거절 성공");
         const newList = friendRequests.filter(
           (comp) => comp.sender.id !== F_id
         );
         setFriendRequests(newList);
       })
-      .catch((err) => {
-        console.log("친구 거절 실패");
-      });
+      .catch((err) => {});
   };
 
   useEffect(() => {
     axios
       .get(`${SERVER_URL}/accounts/friend/request/receive/`, config)
       .then((res) => {
-        console.log("가져오기 성공");
-        console.log(res.data.data);
         setFriendRequests(res.data.data);
       })
-      .catch((err) => {
-        console.log(err.response);
-        console.log("가져오기 실패");
-      });
+      .catch((err) => {});
   }, []);
   ////////////////////////
 

@@ -12,7 +12,7 @@ import {
 
 const ChannelChart = (props) => {
   const { member } = props;
-  console.log(member);
+  // console.log(member);
 
   return (
     <div>

@@ -67,11 +67,7 @@ export default function SignUp() {
     axios
       .post(`${url}/accounts/registration/`, body, config)
       .then((res) => {
-        console.log(res);
-        alert("회원가입되셨습니다");
-        alert("여기 고칠것");
-        history.push("user/");
-        alert("회원가입 축하");
+        alert("환영합니다. KkobuK 서비스를 소개해 드리겠습니다.");
       })
       .catch((err) => {
         console.log("회원가입 실패");
@@ -105,6 +101,7 @@ export default function SignUp() {
     setBirthDate(birthdate);
   };
 
+  // 실제 회원가입 axios
   const reqSignUp = (signUpData) => {
     const url = `${SERVER_URL}/rest-auth/signup/`;
     const handleSetAuth = (auth, userId) => {
@@ -114,8 +111,6 @@ export default function SignUp() {
     axios
       .post(url, signUpData)
       .then((res) => {
-        console.log("회원가입 성공");
-        console.log(res);
         Cookies.set("token", res.data.token, { path: "/" });
         const token = Cookies.get("token");
         const config = {
@@ -126,9 +121,9 @@ export default function SignUp() {
         handleSetAuth(true, res.data.user.pk);
         const pkey = productKey1 + productKey2 + productKey3 + productKey4;
         const body = { product_key: pkey };
-        setupPkey(SERVER_URL, body, config);
 
-        // 이거 프로필로 갈 때, 유저가 product 키 입력해줬으면 그것도 같이 보내주자 아 그러지는 말까?.... 어쩌지 고민좀
+        // 제품키도 보냄
+        setupPkey(SERVER_URL, body, config);
       })
       .catch((err) => {
         console.log("회원가입 실패");
@@ -390,6 +385,6 @@ export default function SignUp() {
   if (!auth) {
     return signUp;
   } else {
-    return <Redirect to="Current/" />;
+    return <Redirect to="aboutme/" />;
   }
 }

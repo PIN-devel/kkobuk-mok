@@ -30,12 +30,10 @@ const Friends = () => {
   };
 
   const tableHead = ["이름", "이메일", "오늘의 점수", "주간 점수", ""];
-
+  // 친구 목록
   useEffect(() => {
     Axios.get(`${SERVER_URL}/accounts/friend/`, config)
       .then((res) => {
-        // console.log("친구들 불러오기 성공");
-        // console.log(res.data);
         const friends = res.data.data.friends.map((person) => {
           return [
             person.id,
@@ -47,12 +45,8 @@ const Friends = () => {
         });
         setFriends(friends);
       })
-      .catch((err) => {
-        console.log("친구들 불러오기 실패");
-        console.log(err.response);
-      });
+      .catch((err) => {});
   }, []);
-
   if (!auth) {
     return <Redirect to="/" />;
   } else {
@@ -78,6 +72,7 @@ const Friends = () => {
                       <ResponsiveDialog
                         sentRequests={sentRequests}
                         setSentRequests={setSentRequests}
+                        friends={friends}
                       />
                     </Grid>
                     <Grid item xs={1}></Grid>

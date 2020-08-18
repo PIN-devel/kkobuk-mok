@@ -22,11 +22,9 @@ function App() {
   const [channelIn, setChannelIn] = useState(null);
 
   useEffect(() => {
-    console.log("유이펙 발동");
     const userID = Cookies.get("myUserId");
     if (userID) {
       if (!auth) {
-        console.log("로그인처리함!");
         setAuth(true);
       }
     }
