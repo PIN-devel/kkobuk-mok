@@ -11,9 +11,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Wrapper } from "./styles";
 import { MainContext } from "../../../contexts/MainContext";
-import FormLabel from "@material-ui/core/FormLabel";
-import Switch from "@material-ui/core/Switch";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -175,16 +172,16 @@ const Timer = () => {
   return (
     <Wrapper>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={9} className="timer">
+        <Grid item xs={12} md={9} className="timer">
           <span>{mySpentHour >= 10 ? mySpentHour : "0" + mySpentHour}</span>
           &nbsp;:&nbsp;
           <span>{mySpentMin >= 10 ? mySpentMin : "0" + mySpentMin}</span>
           &nbsp;:&nbsp;
           <span>{mySpentSec >= 10 ? mySpentSec : "0" + mySpentSec}</span>
         </Grid>
-        <Grid item xs={12} sm={3} container className="cycle-button">
+        <Grid item xs={12} md={3} container className="cycle-button">
           <Grid item xs={12} className="Ctitle">
-            <span>사이클</span>
+            <span>휴식 시간</span>
           </Grid>
           <Grid item xs={12} className="mySwitch">
             <div className="theSwitch">
@@ -196,7 +193,7 @@ const Timer = () => {
                     handleCycle(e.target.checked);
                   }}
                 />
-                <span className="slider"></span>
+                <span className="slider round"></span>
               </label>
             </div>
           </Grid>

@@ -37,32 +37,6 @@ const Main = () => {
   const [haveCycle, setHaveCycle] = useState(false);
   const [initialTheme, setInitialTheme] = useState("밥");
 
-  const scoreDataRef = useRef(currentScoreData);
-  scoreDataRef.current = currentScoreData;
-
-  // created_at = models.DateTimeField(auto_now_add=True)
-  //   # 사용자 설정 값
-  //   total_time = models.IntegerField()
-  //   work_time = models.IntegerField()
-  //   break_time = models.IntegerField()
-  //   # 일시정지 기록
-  //   total_stop_time = models.IntegerField(default=0)
-  //   last_stop_time = models.DateTimeField(null=True)
-  //   # 실제 총 작업 시간
-  //   real_work_time = models.IntegerField()
-
-  //   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='time_setting')
-
-  // break_time: 0
-  // created_at: "2020-08-11T19:21:18.587713+09:00"
-  // id: 3
-  // last_stop_time: "2020-08-11T19:21:21.783919+09:00"
-  // real_work_time: 5
-  // total_stop_time: 0
-  // total_time: 0
-  // user: 9
-  // work_time: 0
-
   const getInitialInfo = () => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
@@ -92,18 +66,20 @@ const Main = () => {
       });
   };
 
-  // function getRandomInt(min, max) {
-  //   min = Math.ceil(min);
-  //   max = Math.floor(max);
-  //   return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
-  // }
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  }
 
   const getInfo = () => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
       .then((res) => {
-        setCurrentTemp(res.data.data.temperature);
-        setCurrentHu(res.data.data.humidity);
+        // setCurrentTemp(res.data.data.temperature);
+        // setCurrentHu(res.data.data.humidity);
+        setCurrentTemp(getRandomInt(20, 40));
+        setCurrentHu(getRandomInt(20, 40));
         setCurrentStatus(res.data.data.user_state);
         setSpentTime(res.data.data.spent_time);
         setCurrentScore(res.data.data.posture_level);
@@ -130,9 +106,9 @@ const Main = () => {
   //   return <h1>Loading...</h1>;
   // }
 
-  if (!auth) {
-    return <Redirect to="/" />;
-  } else {
+  // if (!auth) {
+  //   return <Redirect to="/" />;
+  // } else {
     return (
       <Layout>
         {isLoaded && (
@@ -175,6 +151,6 @@ const Main = () => {
       </Layout>
     );
   }
-};
+// };
 
 export default Main;

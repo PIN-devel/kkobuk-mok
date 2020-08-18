@@ -156,13 +156,10 @@ const HControl = () => {
   return (
     <Wrapper>
       <Grid container>
-        <Grid item xs={12}>
-          <TurtleSign src={FindOutT(currentHu)} />
-        </Grid>
         <Grid container className="happy">
           <Grid item xs={4} container className="3boxes">
             <Grid item xs={12} className="titles topL">
-              <h3>자동 가습</h3>
+            <h3 className="myTitleW">자동 가습</h3>
             </Grid>
             <Grid item xs={12} className="mySwitch">
               <div className="theSwitch">
@@ -175,7 +172,7 @@ const HControl = () => {
                       handleAuto(e.target.checked);
                     }}
                   />
-                  <span className="slider"></span>
+                  <span className="slider round"></span>
                 </label>
               </div>
             </Grid>
@@ -196,14 +193,14 @@ const HControl = () => {
                       handleHumidi(e.target.checked);
                     }}
                   />
-                  <span className="slider"></span>
+                  <span className="slider round"></span>
                 </label>
               </div>
             </Grid>
           </Grid>
           <Grid item xs={4} container className="3boxes">
             <Grid item xs={12} className="titles topR">
-              <h3>알림</h3>
+            <h3 className="myTitleW">알림</h3>
             </Grid>
             <Grid item xs={12} className="mySwitch">
               <div className="theSwitch">
@@ -216,14 +213,14 @@ const HControl = () => {
                       handleSound(!e.target.checked);
                     }}
                   />
-                  <span className="slider"></span>
+                  <span className="slider round"></span>
                 </label>
               </div>
             </Grid>
           </Grid>
           <Grid item xs={6} container className="2boxes">
             <Grid item xs={12} className="titles">
-              <h3>희망 습도</h3>
+            <h3 className="myTitleW">희망 습도</h3>
             </Grid>
             <Grid item xs={12} className="SelBox">
               <div className="NumBox">
@@ -238,7 +235,7 @@ const HControl = () => {
                 />
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="#22b8cf"
                   className="SpecialButton"
                   onClick={() => {
                     submitDeHumid();
@@ -251,7 +248,7 @@ const HControl = () => {
           </Grid>
           <Grid item xs={6} container className="2boxes">
             <Grid item xs={12} className="titles">
-              <h3>알림 테마</h3>
+            <h3 className="myTitleW">알림 테마</h3>
             </Grid>
             <Grid item xs={12} className="SelBox">
               <div className="ThemeBox">
@@ -262,10 +259,9 @@ const HControl = () => {
                     handleMuTheme(e.target.value);
                   }}
                 >
-                  <option value={1}>공포</option>
-                  <option value={2}>유머</option>
-                  <option value={3}>뭐있나</option>
-                  <option value={4}>몰라</option>
+                  <option value={1}>기본</option>
+                  <option value={2}>클래식</option>
+                  <option value={3}>공포</option>
                 </select>
               </div>
             </Grid>

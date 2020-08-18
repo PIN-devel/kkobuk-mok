@@ -7,8 +7,8 @@ export const Wrapper = styled.div`
   padding-left: 10%;
   padding-top: 10%;
   .container {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,16 +50,16 @@ export const Wrapper = styled.div`
   .purpleCircle {
     border-radius: 50%;
     background-color: purple;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     position: absolute;
     opacity: 0;
     animation: scaleIn 4s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
   }
 
   .score {
-    width: 240px;
-    height: 240px;
+    width: 180px;
+    height: 180px;
     z-index: 100;
     border-radius: 50%;
     background-color: white;
@@ -67,7 +67,7 @@ export const Wrapper = styled.div`
       margin-left: 40px;
       margin-top: 60px;
       text-align: center center;
-      font-size: 80px;
+      font-size: 50px;
     }
   }
   @keyframes scaleIn {
