@@ -45,7 +45,7 @@ const Channel = () => {
         handleSetChannelIn(res.data.data);
       })
       .catch((err) => {
-        console.log(err.response);
+        // console.log(err.response);
       });
   };
 
@@ -73,7 +73,7 @@ const Channel = () => {
       })
       .catch((err) => {
         // console.log("Channel 에러!!");
-        console.log(err.response);
+        // console.log(err.response);
       });
   };
   useEffect(() => getChannels(searchData), [searchData, page]);

@@ -23,6 +23,7 @@ export default function ResponsiveDialog(props) {
   const tableHead = ["이름", "이메일", "친구요청"];
   const [foundList, setFoundList] = useState([]);
   const [friendName, setFriendName] = useState("");
+  const { friends } = props;
 
   const findPerson = (name) => {
     const token = Cookies.get("token");
@@ -99,6 +100,7 @@ export default function ResponsiveDialog(props) {
               tableData={foundList}
               setTableData={setFoundList}
               dataType={2}
+              friends={friends}
             />
             {foundList.length === 0 && (
               <div style={{ textAlign: "center" }}>
