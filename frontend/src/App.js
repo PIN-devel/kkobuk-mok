@@ -13,6 +13,7 @@ import Page404 from "./Pages/Page404";
 import { AuthContext } from "./contexts/AuthContext";
 import Cookies from "js-cookie";
 
+
 function App() {
   // const SERVER_URL = "http://3.35.17.150:8000";
   // const SERVER_URL = "https://i3b109.p.ssafy.io";

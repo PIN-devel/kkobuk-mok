@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   .container {
     width: 100%;
     height: 30%;
+    margin-bottom: 10%;
   }
   @keyframes progressAnimationStrike {
     from {
@@ -19,7 +20,7 @@ export const Wrapper = styled.div`
     }
   }
   .word {
-    padding-left: 41%;
+    padding-left: 33%;
   }
   .progress2 {
     padding: 6px;

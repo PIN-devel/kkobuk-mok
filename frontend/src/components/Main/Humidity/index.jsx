@@ -1,32 +1,27 @@
-import React, { useState, useContext, useEffect } from "react";
-import { MainContext } from "../../../contexts/MainContext";
+import React, { useEffect, useState, useContext } from "react";
 import { Wrapper } from "./styles";
-import { Grid } from "@material-ui/core";
+import { MainContext } from "../../../contexts/MainContext";
 
-const Humidity = () => {
+const Temperature = (props) => {
   const { currentHu } = useContext(MainContext);
   const [myHu, setMyHu] = useState(0);
 
   useEffect(() => {
     setMyHu(currentHu);
   }, [currentHu]);
+
   return (
     <Wrapper myHu={myHu} currentHu={currentHu}>
-      <Grid container>
-        <div className="container">
-          <div className="myDiv">
-            <input type="checkbox" className="water" />
-            <label forhtml="water">
-              <div className="fill"></div>
-            </label>
-          </div>
-          <span>0%</span>
-          <span className="word">{currentHu}%</span>
-          <span className="progress">100%</span>
+      <div className="container">
+        <div className="progress2 progress-moved">
+          <div className="progress-bar2"></div>
         </div>
-      </Grid>
+        <span>0%</span>
+        <span className="word">{currentHu}%</span>
+        <span>100%</span>
+      </div>
     </Wrapper>
   );
 };
 
-export default Humidity;
+export default Temperature;

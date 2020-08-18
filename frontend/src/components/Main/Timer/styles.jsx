@@ -9,21 +9,25 @@ export const Wrapper = styled.div`
     padding-left: 14%;
     font-size: 4rem;
   }
-  .cycle-button {
-    padding-top: 3%;
-    padding-left: 0;
-  }
   .start-button {
     margin-left: 42%;
+    color: white;
+    background-color: #22b8cf;
   }
   .stop-button {
     margin-left: 35%;
+    color: white;
+    background-color: #22b8cf;
   }
   .reset-button {
     margin-left: 5%;
+    color: white;
+    background-color: #22b8cf;
   }
   .resume-button {
     margin-left: 35%;
+    color: white;
+    background-color: #22b8cf;
   }
   .cycleW {
     padding-left: 15%;
@@ -40,25 +44,28 @@ export const Wrapper = styled.div`
     text-align: center;
   }
   .mySwitch {
-    padding-top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .theSwitch {
     display: flex;
     justify-content: center;
+    align-items: center;
     .switch {
       position: relative;
       display: inline-block;
       width: 60px;
       height: 34px;
     }
-
+    
     /* Hide default HTML checkbox */
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
-
+    
     /* The slider */
     .slider {
       position: absolute;
@@ -68,10 +75,10 @@ export const Wrapper = styled.div`
       right: 0;
       bottom: 0;
       background-color: #ccc;
-      -webkit-transition: 0.4s;
-      transition: 0.4s;
+      -webkit-transition: .4s;
+      transition: .4s;
     }
-
+    
     .slider:before {
       position: absolute;
       content: "";
@@ -80,22 +87,31 @@ export const Wrapper = styled.div`
       left: 4px;
       bottom: 4px;
       background-color: white;
-      -webkit-transition: 0.4s;
-      transition: 0.4s;
+      -webkit-transition: .4s;
+      transition: .4s;
     }
-
+    
     input:checked + .slider {
-      background-color: #2196f3;
+      background-color: #22b8cf;
     }
-
+    
     input:focus + .slider {
-      box-shadow: 0 0 1px #2196f3;
+      box-shadow: 0 0 1px #2196F3;
     }
-
+    
     input:checked + .slider:before {
       -webkit-transform: translateX(26px);
       -ms-transform: translateX(26px);
       transform: translateX(26px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+    
+    .slider.round:before {
+      border-radius: 50%;
     }
   }
 `;

@@ -192,6 +192,8 @@ export default function Dashboard(props) {
         Cookies.remove("myUserId");
         exitChannel();
         setAuth(false);
+        console.log("Logout success!!");
+        window.location.replace("/");
       })
       .catch((err) => {
         console.log(err);

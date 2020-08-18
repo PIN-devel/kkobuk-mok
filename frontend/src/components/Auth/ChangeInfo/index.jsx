@@ -10,6 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import Divider from '@material-ui/core/Divider';
 import Cookies from "js-cookie";
 import axios from "axios";
+import {Wrapper} from "./styles";
 import { MDBBtn, MDBTypography } from "mdbreact";
 
 function getModalStyle() {
@@ -464,8 +465,11 @@ const ChangeInfo = (props) => {
   );
 
   return (
-    <div>
+      <Wrapper>
       <Button
+      variant="contained"
+      color="primary"
+      className="INFOB"
         type="button"
         onClick={() => {
           handleOpen();
@@ -483,7 +487,7 @@ const ChangeInfo = (props) => {
       >
         {EditForm}
       </Modal>
-    </div>
+      </Wrapper>
   );
 };
 
