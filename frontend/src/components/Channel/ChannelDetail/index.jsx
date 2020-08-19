@@ -2,7 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 import HighRank from "./HighRank";
 import { Typography, Grid, Divider, Button } from "@material-ui/core";
-import useStyles from "./styles";
+import Box from '@material-ui/core/Box';
+import Wrapper from "./styles";
 
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -17,7 +18,6 @@ const ChannelDetail = (props) => {
   const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
   const [channelData, setChannelData] = useState(null);
 
-  const classes = useStyles();
   const token = Cookies.get("token");
   const config = {
     headers: {
@@ -78,44 +78,56 @@ const ChannelDetail = (props) => {
   // console.log(channelData);
 
   return (
-    <div className={classes.root}>
-      {channelData && (
-        <div>
-          <Typography align="center" gutterBottom variant="h5">
-            {channel.name}
-          </Typography>
-          <Typography align="center" gutterBottom variant="subtitle1">
-            {channel.description}
-          </Typography>
-          <Grid container spacing={4}>
-            <Grid item xs={10}></Grid>
-            <Grid item xs={2}>
-              <Button
-                // color="white"
-                style={{
-                  backgroundColor: "#66d9e8",
-                  padding: "4px 4px",
-                  fontSize: "12px",
-                  color: "white",
-                  fontFamily: "Nanum Gothic",
-                }}
-                onClick={() => {
-                  exitChannel();
-                }}
-              >
-                채널 나가기
-              </Button>
-            </Grid>
+    <Wrapper>
 
-            {channelData.members.map((member) => (
-              <Grid item lg={6} md={6} xl={12} xs={12}>
-                <ChannelDetailCard member={member} />
+      <div className="channel-root">
+        {channelData && (
+          <div>
+            <div className="channel-title-div">
+              <div className="channel-title">
+                <Typography align="center" gutterBottom variant="h1">
+                  <Box fontWeight={900} textAlign="center">
+                    {channel.name}
+                  </Box>
+                </Typography>
+                <Typography align="center" gutterBottom variant="h4">
+                  <Box fontWeight={600}>
+                    {channel.description}
+                  </Box>
+                </Typography>
+              </div>
+            </div>
+            <Grid container spacing={4}>
+              <Grid item xs={10}></Grid>
+              <Grid item xs={2}>
+                <Button
+                  // color="white"
+                  style={{
+                    padding: "7px 10px",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    backgroundColor: "#bac8ff",
+                    color: "white",
+                    fontFamily: "Nanum Gothic",
+                  }}
+                  onClick={() => {
+                    exitChannel();
+                  }}
+                >
+                  채널 나가기
+                </Button>
               </Grid>
-            ))}
-          </Grid>
-        </div>
-      )}
-    </div>
+              
+              {channelData.members.map((member) => (
+                <Grid item lg={6} md={6} xl={12} xs={12}>
+                  <ChannelDetailCard member={member} />
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+        )}
+      </div>
+    </Wrapper>
   );
 };
 
