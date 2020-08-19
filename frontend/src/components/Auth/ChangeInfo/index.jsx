@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { UserContext } from "../../../contexts/UserContext";
-import { Button, Grid, FormHelperText } from "@material-ui/core";
+import { Button, Grid, FormHelperText, Typography } from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
 import Cookies from "js-cookie";
 import Wrapper from "./styles";
 import axios from "axios";
@@ -108,7 +108,7 @@ const ChangeInfo = (props) => {
         setNew_Password2("");
         alert("비밀번호가 변경되었습니다");
         setAfterChange(!afterChange);
-        handleClose();
+        // handleClose();
       })
       .catch((err) => {
         alert("비밀번호 변경 실패");
@@ -166,7 +166,7 @@ const ChangeInfo = (props) => {
         console.log(res);
         alert("제품키 변경 성공");
         setAfterChange(!afterChange);
-        handleClose();
+        // handleClose();
       })
       .catch((err) => {
         console.log("제품키 변경 실패");
@@ -174,13 +174,13 @@ const ChangeInfo = (props) => {
       });
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   const ImageHandler = (e) => {
     setNewImage(e);
@@ -200,7 +200,7 @@ const ChangeInfo = (props) => {
         .then((res) => {
           // console.log(res);
           alert("프로필 이미지가 변경되었습니다");
-          handleClose();
+          // handleClose();
           setAfterChange(!afterChange);
         })
         .catch((err) => {
@@ -217,43 +217,62 @@ const ChangeInfo = (props) => {
       .delete(`${SERVER_URL}/accounts/${userID}`, config)
       .then((res) => {
         alert("회원탈퇴 되었습니다");
-        console.log("회원탈퇴");
-        console.log(res);
+        // console.log("회원탈퇴");
+        // console.log(res);
       })
       .catch((err) => {
-        alert("회원 탈퇴 실패");
-        console.log(err.response);
-        console.log("회원탈퇴 실패");
+        // alert("회원 탈퇴 실패");
+        // console.log(err.response);
+        // console.log("회원탈퇴 실패");
       });
   };
 
-  const tryDeleteAccount = (e) => {
-    var wantDelete = false;
-  };
+  // const tryDeleteAccount = (e) => {
+  //   var wantDelete = false;
+  // };
+
+  console.log("이미지");
+  console.log(newImage);
 
   const EditForm = (
     <Wrapper>
-      <div style={modalStyle} className={classes.paper}>
+      {/* <div style={modalStyle} className={classes.paper}> */}
+      <div className={classes.paper}>
         <div>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-            <div class="info-input-group">
-                {/* <div class="info-input-group-prepend">
-                  <span class="info-input-group-text" id="inputGroupFileAddon01">Upload</span>
-                </div> */}
+            <Grid item xs={8}>
+              <div class="info-input-group">
+                <div class="info-input-group-prepend">
+                  {newImage ? (
+                    <span
+                      class="info-input-group-text"
+                      id="inputGroupFileAddon01"
+                    >
+                      {newImage.name}
+                    </span>
+                  ) : (
+                    <Typography variant="body2">파일을 선택해주세요</Typography>
+                  )}
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs={4}>
+              <div class="info-input-group">
                 <div class="info-file">
-                  <input 
-                    type="file" 
-                    class="info-file-input" 
-                    id="inputGroupFile01" 
-                    aria-describedby="inputGroupFileAddon01" 
+                  <input
+                    type="file"
+                    class="info-file-input"
+                    id="inputGroupFile01"
+                    aria-describedby="inputGroupFileAddon01"
                     onChange={(e) => {
                       ImageHandler(e.target.files[0]);
-                    }}>
-                    </input>
-                  <label class="info-file-label" for="inputGroupFile01">Choose file</label>
+                    }}
+                  ></input>
+                  <label class="info-file-label" for="inputGroupFile01">
+                    파일 찾기
+                  </label>
                 </div>
-              </div>                
+              </div>
             </Grid>
 
             <Grid item xs={12} className="text-right">
@@ -263,7 +282,7 @@ const ChangeInfo = (props) => {
                 onClick={() => {
                   EditImage();
                 }}
-                >
+              >
                 프로필 이미지 변경
               </Button>
             </Grid>
@@ -271,7 +290,7 @@ const ChangeInfo = (props) => {
             <Grid item xs={12}>
               <Divider></Divider>
             </Grid>
-            
+
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -289,9 +308,15 @@ const ChangeInfo = (props) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={new_password1.length < 8 && new_password1.length > 0 ? true : false}
+                error={
+                  new_password1.length < 8 && new_password1.length > 0
+                    ? true
+                    : false
+                }
                 helperText={
-                  new_password1.length < 8 && new_password1.length > 0 ? "비밀번호는 8자리 이상입니다" : ""
+                  new_password1.length < 8 && new_password1.length > 0
+                    ? "비밀번호는 8자리 이상입니다"
+                    : ""
                 }
                 variant="outlined"
                 fullWidth
@@ -310,7 +335,9 @@ const ChangeInfo = (props) => {
               <TextField
                 error={new_password1 === new_password2 ? false : true}
                 helperText={
-                  new_password1 === new_password2 ? "" : "비밀번호를 확인해주세요"
+                  new_password1 === new_password2
+                    ? ""
+                    : "비밀번호를 확인해주세요"
                 }
                 variant="outlined"
                 required
@@ -333,7 +360,7 @@ const ChangeInfo = (props) => {
                 onClick={() => {
                   ChangePass();
                 }}
-                >
+              >
                 비밀번호 변경
               </Button>
             </Grid>
@@ -438,15 +465,15 @@ const ChangeInfo = (props) => {
 
   return (
     <div>
-      <Button
+      {/* <Button
         type="button"
         onClick={() => {
           handleOpen();
         }}
       >
         정보 변경
-      </Button>
-      <Modal
+      </Button> */}
+      {/* <Modal
         open={open}
         onClose={() => {
           handleClose();
@@ -455,7 +482,8 @@ const ChangeInfo = (props) => {
         aria-describedby="simple-modal-description"
       >
         {EditForm}
-      </Modal>
+      </Modal> */}
+      {EditForm}
     </div>
   );
 };

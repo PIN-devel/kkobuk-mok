@@ -25,19 +25,11 @@ const User = () => {
     axios
       .get(`${SERVER_URL}/accounts/${userID}/`, config)
       .then((res) => {
-        console.log("유저정보 가져오기 성공");
-        console.log(res.data.data);
         setMe(res.data.data);
       })
-      .catch((err) => {
-        console.log("유저정보 가져오기 실패");
-        console.log(err.response);
-      });
+      .catch((err) => {});
   }, [afterChange]);
-  if (me) {
-    console.log('점수')
-    console.log(me.posture[0])
-  }
+
   if (!auth) {
     return <Redirect to="/" />;
   } else {
@@ -52,8 +44,8 @@ const User = () => {
                 email={me.email}
                 friends={me.friends}
                 today={me.posture[0].score}
+                data={me.posture.slice(1, 8)}
               />
-              <Graphs data={me.posture.slice(1, 8)} />
             </Wrapper>
           </Layout>
         </UserContext.Provider>
