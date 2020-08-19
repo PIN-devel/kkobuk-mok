@@ -38,6 +38,9 @@ const CircleProgressBarBase = ({
     if (progressBar < percentage) updatePercentage();
   }, [progressBar]);
 
+  console.log('여기야')
+  console.log(numinside)
+  // console.log(numinside)
   return (
     <figure className={className}>
       <svg viewBox={circleConfig.viewBox}>

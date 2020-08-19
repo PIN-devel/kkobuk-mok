@@ -12,11 +12,12 @@ import AboutMe from "./Pages/About/AboutMe";
 import Page404 from "./Pages/Page404";
 import { AuthContext } from "./contexts/AuthContext";
 import Cookies from "js-cookie";
+import AdminPage from "./Pages/AdminPage";
 
 function App() {
   // const SERVER_URL = "http://3.35.17.150:8000";
-  // const SERVER_URL = "https://i3b109.p.ssafy.io";
-  const SERVER_URL = "http://localhost:8000";
+  const SERVER_URL = "https://i3b109.p.ssafy.io";
+  // const SERVER_URL = "http://localhost:8000";
   const [auth, setAuth] = useState(false); //  !auth 면 redirect 시켜버리자
   const [channelIn, setChannelIn] = useState(null);
 
@@ -47,6 +48,7 @@ function App() {
             <Route exact path="/SignUp" component={SignUp} />
             <Route exact path="/current" component={Main} />
             <Route exact path="/user" component={User} />
+            <Route exact path="/admin" component={AdminPage} />
             <Route exact path="/Friends" component={Friends} />
             <Route exact path="/Channel" component={Channel} />
             <Route exact path="/ContactUs" component={ContactUs} />

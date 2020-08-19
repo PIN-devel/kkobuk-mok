@@ -7,8 +7,6 @@ import { MainContext } from "../../../contexts/MainContext";
 import HControl from "../HControl";
 
 const CurrentStatus = (props) => {
-  const { currentHu } = useContext(MainContext);
-
   return (
     <Wrapper>
       <Grid container spacing={1}>
