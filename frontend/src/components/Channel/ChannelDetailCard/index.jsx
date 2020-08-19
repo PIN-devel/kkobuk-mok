@@ -11,6 +11,8 @@ import {
   CircularProgress,
   Box,
 } from "@material-ui/core";
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import clsx from "clsx";
 import useStyles from "./styles";
@@ -46,9 +48,21 @@ const ChannelDetailCard = (props) => {
 
   return (
     <Card className={clsx(classes.root)}>
-      <Grid container spacing={4}>
+      <Grid container spacing={1}>
         <Grid item lg={3} md={3} xl={3} xs={3}>
-          <CardContent>
+          <Chip
+            variant="outlined"
+            size="small"
+            icon={<FaceIcon />}
+            label="공부중"
+            color="primary"
+            className={classes.memberChip}
+          />
+          <Grid container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            className={classes.memberProfile}>
             {/* <div className={classes.imageContainer}>
               <img
                 alt="channel"
@@ -57,31 +71,31 @@ const ChannelDetailCard = (props) => {
                 // src={}
               />
             </div> */}
-            <Grid container spacing={4}>
-              <Grid item xs={4}></Grid>
-              <Grid item xs={4}>
-                <Avatar className={classes.large}>kkobuk</Avatar>
-              </Grid>
-              <Grid item xs={4}></Grid>
+            <Grid item lg={6}></Grid>
+            <Grid item lg={6}> 
+              <Avatar className={classes.large}>kkobuk</Avatar>
+              <Typography gutterBottom variant="body1">
+                <Box textAlign="center" m={1}>
+                {member.name}님
+                </Box>
+              </Typography>
             </Grid>
-            <br></br>
-            <Typography align="right" gutterBottom variant="body1">
-              {member.name}
-            </Typography>
-            <br></br>
-            <Grid container spacing={4}>
-              <Grid item xs={2}></Grid>
-              <Grid item xs={2}>
-                <CircularProgressWithLabel value={80} />
-              </Grid>
-              <Grid item xs={2}></Grid>
 
-              <Grid item xs={2}>
-                <CircularProgressWithLabel value={90} />
+            {/* <Grid 
+              container
+              direction="row"
+              justify="center"
+              alignItems="center">
+              <Grid item>
+                <Grid item>
+                  <CircularProgressWithLabel value={80} />
+                </Grid>
+                <Grid item >
+                  <CircularProgressWithLabel value={90} />
+                </Grid>
               </Grid>
-              <Grid item xs={2}></Grid>
-            </Grid>
-          </CardContent>
+            </Grid> */}
+          </Grid>
         </Grid>
         <Grid item lg={9} md={9} xl={9} xs={9}>
           <ChannelChart member={member} />
