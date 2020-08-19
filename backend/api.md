@@ -48,6 +48,6 @@
 |  |  |  |  |  | |
 | 제품키 등록 | post | /accounts/productkey/ | token(관리자만 등록 가능), product_key | | |
 |  |  |  |  | | |
-| 문의사항 목록 | get | /accounts/inquery/ | token(관리자만 조회 가능) | | 해결 안된 문의사항만 가져옴 |
-| 문의사항 등록 | post | /accounts/inquery/ | token | name, email, subject, message | |
-| 문의사항 해결 | post | /accounts/inquery/<inquery_id>/ | token(관리자만 가능) |                                                              | solved(true, false) |
+| 문의사항 목록 | get | /accounts/inquery/ | token(관리자만 조회 가능), _page | 해결 안된 문의사항만 |  |
+| 문의사항 등록 | post | /accounts/inquery/ | token, name, email, subject, message |  | |
+| 문의사항 답변 | post | /accounts/inquery/<inquery_id>/ | token(관리자만 가능), title, content |                                                              |  |

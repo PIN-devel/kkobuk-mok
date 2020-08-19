@@ -88,6 +88,11 @@ class FriendRequestReceiverListSerializer(serializers.ModelSerializer):
         model = FriendRequest
         fields = ('receiver',)
 
+class UserCompactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('id', 'name', 'email')
+
 class InquerySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inquery

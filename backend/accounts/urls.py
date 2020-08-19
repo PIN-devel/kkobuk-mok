@@ -34,7 +34,7 @@ urlpatterns = [
 
     # 문의사항
     path('inquery/', views.inquery_list_create),
-    path('inquery/<int:inquery_id>/', views.inquery_solved),
+    path('inquery/<int:inquery_id>/', views.inquery_reply),
 
     path('', views.list),
     path('<int:user_id>/', views.detail_or_delete_or_update),
