@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { Wrapper } from "./styles";
 import { Grid } from "@material-ui/core";
-import { HorizontalBar } from 'react-chartjs-2';
+import { HorizontalBar } from "react-chartjs-2";
 
 const Graphs = (props) => {
   return (
