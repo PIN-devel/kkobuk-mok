@@ -20,13 +20,13 @@ const Room = () => {
               <Grid item>
                 <i
                   id="thermoI"
-                  class="fas fa-thermometer-three-quarters fa-3x"
+                  className="fas fa-thermometer-three-quarters fa-3x"
                 ></i>
               </Grid>
             </Grid>
             <Grid item xs={12} className="humi" container>
               <Grid item>
-                <i id="humiI" class="fas fa-tint fa-2x"></i>
+                <i id="humiI" className="fas fa-tint fa-2x"></i>
               </Grid>
             </Grid>
           </Grid>
