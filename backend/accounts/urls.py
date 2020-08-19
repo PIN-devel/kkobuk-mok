@@ -29,7 +29,7 @@ urlpatterns = [
     path('timer/restart/', views.timer_restart),
     path('timer/stop/', views.timer_stop),
 
-    # 제품키 등록
+    # 제품키 조회, 등록. 삭제
     path('productkey/', views.product_key),
 
     # 문의사항

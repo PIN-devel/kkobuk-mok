@@ -46,8 +46,10 @@
 | 타이머 재시작 | post | /accounts/timer/restart/ | token | user_state, time(현재 timesetting 데이터) | |
 | 타이머 중지 | post | /accounts/timer/stop/ | token | user_state, time(현재 timesetting 데이터) | |
 |  |  |  |  |  | |
-| 제품키 등록 | post | /accounts/productkey/ | token(관리자만 등록 가능), product_key | | |
+| 제품키조회 | get | /accounts/productkey/ | token(관리자만 가능), query: _page, keyword | product_key, user(id, email, name) | |
+| 제품키 생성 | post | /accounts/productkey/ | token(관리자만 가능), product_key | | |
+| 제품키삭제 | delete | /accounts/productkey/ | token(관리자만가능), product_id | | |
 |  |  |  |  | | |
-| 문의사항 목록 | get | /accounts/inquery/ | token(관리자만 조회 가능), _page | 해결 안된 문의사항만 |  |
+| 문의사항 목록 | get | /accounts/inquery/ | token(관리자만 조회 가능), query: _page | 해결 안된 문의사항만 |  |
 | 문의사항 등록 | post | /accounts/inquery/ | token, name, email, subject, message |  | |
 | 문의사항 답변 | post | /accounts/inquery/<inquery_id>/ | token(관리자만 가능), title, content |                                                              |  |
