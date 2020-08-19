@@ -1,29 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import clsx from "clsx";
-// import CssBaseline from "@material-ui/core/CssBaseline";
-// import Drawer from "@material-ui/core/Drawer";
-// import AppBar from "@material-ui/core/AppBar";
-// import Toolbar from "@material-ui/core/Toolbar";
-// import Typography from "@material-ui/core/Typography";
-// import Divider from "@material-ui/core/Divider";
-// import { Button } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-// import Badge from "@material-ui/core/Badge";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { AuthContext } from "../../contexts/AuthContext";
-import NestedList from "../MyDash/listItems";
-import Footer from "../Footer";
-import useStyles from "./styles";
-// import Menu from "@material-ui/core/Menu";
-// import MenuItem from "@material-ui/core/MenuItem";
-import { Link, Redirect } from "react-router-dom";
-import Cookies from "js-cookie";
-import axios from "axios";
-import localStorage from "local-storage";
-
 import {
   Badge,
   Button,
@@ -42,6 +18,22 @@ import {
   MenuList,
   Grid,
 } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+
+import { AuthContext } from "../../contexts/AuthContext";
+import NestedList from "../MyDash/listItems";
+import Footer from "../Footer";
+import useStyles from "./styles";
+
+import { Link, Redirect } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
+import localStorage from "local-storage";
 
 export default function Dashboard(props) {
   const { SERVER_URL, setAuth, setChannelIn } = useContext(AuthContext);
@@ -271,9 +263,19 @@ export default function Dashboard(props) {
                       onKeyDown={handleListKeyDown}
                     >
                       <MenuItem component={Link} to="/User">
-                        <i class="fas fa-user-circle" style={{margin:"0 7px 0 0"}}></i>Profile
+                        <i
+                          class="fas fa-user-circle"
+                          style={{ margin: "0 7px 0 0" }}
+                        ></i>
+                        Profile
                       </MenuItem>
-                      <MenuItem onClick={Logout}><i class="fas fa-sign-out-alt" style={{margin:"0 7px 0 0"}}></i>Logout</MenuItem>
+                      <MenuItem onClick={Logout}>
+                        <i
+                          class="fas fa-sign-out-alt"
+                          style={{ margin: "0 7px 0 0" }}
+                        ></i>
+                        Logout
+                      </MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -317,7 +319,7 @@ export default function Dashboard(props) {
                     >
                       {friendRequests.length === 0 ? (
                         <MenuItem onClick={handleClose2}>
-                          <p style={{margin:"0"}}>친구 요청이 없습니다</p>
+                          <p style={{ margin: "0" }}>친구 요청이 없습니다</p>
                         </MenuItem>
                       ) : (
                         friendRequests.map((req) => {
