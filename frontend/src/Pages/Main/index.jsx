@@ -77,10 +77,10 @@ const Main = () => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
       .then((res) => {
-        // setCurrentTemp(res.data.data.temperature);
-        // setCurrentHu(res.data.data.humidity);
-        setCurrentTemp(getRandomInt(20, 40));
-        setCurrentHu(getRandomInt(20, 40));
+        setCurrentTemp(res.data.data.temperature);
+        setCurrentHu(res.data.data.humidity);
+        // setCurrentTemp(getRandomInt(20, 40));
+        // setCurrentHu(getRandomInt(20, 80));
         setCurrentStatus(res.data.data.user_state);
         setSpentTime(res.data.data.spent_time);
         setCurrentScore(res.data.data.posture_level);

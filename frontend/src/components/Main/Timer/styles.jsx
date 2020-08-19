@@ -3,6 +3,8 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   .timer {
     display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding-left: 14%;
     font-size: 4vw;
@@ -38,6 +40,7 @@ export const Wrapper = styled.div`
   }
   .cycle-button {
     display: flex;
+    margin: 0 auto;
   }
   .mySwitch {
   }

@@ -155,7 +155,122 @@ const HControl = () => {
 
   return (
     <Wrapper>
-      <Grid container className="happy">
+      <Grid container className="outerG">
+        <Grid item xs={12} className="theFirst" container>
+          <Grid item xs={4} className="TitleSpace FirstTS">
+            <Typography className="myTitleW">자동 가습</Typography>
+          </Grid>
+          <Grid item xs={8} className="switchBox">
+            <div className="theSwitch">
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={isAuto}
+                  onChange={(e) => {
+                    setIsAuto(!isAuto);
+                    handleAuto(e.target.checked);
+                  }}
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} className="theSecond" container>
+          <Grid item xs={4} className="TitleSpace">
+            <Typography className="myTitleW">가습기</Typography>
+          </Grid>
+          <Grid item xs={8} className="switchBox">
+            <div className="theSwitch">
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={isHumidiOn}
+                  disabled={isAuto}
+                  onChange={(e) => {
+                    setIsHumidiOn(!isHumidiOn);
+                    handleHumidi(e.target.checked);
+                  }}
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} className="theThird" container>
+          <Grid item xs={4} className="TitleSpace">
+            <Typography className="myTitleW">알림</Typography>
+          </Grid>
+          <Grid item xs={8} className="switchBox">
+            <div className="theSwitch">
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={!isSilent}
+                  onChange={(e) => {
+                    setIsSilent(!isSilent);
+                    handleSound(!e.target.checked);
+                  }}
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} className="theFourth" container>
+          <Grid item xs={4} className="TitleSpace">
+            <Typography className="myTitleW">희망 습도</Typography>
+          </Grid>
+          <Grid item xs={8} className="switchBox" container>
+          <Grid item xs={2} className="NumBox"></Grid>
+            <Grid item xs={4} className="NumBox">
+              <input
+                type="text"
+                className="SpecialOne"
+                value={myDeHumid}
+                maxLength={2}
+                onChange={(e) => {
+                  handleDeHumid(e.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={1} className="NumBox"></Grid>
+            <Grid item xs={4} className="NumBox">
+              <Button
+                variant="contained"
+                color="#22b8cf"
+                className="SpecialButton"
+                onClick={() => {
+                  submitDeHumid();
+                }}
+              >
+                적용
+              </Button>
+            </Grid>
+            <Grid item xs={1} className="NumBox"></Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} className="theFifth" container>
+          <Grid item xs={4} className="TitleSpace LastTS">
+            <Typography className="myTitleW">알림 테마</Typography>
+          </Grid>
+          <Grid item xs={8} className="ThemeBox">
+            <select
+                className="myTheme"
+                className="ThemeS"
+                defaultValue={initialTheme}
+                onChange={(e) => {
+                  handleMuTheme(e.target.value);
+                }}
+              >
+                <option value={1}>기본</option>
+                <option value={2}>클래식</option>
+                <option value={3}>공포</option>
+              </select>
+          </Grid>
+        </Grid>
+      </Grid>
+      {/* <Grid container className="happy">
         <Grid item xs={4} container className="3boxes">
           <Grid item xs={12} className="titles topL">
             <Typography className="myTitleW">자동 가습</Typography>
@@ -257,7 +372,7 @@ const HControl = () => {
           <Grid item xs={12} className="SelBox" container>
             <Grid item className="ThemeBox">
               <select
-                id="myTheme"
+                className="myTheme"
                 defaultValue={initialTheme}
                 onChange={(e) => {
                   handleMuTheme(e.target.value);
@@ -270,7 +385,7 @@ const HControl = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Wrapper>
   );
 };

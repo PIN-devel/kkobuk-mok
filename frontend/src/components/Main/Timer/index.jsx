@@ -179,9 +179,9 @@ const Timer = () => {
           &nbsp;:&nbsp;
           <span>{mySpentSec >= 10 ? mySpentSec : "0" + mySpentSec}</span>
         </Grid>
-        <Grid item xs={12} md={3} container className="cycle-button">
+        <Grid item xs={12} md={3} container className="cycle-button" justify="center">
           <Grid item xs={12} className="Ctitle">
-            <Typography>휴식 시간</Typography>
+            <Typography>휴식 설정</Typography>
           </Grid>
           <Grid item xs={12} className="mySwitch">
             <div className="theSwitch">
@@ -199,7 +199,7 @@ const Timer = () => {
           </Grid>
         </Grid>
         <Grid item xs={12} container spacing={2} className="">
-          <Grid item md={6} lg={3}>
+          <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="Stopwatch-Hour-label">Hour</InputLabel>
               <Select
@@ -228,7 +228,7 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item md={6} lg={3}>
+          <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="Stopwatch-Minute-label">Minute</InputLabel>
               <Select
@@ -257,7 +257,7 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item md={6} lg={3}>
+          <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="Stopwatch-Worktime-label">Work</InputLabel>
               <Select
@@ -286,7 +286,7 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item md={6} lg={3}>
+          <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="Stopwatch-Break-label">Break</InputLabel>
               <Select
@@ -364,7 +364,6 @@ const Timer = () => {
           )}
           {currentStatus === 3 ? (
             <div>
-              <h3>휴식시간</h3>
               <Button
                 size="large"
                 variant="contained"

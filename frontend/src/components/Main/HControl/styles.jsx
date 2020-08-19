@@ -1,12 +1,62 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  width: 100%;
-  .happy {
+width: 85%;
+height: 90%;
+padding-top: 5%;
+  .outerG {
+    width: 100%;
+    height: 100%;
     border-style: outset;
     border-radius: 10px;
   }
+  .theFirst {
+    width: 100%;
+    height: 20%;
+    border-bottom-style: solid;
+    border-bottom-color: lightgray;
+  }
+  .theSecond {
+    width: 100%;
+    height: 20%;
+    border-bottom-style: solid;
+    border-bottom-color: lightgray;
+  }
+  .theThird {
+    width: 100%;
+    height: 20%;
+    border-bottom-style: solid;
+    border-bottom-color: lightgray;
+  }
+  .theFourth {
+    width: 100%;
+    height: 20%;
+    border-bottom-style: solid;
+    border-bottom-color: lightgray;
+  }
+  .theFifth {
+    width: 100%;
+    height: 20%;
+  }
+  .TitleSpace {
+    text-align: center;
+    background-color: #22b8cf;
+  }
+  .FirstTS {
+    border-top-left-radius: 10px;
+  }
+  .LastTS {
+    border-bottom-left-radius: 10px;
+  }
+  .myTitleW {
+    color: white;
+    padding-top: 15%;
+    font-size: 1rem;
+  }
   .ThemeBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 70%;
     height: 100%;
   }
@@ -16,23 +66,21 @@ export const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
   }
-  .mySwitch {
+  .switchBox {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .myTitleW {
-    color: white;
-    padding-top: 5%;
-    font-size: 1.1vw;
-  }
   select {
-    width: 90%;
-    height: 100%;
+    width: 80%;
+    height: 70%;
     border-radius: 10px;
-    padding-left: 10%;
-    font-size: 1.1vw;
+    border-style: solid;
+    border-color: light-gray;
+    padding-left: 25%;
+    font-size: 1.1rem;
     letter-spacing: 1px;
+    outline: none;
   }
   .NumBox {
     height: 100%;
@@ -41,24 +89,26 @@ export const Wrapper = styled.div`
     align-items: center;
   }
   .SpecialOne {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 70%;
     display: flex;
     border-radius: 10px;
+    border-style: solid;
+    border-color: light-gray;
     text-align: center;
-    font-size: 1.1vw;
+    font-size: 1rem;
     letter-spacing: 1px;
     outline: none;
   }
   .SpecialButton {
-    width: 100%;
-    height: 95%;
+    width: 80%;
+    height: 70%;
     color: white;
     background-color: #22b8cf;
   }
   option {
     height: 100px;
-    font-size: 1.1vw;
+    font-size: 1rem;
   }
   h3 {
     color: white;

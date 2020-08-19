@@ -10,6 +10,8 @@ export const Wrapper = styled.div`
     width: 100%;
   }
   .Top {
+    display: flex;
+    justify-content: center;
     width: 100%;
     height: 35%;
   }
@@ -66,6 +68,8 @@ export const Wrapper = styled.div`
     border-bottom-color: black;
   }
   .Bot {
+    display: flex;
+    justify-content: center;
     width: 100%;
     height: 35%;
   }
