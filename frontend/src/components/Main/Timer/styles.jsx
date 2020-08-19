@@ -35,19 +35,25 @@ export const Wrapper = styled.div`
     font-weight: 1000;
   }
   .Ctitle {
+    text-align: center;
     font-size: 20px;
     font-weight: 1000;
   }
   .cycle-button {
-    display: flex;
     margin: 0 auto;
+    border-style: outset;
+    border-radius: 10px;
   }
   .mySwitch {
   }
   .theSwitch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .switch {
       position: relative;
       display: inline-block;
+      
       width: 60px;
       height: 34px;
     }
