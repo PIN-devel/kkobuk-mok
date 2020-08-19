@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.core.paginator import Paginator
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -16,6 +17,8 @@ from django.db.models import Sum
 from datetime import date, timedelta, datetime, time, timezone
 
 User = get_user_model()
+
+PER_PAGE = 10
 
 def user_state_check(ing, total, work, rest):
     if total != 0 and ing >= total:
@@ -477,8 +480,9 @@ def product_key(request):
 def inquery_list_create(request):
     if request.method == 'GET': # 해결 안된 문의사항만
         if request.user.is_superuser:
-            inquery = Inquery.objects.filter(solved=False)
-            serializer = InquerySerializer(inquery, many=True)
+            p = request.GET.get('_page', 1)
+            inquery = Paginator(Inquery.objects.filter(solved=False).order_by('-pk'), PER_PAGE)
+            serializer = InquerySerializer(inquery.page(p), many=True)
             return Response({"status": "OK", "data": serializer.data})
         return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN) 
     else:
@@ -489,10 +493,21 @@ def inquery_list_create(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def inquery_solved(request, inquery_id):
+def inquery_reply(request, inquery_id):
     if request.user.is_superuser:
         inquery = get_object_or_404(Inquery, id=inquery_id)
-        inquery.solved = not inquery.solved
-        inquery.save()
-        return Response({"status": "OK", "data": {"solved": inquery.solved}})
+        if not inquery.solved:
+            title = request.data.get('title')
+            content = request.data.get('content')
+            send_mail(
+                title,
+                content,
+                'kkobuk@gmail.com',
+                [inquery.email],
+                fail_silently=False
+            )
+            inquery.solved = not inquery.solved
+            inquery.save()
+            return Response({"status": "OK"})
+        return Response({"status": "FAIL", "msg": "이미 처리한 문의사항입니다."}, status=status.HTTP_409_CONFLICT)
     return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN)
