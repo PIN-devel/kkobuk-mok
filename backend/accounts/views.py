@@ -346,6 +346,8 @@ def sensing_save(request):
             Sensing.objects.create(user=p.user, posture_level=int(posture_level), temperature=float(temperature), humidity=float(humidity))
         except:
             print("아두이노에서 온 값이 이상한 것 같아요")
+
+    now = datetime.now(timezone.utc)
     if p.user.current_state != 1: # timesetting 테이블 만들어진 상태
         if TimeSetting.objects.filter(user=p.user).exists():
             t = TimeSetting.objects.filter(user=p.user).order_by('-pk')[0]
