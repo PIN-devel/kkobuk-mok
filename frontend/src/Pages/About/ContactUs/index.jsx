@@ -31,25 +31,35 @@ const ContactUs = () => {
     const { SERVER_URL } = useContext(AuthContext);
 
     const registerInquery = () => {
-      const url = `${SERVER_URL}/accounts/inquery/`;
-      const inqueryData = {
-        name: userName,
-        email: userEmail,
-        subject,
-        message,
-      };
-      
-      axios
-        .post(url, inqueryData, config)
-        .then(() => {            
-          setUserName("");
-          setUserEmail("");
-          setSubject("");
-          setMessage("");
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
+			if (!userName) {
+				alert("이름을 입력해주세요");
+			} else if (!userEmail) {
+				alert("이메일을 입력해주세요");
+			}	else if (!subject) {
+				alert("문의 제목을 입력해주세요");
+			}	else if (!message) {
+				alert("문의 내용을 입력해주세요");
+			} else {
+				const url = `${SERVER_URL}/accounts/inquery/`;
+				const inqueryData = {
+					name: userName,
+					email: userEmail,
+					subject,
+					message,
+				};
+				
+				axios
+					.post(url, inqueryData, config)
+					.then(() => {            
+						setUserName("");
+						setUserEmail("");
+						setSubject("");
+						setMessage("");
+					})
+					.catch((err) => {
+						console.log(err.response);
+					});
+			}
     };
 
     const handleSetUserName = (e) => {
@@ -66,7 +76,7 @@ const ContactUs = () => {
     };
     
     return (
-        <Wrapper>
+			<Wrapper>
             <Layout>                
                 <section>
                     <Grid className="contact-grid">
@@ -83,18 +93,18 @@ const ContactUs = () => {
                                 <i class="fas fa-envelope"></i> Write to us
                             </h1>
                             </div>
-
                             <div className="contact-form">
+																
                                 <FormControl fullWidth className="contact-form-control">
                                     <InputLabel>Name</InputLabel>
                                     <Input
                                         id="standard-adornment-name"
                                         onChange={(e) => {
-                                            handleSetUserName(e);
+																					handleSetUserName(e);
                                         }}
                                         value={userName}
                                         startAdornment={<i class="fas fa-user fa-lg contact-fa"></i>}
-                                    />
+																				/>
                                 </FormControl>
                                 
                                 <FormControl fullWidth className="contact-form-control">
@@ -102,11 +112,11 @@ const ContactUs = () => {
                                     <Input
                                         id="form-email"
                                         onChange={(e) => {
-                                            handleSetUserEmail(e);
+																					handleSetUserEmail(e);
                                         }}
                                         value={userEmail}
                                         startAdornment={<i class="fas fa-envelope contact-fa"></i>}
-                                    />
+																				/>
                                 </FormControl>
 
                                 <FormControl fullWidth className="contact-form-control">
@@ -114,11 +124,11 @@ const ContactUs = () => {
                                     <Input
                                         id="form-subject"
                                         onChange={(e) => {
-                                            handleSetSubject(e);
+																					handleSetSubject(e);
                                         }}
                                         value={subject}
                                         startAdornment={<i class="fas fa-tag contact-fa"></i>}
-                                    />
+																				/>
                                 </FormControl>
                                 
                                 <FormControl fullWidth className="contact-form-control">
@@ -126,15 +136,15 @@ const ContactUs = () => {
                                     <Input
                                         id="form-text"
                                         onChange={(e) => {
-                                            handleSetMessage(e);
+																					handleSetMessage(e);
                                         }}
                                         value={message}
                                         multiline={true}
                                         startAdornment={<i class="fas fa-pencil-alt contact-fa"></i>}
-                                    />
+																				/>
                                 </FormControl>
                             </div>
-
+														<p style={{textAlign:"right"}}>빠른 시일 내에 위에 적어주신 이메일로 답변 드리겠습니다 <i class="far fa-smile"></i></p>
                             <div className="contact-btn-div">
                                 <Button
                                 variant="contained"
