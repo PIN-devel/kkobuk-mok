@@ -69,9 +69,11 @@ const ContactUs = () => {
         <Wrapper>
             <Layout>                
                 <section>
-                    <h2 className="contact-title">
-                    Contact us
-                    </h2>
+                    <Grid className="contact-grid">
+                        <h2 className="contact-title">
+                        Contact us
+                        </h2>
+                    </Grid>
                     <Grid container>
                     <Grid xs={12} md={6} className="contact-grid">
                         <Card>
