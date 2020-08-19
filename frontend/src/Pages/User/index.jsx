@@ -34,7 +34,10 @@ const User = () => {
         console.log(err.response);
       });
   }, [afterChange]);
-
+  if (me) {
+    console.log('점수')
+    console.log(me.posture[0])
+  }
   if (!auth) {
     return <Redirect to="/" />;
   } else {
