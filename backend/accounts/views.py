@@ -53,7 +53,7 @@ def detail_or_delete_or_update(request, user_id):
         if user.sensing:
             startdate = date.today()
             posture = []
-            for i in range(0,8):
+            for i in range(7,-1,-1):
                 p = {}
                 day = startdate - timedelta(days=i)
                 cnt = Sensing.objects.filter(user=user).filter(created_at__contains=day).count()
@@ -490,10 +490,10 @@ def product_key(request):
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def inquery_list_create(request):
-    if request.method == 'GET': # 해결 안된 문의사항만
+    if request.method == 'GET':
         if request.user.is_superuser:
             p = request.GET.get('_page', 1)
-            inquery = Paginator(Inquery.objects.filter(solved=False).order_by('-pk'), PER_PAGE)
+            inquery = Paginator(Inquery.objects.order_by('-pk'), PER_PAGE)
             serializer = InquerySerializer(inquery.page(p), many=True)
             return Response({"status": "OK", "data": serializer.data})
         return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN) 
