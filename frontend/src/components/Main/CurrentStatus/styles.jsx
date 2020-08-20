@@ -1,12 +1,17 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
-`;
-
-export const TStatus = styled.img`
-  display: flex;
-  padding-left: 10%;
-  width: 90%;
-  height: 90%;
+display: flex;
+justify-content: center;
+margin-top: 1%;
+width: 100%;
+  .FirstPart {
+    height: 360px;
+  }
+  .SecondPart {
+    height: 360px;
+  }
+  .ThirdPart {
+    height: 360px;
+  }
 `;

@@ -42,7 +42,7 @@ SECRET_KEY = get_secret('SECRET_KEY')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'i3b109.p.ssafy.io',
+  'i3b109.p.ssafy.io',
     '3.35.17.150',
     'localhost',
     'kkobuk.tk',

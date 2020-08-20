@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 // core components
 import styles from "./tableStyle.js";
 import Axios from "axios";
+import Friends from "../../../Pages/Friends";
 
 const useStyles = makeStyles(styles);
 const StyledTableCell = withStyles((theme) => ({
@@ -36,7 +37,20 @@ export default function CustomTable(props) {
     tableHeaderColor,
     setTableData,
     dataType,
+    friends,
   } = props; // 1은 친구목록 2는 친구찾기 3은 보낸요청목록
+
+  // 친구 찾기 할 때, 이름으로
+  const friendsId = [];
+  if (friends) {
+    friends.map((friend, key) => {
+      friendsId.push(friend[0]);
+    });
+  }
+  if (dataType === 2) {
+    console.log("333");
+    console.log(tableData);
+  }
 
   const token = Cookies.get("token");
   const config = {
@@ -47,29 +61,29 @@ export default function CustomTable(props) {
   const addFriend = (id) => {
     Axios.post(`${SERVER_URL}/accounts/friend/${id}/`, { flag: true }, config)
       .then((res) => {
-        console.log(res.data);
-        console.log("요청 성공");
+        // console.log(res.data);
+        // console.log("요청 성공");
         alert("친구요청이 완료되었습니다");
         const newone = requestMade + 1;
         setRequestMade(newone);
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log("요청 실패");
+        // console.log(err.response);
+        // console.log("요청 실패");
       });
   };
 
   const deleteFriend = (F_id) => {
     Axios.delete(`${SERVER_URL}/accounts/friend/${F_id}/`, config)
       .then((res) => {
-        console.log(res.data);
-        console.log("요청 성공");
+        // console.log(res.data);
+        // console.log("요청 성공");
         const newList = tableData.filter((comp) => comp[0] !== F_id);
         setTableData(newList);
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log("요청 실패");
+        // console.log(err.response);
+        // console.log("요청 실패");
       });
   };
 
@@ -80,18 +94,12 @@ export default function CustomTable(props) {
       config
     )
       .then((res) => {
-        console.log(res.data);
-        console.log("친구 요청 취소 성공");
         alert("친구 요청이 취소되었습니다");
         const newList = tableData.filter((comp) => comp[0] !== F_id);
         setTableData(newList);
       })
-      .catch((err) => {
-        console.log(err.response);
-        console.log("친구 요청 취소 실패");
-      });
+      .catch((err) => {});
   };
-
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -117,7 +125,7 @@ export default function CustomTable(props) {
               <TableRow key={key} className={classes.tableBodyRow}>
                 {prop.slice(1).map((prop, key) => {
                   return (
-                    <TableCell className={classes.tableCell} key={key}>
+                    <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
                       {prop}
                     </TableCell>
                   );
@@ -126,6 +134,7 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell} key={key}>
                     <Button
                       color="black"
+                      className="PrimaryFont"
                       onClick={() => {
                         deleteFriend(prop[0]);
                       }}
@@ -137,23 +146,32 @@ export default function CustomTable(props) {
                   ""
                 )}
                 {dataType === 2 ? (
-                  <TableCell className={classes.tableCell} key={key}>
-                    <Button
-                      color="primary"
-                      onClick={() => {
-                        addFriend(prop[0]);
-                      }}
-                    >
-                      친구 요청
-                    </Button>
+                  <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
+                    {friendsId.length > 0 &&
+                      (friendsId.find((id) => {
+                        return id === prop[0];
+                      }) ? (
+                        "친구입니다"
+                      ) : (
+                        <Button
+                          color="primary"
+                          className="PrimaryFont"
+                          onClick={() => {
+                            addFriend(prop[0]);
+                          }}
+                        >
+                          친구 요청
+                        </Button>
+                      ))}
                   </TableCell>
                 ) : (
                   ""
                 )}
                 {dataType === 3 ? (
-                  <TableCell className={classes.tableCell} key={key}>
+                  <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
                     <Button
                       color="primary"
+                      className="PrimaryFont"
                       onClick={() => {
                         cancelRequest(prop[0]);
                       }}

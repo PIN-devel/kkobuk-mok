@@ -6,6 +6,16 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     backgroundColor: "white",
   },
+  // image: {
+  //   backgroundImage: `url(${"/images/kkobuk_logo.png"})`,
+  //   backgroundRepeat: "no-repeat",
+  //   backgroundColor:
+  //     theme.palette.type === "light"
+  //       ? theme.palette.grey[50]
+  //       : theme.palette.grey[900],
+  //   backgroundSize: "cover",
+  //   backgroundPosition: "center",
+  // },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },
@@ -77,6 +87,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
   },
+  // paper: {
+  //   marginRight: theme.spacing(2),
+  // },
   fixedHeight: {
     height: 240,
   },

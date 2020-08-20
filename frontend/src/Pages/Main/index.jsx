@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Layout from "../../Layout/MyDash/Dashboard";
 import Wrapper from "./styles";
 import CurrentStatus from "../../components/Main/CurrentStatus";
@@ -7,9 +7,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MainContext } from "../../contexts/MainContext";
+import { Grid } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
 
 const Main = () => {
-  const { SERVER_URL } = useContext(AuthContext);
+  const { auth, SERVER_URL } = useContext(AuthContext);
   const token = Cookies.get("token");
   const config = {
     headers: {
@@ -34,42 +36,16 @@ const Main = () => {
   const [isHumidiOn, setIsHumidiOn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [haveCycle, setHaveCycle] = useState(false);
-  const [isTurtleOn, setIsTurtleOn] = useState(true);
-
-  const scoreDataRef = useRef(currentScoreData);
-  scoreDataRef.current = currentScoreData;
-
-  // created_at = models.DateTimeField(auto_now_add=True)
-  //   # 사용자 설정 값
-  //   total_time = models.IntegerField()
-  //   work_time = models.IntegerField()
-  //   break_time = models.IntegerField()
-  //   # 일시정지 기록
-  //   total_stop_time = models.IntegerField(default=0)
-  //   last_stop_time = models.DateTimeField(null=True)
-  //   # 실제 총 작업 시간
-  //   real_work_time = models.IntegerField()
-
-  //   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='time_setting')
-
-  // break_time: 0
-  // created_at: "2020-08-11T19:21:18.587713+09:00"
-  // id: 3
-  // last_stop_time: "2020-08-11T19:21:21.783919+09:00"
-  // real_work_time: 5
-  // total_stop_time: 0
-  // total_time: 0
-  // user: 9
-  // work_time: 0
+  const [initialTheme, setInitialTheme] = useState("밥");
 
   const getInitialInfo = () => {
     axios
       .get(`${SERVER_URL}/accounts/maininfo/`, config)
       .then((res) => {
-        console.log("최초값 수령 성공");
+        // console.log("최초값 수령 성공");
         setDeHumid(res.data.data.desired_humidity);
         setIsAuto(res.data.data.auto_setting);
-        setIsSilent(res.data.data.slient_mode);
+        setIsSilent(res.data.data.silent_mode);
         const myTime = res.data.data.time.total_time;
         setTotalTime(myTime);
         const hour = parseInt(myTime / 60);
@@ -82,19 +58,20 @@ const Main = () => {
         }
         setBreakTime(res.data.data.time.break_time);
         setIsHumidiOn(res.data.data.humidifier_on_off);
+        setInitialTheme(res.data.data.theme);
         setIsLoaded(true);
       })
       .catch((err) => {
-        console.log("최초값 수령 실패");
-        console.log(err.response);
+        // console.log("최초값 수령 실패");
+        // console.log(err.response);
       });
   };
 
-  // function getRandomInt(min, max) {
-  //   min = Math.ceil(min);
-  //   max = Math.floor(max);
-  //   return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
-  // }
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  }
 
   const getInfo = () => {
     axios
@@ -102,16 +79,18 @@ const Main = () => {
       .then((res) => {
         setCurrentTemp(res.data.data.temperature);
         setCurrentHu(res.data.data.humidity);
+        // setCurrentTemp(getRandomInt(20, 40));
+        // setCurrentHu(getRandomInt(20, 80));
         setCurrentStatus(res.data.data.user_state);
         setSpentTime(res.data.data.spent_time);
         setCurrentScore(res.data.data.posture_level);
         setCurrentScoreData(res.data.data.posture_avg);
-        console.log("데이터 받아오는 중");
-        console.log(res.data.data);
+        // console.log("데이터 받아오는 중");
+        // console.log(res.data.data);
       })
       .catch((err) => {
-        console.log("정보 못받는중");
-        console.log(err.response);
+        // console.log("정보 못받는중");
+        // console.log(err.response);
       });
   };
 
@@ -128,47 +107,61 @@ const Main = () => {
   //   return <h1>Loading...</h1>;
   // }
 
-  return (
-    <Layout>
-      {isLoaded && (
-        <MainContext.Provider
-          value={{
-            currentScore,
-            currentHu,
-            currentTemp,
-            currentScoreData,
-            spentTime,
-            currentStatus,
-            TotalTime,
-            WorkTime,
-            setWorkTime,
-            BreakTime,
-            setBreakTime,
-            DeHumid,
-            setDeHumid,
-            isAuto,
-            setIsAuto,
-            isSilent,
-            setIsSilent,
-            isHumidiOn,
-            setIsHumidiOn,
-            haveCycle,
-            setHaveCycle,
-            TotalHour,
-            setTotalHour,
-            TotalMin,
-            setTotalMin,
-            isTurtleOn,
-          }}
-        >
-          <Wrapper>
-            <CurrentStatus />
-            <ControlPanel />
-          </Wrapper>
-        </MainContext.Provider>
-      )}
-    </Layout>
-  );
+  if (!auth) {
+    return <Redirect to="/" />;
+  } else {
+    return (
+      <Layout>
+        {isLoaded && (
+          <MainContext.Provider
+            value={{
+              currentScore,
+              currentHu,
+              currentTemp,
+              currentScoreData,
+              spentTime,
+              currentStatus,
+              TotalTime,
+              WorkTime,
+              setWorkTime,
+              BreakTime,
+              setBreakTime,
+              DeHumid,
+              setDeHumid,
+              isAuto,
+              setIsAuto,
+              isSilent,
+              setIsSilent,
+              isHumidiOn,
+              setIsHumidiOn,
+              haveCycle,
+              setHaveCycle,
+              TotalHour,
+              setTotalHour,
+              TotalMin,
+              setTotalMin,
+              initialTheme,
+            }}
+          >
+            <Wrapper>
+              <Grid container spacing={1}>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={10} className="CurS">
+                  <CurrentStatus />
+                </Grid>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={10} className="ConP">
+                  <ControlPanel />
+                </Grid>
+                <Grid item xs={1}></Grid>
+              </Grid>
+            </Wrapper>
+          </MainContext.Provider>
+        )}
+      </Layout>
+    );
+  }
 };
 
 export default Main;

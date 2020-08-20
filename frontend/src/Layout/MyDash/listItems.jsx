@@ -72,14 +72,14 @@ export default function NestedList(props) {
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Current" />
+        <ListItemText primary="대시보드" />
       </ListItem>
 
       <ListItem button onClick={handleClick_1}>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="Community" />
+        <ListItemText primary="커뮤니티" />
         {open_1 ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={drawerOpen ? open_1 : false} timeout="auto" unmountOnExit>
@@ -93,7 +93,7 @@ export default function NestedList(props) {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Friends" />
+            <ListItemText primary="친구" />
           </ListItem>
           <ListItem
             button
@@ -104,7 +104,7 @@ export default function NestedList(props) {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Channel" />
+            <ListItemText primary="채널" />
           </ListItem>
         </List>
       </Collapse>
@@ -113,7 +113,7 @@ export default function NestedList(props) {
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary="About" />
+        <ListItemText primary="안내사항" />
         {open_2 ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
 
@@ -128,7 +128,7 @@ export default function NestedList(props) {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="AboutMe" />
+            <ListItemText primary="제품 안내" />
           </ListItem>
           <ListItem
             button
@@ -139,7 +139,7 @@ export default function NestedList(props) {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="ContactUs" />
+            <ListItemText primary="문의하기" />
           </ListItem>
           <ListItem
             button
@@ -150,7 +150,7 @@ export default function NestedList(props) {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Terms" />
+            <ListItemText primary="이용약관" />
           </ListItem>
         </List>
       </Collapse>

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { Button } from "@material-ui/core";
@@ -11,9 +11,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Wrapper } from "./styles";
 import { MainContext } from "../../../contexts/MainContext";
-import FormLabel from "@material-ui/core/FormLabel";
-import Switch from "@material-ui/core/Switch";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -101,13 +98,13 @@ const Timer = () => {
         axios
           .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
           .then((res) => {
-            console.log("시작!");
-            console.log(res);
+            // console.log("시작!");
+            // console.log(res);
             setMystatus(2);
           })
           .catch((err) => {
-            console.log("시작실패");
-            console.log(err.response);
+            // console.log("시작실패");
+            // console.log(err.response);
           });
       }
     } else {
@@ -119,13 +116,13 @@ const Timer = () => {
       axios
         .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
         .then((res) => {
-          console.log("시작!");
-          console.log(res);
+          // console.log("시작!");
+          // console.log(res);
           setMystatus(2);
         })
         .catch((err) => {
-          console.log("시작실패");
-          console.log(err.response);
+          // console.log("시작실패");
+          // console.log(err.response);
         });
     }
   };
@@ -134,13 +131,13 @@ const Timer = () => {
     axios
       .post(`${SERVER_URL}/accounts/timer/pause/`, null, config)
       .then((res) => {
-        console.log("일시정지!");
-        console.log(res);
+        // console.log("일시정지!");
+        // console.log(res);
         setMystatus(4);
       })
       .catch((err) => {
-        console.log("일시정지 실패");
-        console.log(err.response);
+        // console.log("일시정지 실패");
+        // console.log(err.response);
       });
   };
 
@@ -148,13 +145,13 @@ const Timer = () => {
     axios
       .post(`${SERVER_URL}/accounts/timer/restart/`, null, config)
       .then((res) => {
-        console.log("다시 시작!");
-        console.log(res);
+        // console.log("다시 시작!");
+        // console.log(res);
         setMystatus(2);
       })
       .catch((err) => {
-        console.log("다시 시작 실패");
-        console.log(err.response);
+        // console.log("다시 시작 실패");
+        // console.log(err.response);
       });
   };
 
@@ -162,50 +159,49 @@ const Timer = () => {
     axios
       .post(`${SERVER_URL}/accounts/timer/stop/`, null, config)
       .then((res) => {
-        console.log("종료!");
-        console.log(res);
+        // console.log("종료!");
+        // console.log(res);
         setMystatus(1);
       })
       .catch((err) => {
-        console.log("종료 실패");
-        console.log(err.response);
+        // console.log("종료 실패");
+        // console.log(err.response);
       });
   }; // 완전정지
 
   return (
     <Wrapper>
       <Grid container spacing={3}>
-        <Grid item xs={9} className="timer">
+        <Grid item xs={12} md={9} className="timer">
           <span>{mySpentHour >= 10 ? mySpentHour : "0" + mySpentHour}</span>
           &nbsp;:&nbsp;
           <span>{mySpentMin >= 10 ? mySpentMin : "0" + mySpentMin}</span>
           &nbsp;:&nbsp;
           <span>{mySpentSec >= 10 ? mySpentSec : "0" + mySpentSec}</span>
         </Grid>
-        <Grid item xs={3} className="cycle-button">
-          <FormLabel component="legend" className="cycleW">
-            사이클
-          </FormLabel>
-          <Typography component="div">
-            <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item>Off</Grid>
-              <Grid item>
-                <Switch
+        <Grid item xs={12} md={3} container className="cycle-button" justify="center">
+          <Grid item xs={12} className="Ctitle">
+            <Typography className="PrimaryFont">휴식 설정</Typography>
+          </Grid>
+          <Grid item xs={12} className="mySwitch">
+            <div className="theSwitch">
+              <label className="switch">
+                <input
+                  type="checkbox"
                   checked={haveCycle}
-                  color="primary"
                   onChange={(e) => {
                     handleCycle(e.target.checked);
                   }}
                 />
-              </Grid>
-              <Grid item>On</Grid>
-            </Grid>
-          </Typography>
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </Grid>
         </Grid>
         <Grid item xs={12} container spacing={2} className="">
-          <Grid item xs={12} md={3}>
+          <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="Stopwatch-Hour-label">Hour</InputLabel>
+              <InputLabel id="Stopwatch-Hour-label" className="PrimaryFont">Hour</InputLabel>
               <Select
                 labelId="Stopwatch-Hour-label"
                 id="Stopwatch-Hour"
@@ -232,9 +228,9 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="Stopwatch-Minute-label">Minute</InputLabel>
+              <InputLabel id="Stopwatch-Minute-label" className="PrimaryFont">Minute</InputLabel>
               <Select
                 labelId="Stopwatch-Minute-label"
                 id="Stopwatch-Minute"
@@ -261,9 +257,9 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="Stopwatch-Worktime-label">Work</InputLabel>
+              <InputLabel id="Stopwatch-Worktime-label" className="PrimaryFont">Work</InputLabel>
               <Select
                 labelId="Stopwatch-Worktime-label"
                 id="Stopwatch-Worktime"
@@ -290,9 +286,9 @@ const Timer = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="Stopwatch-Break-label">Break</InputLabel>
+              <InputLabel id="Stopwatch-Break-label" className="PrimaryFont">Break</InputLabel>
               <Select
                 labelId="Stopwatch-Break-label"
                 id="Stopwatch-Break"
@@ -324,14 +320,15 @@ const Timer = () => {
         <Grid item xs={12} className="buttons">
           {currentStatus === 1 ? (
             <Button
+              size="large"
               variant="contained"
               color="primary"
-              className="start-button"
+              className="start-button PrimaryFont"
               onClick={() => {
                 start();
               }}
             >
-              Start
+              시작
             </Button>
           ) : (
             ""
@@ -340,24 +337,26 @@ const Timer = () => {
           {currentStatus === 2 ? (
             <div>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
-                className="stop-button"
+                className="stop-button PrimaryFont"
                 onClick={() => {
                   stop();
                 }}
               >
-                Stop
+                일시정지
               </Button>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
-                className="reset-button"
+                className="reset-button PrimaryFont"
                 onClick={() => {
                   reset();
                 }}
               >
-                Reset
+                초기화
               </Button>
             </div>
           ) : (
@@ -365,16 +364,16 @@ const Timer = () => {
           )}
           {currentStatus === 3 ? (
             <div>
-              <h3>휴식시간</h3>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
-                className="reset-button"
+                className="reset-button PrimaryFont"
                 onClick={() => {
                   reset();
                 }}
               >
-                Reset
+                초기화
               </Button>
             </div>
           ) : (
@@ -384,24 +383,26 @@ const Timer = () => {
           {currentStatus === 4 ? (
             <div>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
-                className="resume-button"
+                className="resume-button PrimaryFont"
                 onClick={() => {
                   resume();
                 }}
               >
-                Resume
+                계속하기
               </Button>
               <Button
+                size="large"
                 variant="contained"
                 color="primary"
-                className="reset-button"
+                className="reset-button PrimaryFont"
                 onClick={() => {
                   reset();
                 }}
               >
-                Reset
+                초기화
               </Button>
             </div>
           ) : (

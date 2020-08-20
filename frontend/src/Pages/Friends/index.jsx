@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Axios from "axios";
+import { Redirect } from "react-router-dom";
 
 import Layout from "../../Layout/MyDash/Dashboard";
 import useStyles from "./styles";
@@ -15,7 +16,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { FriendContext } from "../../contexts/FriendContext";
 
 const Friends = () => {
-  const { SERVER_URL } = useContext(AuthContext);
+  const { auth, SERVER_URL } = useContext(AuthContext);
   const classes = useStyles();
   // const [searchFriendOpen, setSearchFriendOpen] = useState(false);
   const [friends, setFriends] = useState([]);
@@ -29,12 +30,10 @@ const Friends = () => {
   };
 
   const tableHead = ["이름", "이메일", "오늘의 점수", "주간 점수", ""];
-
+  // 친구 목록
   useEffect(() => {
     Axios.get(`${SERVER_URL}/accounts/friend/`, config)
       .then((res) => {
-        console.log("친구들 불러오기 성공");
-        console.log(res.data);
         const friends = res.data.data.friends.map((person) => {
           return [
             person.id,
@@ -46,59 +45,60 @@ const Friends = () => {
         });
         setFriends(friends);
       })
-      .catch((err) => {
-        console.log("친구들 불러오기 실패");
-        console.log(err.response);
-      });
+      .catch((err) => {});
   }, []);
-
-  return (
-    <Layout>
-      <FriendContext.Provider
-        value={{
-          requestMade,
-          setRequestMade,
-        }}
-      >
-        <div className={classes.root}>
-          <Grid container className={classes.friendHeader}>
-            <Grid item xs={12}>
-              <Box bgcolor="white" color="black">
-                <div className={classes.friendHeaderText}>Friends list</div>
-                <Grid container spacing={3}>
-                  <Grid item xs></Grid>
-                  <Grid item xs={1.2}>
-                    <SentFriendRequests />
+  if (!auth) {
+    return <Redirect to="/" />;
+  } else {
+    return (
+      <Layout>
+        <FriendContext.Provider
+          value={{
+            requestMade,
+            setRequestMade,
+          }}
+        >
+          <div className={classes.root}>
+            <Grid container className={classes.friendHeader}>
+              <Grid item xs={12}>
+                <Box bgcolor="white" color="black">
+                  <div className={classes.friendHeaderText}>Friends list</div>
+                  <Grid container spacing={3}>
+                    <Grid item xs></Grid>
+                    <Grid item xs={1.2}>
+                      <SentFriendRequests />
+                    </Grid>
+                    <Grid item xs={1.2}>
+                      <ResponsiveDialog
+                        sentRequests={sentRequests}
+                        setSentRequests={setSentRequests}
+                        friends={friends}
+                      />
+                    </Grid>
+                    <Grid item xs={1}></Grid>
                   </Grid>
-                  <Grid item xs={1.2}>
-                    <ResponsiveDialog
-                      sentRequests={sentRequests}
-                      setSentRequests={setSentRequests}
-                    />
-                  </Grid>
-                  <Grid item xs={1}></Grid>
-                </Grid>
-              </Box>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
 
-          <Grid container>
-            <Grid item xs={1} />
-            <Grid item xs>
-              <Table
-                tableHeaderColor="black"
-                tableHead={tableHead}
-                tableData={friends}
-                setTableData={setFriends}
-                dataType={1}
-              />
+            <Grid container>
+              <Grid item xs={1} />
+              <Grid item xs>
+                <Table
+                  tableHeaderColor="black"
+                  tableHead={tableHead}
+                  tableData={friends}
+                  setTableData={setFriends}
+                  dataType={1}
+                />
+              </Grid>
+              <Grid item xs={1} />
             </Grid>
-            <Grid item xs={1} />
-          </Grid>
-        </div>
-      </FriendContext.Provider>
-    </Layout>
-  );
+          </div>
+        </FriendContext.Provider>
+      </Layout>
+    );
+  }
 };
 
 export default Friends;

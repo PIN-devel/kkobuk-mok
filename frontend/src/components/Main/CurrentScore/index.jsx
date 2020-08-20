@@ -3,24 +3,29 @@ import { Wrapper } from "./styles";
 import { MainContext } from "../../../contexts/MainContext";
 
 const CurrentScore = (props) => {
-  const { currentScore } = useContext(MainContext);
-  const [myWord, setMyWord] = useState("");
-  const [myClass, setMyClass] = useState("whiteCircle");
+  const { currentScore, currentStatus } = useContext(MainContext);
+  const [myWord, setMyWord] = useState("대기");
+  const [myClass, setMyClass] = useState("purpleCircle");
   useEffect(() => {
-    if (currentScore === 3) {
-      setMyWord("위험");
-      setMyClass("redCircle");
-    } else if (currentScore === 2) {
-      setMyWord("주의");
-      setMyClass("yellowCircle");
-    } else if (currentScore === 1) {
-      setMyWord("완벽");
-      setMyClass("blueCircle");
+    if (currentStatus === 3) {
+      setMyWord("휴식");
+      setMyClass("greenCircle");
     } else {
-      setMyWord("대기");
-      setMyClass("purpleCircle");
+      if (currentScore === 3) {
+        setMyWord("위험");
+        setMyClass("redCircle");
+      } else if (currentScore === 2) {
+        setMyWord("주의");
+        setMyClass("yellowCircle");
+      } else if (currentScore === 1) {
+        setMyWord("완벽");
+        setMyClass("blueCircle");
+      } else {
+        setMyWord("대기");
+        setMyClass("purpleCircle");
+        }
     }
-  }, [currentScore]);
+    }, [currentScore, currentStatus]);
   return (
     <Wrapper>
       <div className="container">

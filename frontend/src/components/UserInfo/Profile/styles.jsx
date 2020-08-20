@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
+  margin-left: 5%;
   justify-content: space-between;
   .profileInfo {
     margin-left: 50px;

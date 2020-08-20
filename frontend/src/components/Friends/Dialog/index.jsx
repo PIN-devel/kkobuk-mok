@@ -12,7 +12,7 @@ import Table from "../Table/Table";
 import { AuthContext } from "../../../contexts/AuthContext";
 import SearchComponent from "../../Search";
 import Cookies from "js-cookie";
-import Axios from "axios";
+import axios from "axios";
 
 export default function ResponsiveDialog(props) {
   const { SERVER_URL } = useContext(AuthContext);
@@ -23,6 +23,7 @@ export default function ResponsiveDialog(props) {
   const tableHead = ["이름", "이메일", "친구요청"];
   const [foundList, setFoundList] = useState([]);
   const [friendName, setFriendName] = useState("");
+  const { friends } = props;
 
   const findPerson = (name) => {
     const token = Cookies.get("token");
@@ -32,20 +33,24 @@ export default function ResponsiveDialog(props) {
       },
     };
     if (name !== "") {
-      Axios.get(
-        `${SERVER_URL}/accounts/?kw=${name}&order_by='point'&period="month"`,
-        config
-      )
+      axios
+        .get(
+          `${SERVER_URL}/accounts/?kw=${name}&order_by='point'&period="month"`,
+          config
+        )
         .then((res) => {
-          console.log("사람 찾기 성공");
+          // console.log("사람 찾기 성공");
+
           const pplList = res.data.data.map((person) => {
             return [person.id, person.name, person.email];
           });
+
           setFoundList(pplList);
-          console.log(res);
+
+          console.log(foundList);
         })
         .catch((err) => {
-          console.log("사람 찾기 실패");
+          // console.log("사람 찾기 실패");
           console.log(err.response);
         });
     }
@@ -95,7 +100,13 @@ export default function ResponsiveDialog(props) {
               tableData={foundList}
               setTableData={setFoundList}
               dataType={2}
+              friends={friends}
             />
+            {foundList.length === 0 && (
+              <div style={{ textAlign: "center" }}>
+                <h4>검색 결과가 없습니다.</h4>
+              </div>
+            )}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

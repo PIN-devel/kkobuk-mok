@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from django.contrib.auth import get_user_model
-from .models import FriendRequest, TimeSetting
+from .models import FriendRequest, TimeSetting, Inquery, Product
 
 from allauth.account import app_settings as allauth_settings
 from allauth.utils import email_address_exists
@@ -72,7 +72,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'name', 'gender', 'birth_date', 'desired_humidity', 'humidifier_on_off', 'slient_mode',
+        fields = ('id', 'email', 'name', 'gender', 'birth_date', 'desired_humidity', 'humidifier_on_off', 'silent_mode',
          'auto_setting', 'room', 'image','friends', 'current_state')
         read_only_fields = ('id', 'email', 'room', 'friends', 'current_state')
 
@@ -88,10 +88,18 @@ class FriendRequestReceiverListSerializer(serializers.ModelSerializer):
         model = FriendRequest
         fields = ('receiver',)
 
+class InquerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inquery
+        fields = '__all__'
 
-# 추후 모델링 결정되면, 방 멤버들 정보 어떤거 보여줄지 넣으면 됨
-# class MemberSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = get_user_model()
-#         fields = ('id', 'email', 'name', 'gender', 'image', 'current_state')
-#         read_only_fields = ('id', 'email')
+class UserCompactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('id', 'name', 'email')
+
+class ProductSerializer(serializers.ModelSerializer):
+    user = UserCompactSerializer(allow_null=True, required=False)
+    class Meta:
+        model = Product
+        fields = ('id', 'product_key', 'user')

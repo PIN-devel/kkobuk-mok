@@ -34,7 +34,7 @@ export default function SignUp() {
   const [gender, setGender] = useState("1");
   const [birthDate, setBirthDate] = useState("2000-01-01");
   const [confirmedPKey, setConfirmedPKey] = useState(false);
-  const { setAuth, SERVER_URL } = useContext(AuthContext);
+  const { auth, setAuth, SERVER_URL } = useContext(AuthContext);
 
   const history = useHistory();
 
@@ -67,9 +67,7 @@ export default function SignUp() {
     axios
       .post(`${url}/accounts/registration/`, body, config)
       .then((res) => {
-        console.log(res);
-        alert("회원가입되셨습니다");
-        history.push("user/");
+        alert("환영합니다. KkobuK 서비스를 소개해 드리겠습니다.");
       })
       .catch((err) => {
         console.log("회원가입 실패");
@@ -103,17 +101,17 @@ export default function SignUp() {
     setBirthDate(birthdate);
   };
 
+  // 실제 회원가입 axios
   const reqSignUp = (signUpData) => {
     const url = `${SERVER_URL}/rest-auth/signup/`;
-    const handleSetAuth = (auth, userId) => {
+    const handleSetAuth = (auth, userId, userName) => {
       setAuth(auth);
       Cookies.set("myUserId", userId);
+      Cookies.set("myuserName", userName);
     };
     axios
       .post(url, signUpData)
       .then((res) => {
-        console.log("회원가입 성공");
-        console.log(res);
         Cookies.set("token", res.data.token, { path: "/" });
         const token = Cookies.get("token");
         const config = {
@@ -121,12 +119,12 @@ export default function SignUp() {
             Authorization: `Jwt ${token}`,
           },
         };
-        handleSetAuth(true, res.data.user.pk);
+        handleSetAuth(true, res.data.user.pk, res.data.user.username);
         const pkey = productKey1 + productKey2 + productKey3 + productKey4;
         const body = { product_key: pkey };
-        setupPkey(SERVER_URL, body, config);
 
-        // 이거 프로필로 갈 때, 유저가 product 키 입력해줬으면 그것도 같이 보내주자 아 그러지는 말까?.... 어쩌지 고민좀
+        // 제품키도 보냄
+        setupPkey(SERVER_URL, body, config);
       })
       .catch((err) => {
         console.log("회원가입 실패");
@@ -159,7 +157,7 @@ export default function SignUp() {
     }
   };
 
-  return (
+  const signUp = (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -167,7 +165,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          KkobuK
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -179,7 +177,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="name"
-                label="Name"
+                label="이름"
                 autoFocus
                 value={name}
                 onChange={(e) => {
@@ -193,7 +191,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="이메일"
                 name="email"
                 autoComplete="email"
                 value={email}
@@ -212,7 +210,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="비밀번호"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -232,7 +230,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="check"
-                label="Check Password"
+                label="비밀번호 확인"
                 type="password"
                 id="check"
                 autoComplete="current-password"
@@ -325,7 +323,7 @@ export default function SignUp() {
               </Grid>
             </Grid>
             <Grid item xs={12} sm={3}>
-              <FormLabel>Gender</FormLabel>
+              <FormLabel>성별</FormLabel>
             </Grid>
             <Grid item xs={12} sm={7}>
               <FormControl component="fieldset">
@@ -338,21 +336,13 @@ export default function SignUp() {
                     handleSetGender(e.target.value === "female" ? "1" : "0");
                   }}
                 >
-                  <FormControlLabel
-                    value="1"
-                    control={<Radio />}
-                    label="Female"
-                  />
-                  <FormControlLabel
-                    value="0"
-                    control={<Radio />}
-                    label="Male"
-                  />
+                  <FormControlLabel value="1" control={<Radio />} label="여" />
+                  <FormControlLabel value="0" control={<Radio />} label="남" />
                 </RadioGroup>
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={3}>
-              <FormLabel>Birthday</FormLabel>
+              <FormLabel>생년월일</FormLabel>
             </Grid>
             <Grid item xs={12} sm={9}>
               <form className={classes.container} noValidate>
@@ -379,12 +369,12 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            회원가입
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/" variant="body2">
-                Already have an account? Sign in
+                로그인 후 이용하러가기
               </Link>
             </Grid>
           </Grid>
@@ -392,4 +382,10 @@ export default function SignUp() {
       </div>
     </Container>
   );
+
+  if (!auth) {
+    return signUp;
+  } else {
+    return <Redirect to="aboutme/" />;
+  }
 }

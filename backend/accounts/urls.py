@@ -17,6 +17,8 @@ urlpatterns = [
     path('find/', views.email_find),
 
     path('maininfo/', views.main_info),
+    path('theme/change/', views.theme_change),
+
     # 라즈베리파이
     path('initialinfo/', views.initial_info),
     path('sensingsave/', views.sensing_save),
@@ -26,7 +28,14 @@ urlpatterns = [
     path('timer/pause/', views.timer_pause),
     path('timer/restart/', views.timer_restart),
     path('timer/stop/', views.timer_stop),
-    
+
+    # 제품키 조회, 등록. 삭제
+    path('productkey/', views.product_key),
+
+    # 문의사항
+    path('inquery/', views.inquery_list_create),
+    path('inquery/<int:inquery_id>/', views.inquery_reply),
+
     path('', views.list),
     path('<int:user_id>/', views.detail_or_delete_or_update),
 ]

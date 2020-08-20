@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    // backgroundColor: "#fafbff"
+  },
   imageContainer: {
     height: 64,
     width: 64,
@@ -31,6 +33,13 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(10),
     height: theme.spacing(10),
+    backgroundColor: "#",
+  },
+  memberProfile: {
+    marginTop: "1rem",
+  },
+  memberChip: {
+    margin: "1rem",
   },
 }));
 

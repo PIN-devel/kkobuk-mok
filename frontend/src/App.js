@@ -12,6 +12,7 @@ import AboutMe from "./Pages/About/AboutMe";
 import Page404 from "./Pages/Page404";
 import { AuthContext } from "./contexts/AuthContext";
 import Cookies from "js-cookie";
+import AdminPage from "./Pages/AdminPage";
 
 function App() {
   // const SERVER_URL = "http://3.35.17.150:8000";
@@ -21,11 +22,9 @@ function App() {
   const [channelIn, setChannelIn] = useState(null);
 
   useEffect(() => {
-    console.log("유이펙 발동");
     const userID = Cookies.get("myUserId");
     if (userID) {
       if (!auth) {
-        console.log("로그인처리함!");
         setAuth(true);
       }
     }
@@ -45,15 +44,16 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={SignIn} />
-            <Route exact path="/SignIn" component={SignIn} />
+            {/* <Route exact path="/SignIn" component={SignIn} /> */}
             <Route exact path="/SignUp" component={SignUp} />
             <Route exact path="/current" component={Main} />
             <Route exact path="/user" component={User} />
+            <Route exact path="/admin" component={AdminPage} />
             <Route exact path="/Friends" component={Friends} />
             <Route exact path="/Channel" component={Channel} />
             <Route exact path="/ContactUs" component={ContactUs} />
             <Route exact path="/AboutMe" component={AboutMe} />
-            {/* <Route exact path="/Terms" component={Terms} /> */}
+            <Route exact path="/Terms" component={Terms} />
             <Route exact path="/not-found" component={Page404} />
             <Redirect to="not-found/" />;
           </Switch>
