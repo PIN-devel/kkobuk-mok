@@ -53,7 +53,7 @@ def detail_or_delete_or_update(request, user_id):
         if user.sensing:
             startdate = date.today()
             posture = []
-            for i in range(7,-1,-1):
+            for i in range(8,-1,-1):
                 p = {}
                 day = startdate - timedelta(days=i)
                 cnt = Sensing.objects.filter(user=user).filter(created_at__contains=day).count()
