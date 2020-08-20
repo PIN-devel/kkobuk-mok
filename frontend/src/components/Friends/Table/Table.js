@@ -148,7 +148,7 @@ export default function CustomTable(props) {
                 )}
                 {dataType === 2 ? (
                   <TableCell className={classes.tableCell} key={key} className="PrimaryFont" align="center">
-                    <Button
+                    {prop[0] !== -1 ? <Button
                       color="primary"
                       variant="contained"
                       className="PrimaryFont"
@@ -157,7 +157,14 @@ export default function CustomTable(props) {
                       }}
                     >
                       친구 요청
-                    </Button>
+                    </Button>:<Button
+                      color="primary"
+                      variant="contained"
+                      className="PrimaryFont"
+                      disabled={true}
+                    >
+                      친구 사이
+                    </Button>}
                     </TableCell>
                       ) : ""}
                 {dataType === 3 ? (
