@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-width: 85%;
-height: 90%;
-padding-top: 5%;
+  width: 85%;
+  height: 90%;
+  padding-top: 5%;
   .outerG {
     width: 100%;
     height: 100%;
@@ -78,15 +78,15 @@ padding-top: 5%;
     border-style: solid;
     border-color: light-gray;
     padding-left: 25%;
-    font-family: 'Nanum Gothic Coding', monospace;
-  font-family: 'Poor Story', cursive;
+    font-family: "Nanum Gothic Coding", monospace;
+    font-family: "Poor Story", cursive;
     font-size: 1.1rem;
     letter-spacing: 1px;
     outline: none;
   }
   .PrimaryFont {
-  font-family: 'Nanum Gothic Coding', monospace;
-  font-family: 'Poor Story', cursive;
+    font-family: "Nanum Gothic Coding", monospace;
+    font-family: "Poor Story", cursive;
   }
   .NumBox {
     height: 100%;
@@ -104,23 +104,23 @@ padding-top: 5%;
     text-align: center;
     font-size: 1rem;
     letter-spacing: 1px;
-    font-family: 'Nanum Gothic Coding', monospace;
-  font-family: 'Poor Story', cursive;
+    font-family: "Nanum Gothic Coding", monospace;
+    font-family: "Poor Story", cursive;
     outline: none;
   }
   .SpecialButton {
     width: 80%;
     height: 70%;
     color: white;
-    font-family: 'Nanum Gothic Coding', monospace;
-  font-family: 'Poor Story', cursive;
+    font-family: "Nanum Gothic Coding", monospace;
+    font-family: "Poor Story", cursive;
     background-color: #22b8cf;
   }
   option {
     height: 100px;
     font-size: 1rem;
-    font-family: 'Nanum Gothic Coding', monospace;
-  font-family: 'Poor Story', cursive;
+    font-family: "Nanum Gothic Coding", monospace;
+    font-family: "Poor Story", cursive;
   }
   h3 {
     color: white;

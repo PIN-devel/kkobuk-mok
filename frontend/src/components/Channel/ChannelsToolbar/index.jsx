@@ -47,13 +47,17 @@ const ChannelsToolbar = (props) => {
   };
   const createChannel = (e) => {
     e.preventDefault();
+    let passwordData = null;
+    if (password) {
+      passwordData = password;
+    }
     const url = `${SERVER_URL}/rooms/`;
     const handleSetChannelIn = (channel) => {
       setChannelIn(channel);
     };
     const channelData = {
       name: channelName,
-      password,
+      password: passwordData,
       description: channelGoal,
     };
     axios
@@ -67,6 +71,17 @@ const ChannelsToolbar = (props) => {
         // console.log("채널 생성 에러!!");
         console.log(err.response);
       });
+  };
+
+  const handleCreateChannel = (e) => {
+    e.preventDefault();
+    if (!channelName) {
+      alert("채널 이름을 입력해주세요");
+    } else if (!channelGoal) {
+      alert("채널 목표를 입력해주세요");
+    } else {
+      createChannel(e);
+    }
   };
 
   const handleSetChannelName = (e) => {
@@ -110,7 +125,7 @@ const ChannelsToolbar = (props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <form className={classes.form} onSubmit={createChannel}>
+            <form className={classes.form} onSubmit={handleCreateChannel}>
               <TextField
                 className={classes.textField}
                 fullWidth
