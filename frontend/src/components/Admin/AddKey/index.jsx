@@ -125,7 +125,9 @@ const AddKey = () => {
                 handleSubmit(e);
               }}
             >
-              등록
+              <Typography className="PrimaryFont">
+                등록
+              </Typography>
             </Button>
           </Grid>
         </Grid>

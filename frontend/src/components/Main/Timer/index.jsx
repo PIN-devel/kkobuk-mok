@@ -98,13 +98,13 @@ const Timer = () => {
         axios
           .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
           .then((res) => {
-            console.log("시작!");
-            console.log(res);
+            // console.log("시작!");
+            // console.log(res);
             setMystatus(2);
           })
           .catch((err) => {
-            console.log("시작실패");
-            console.log(err.response);
+            // console.log("시작실패");
+            // console.log(err.response);
           });
       }
     } else {
@@ -116,13 +116,13 @@ const Timer = () => {
       axios
         .post(`${SERVER_URL}/accounts/timer/start/`, body, config)
         .then((res) => {
-          console.log("시작!");
-          console.log(res);
+          // console.log("시작!");
+          // console.log(res);
           setMystatus(2);
         })
         .catch((err) => {
-          console.log("시작실패");
-          console.log(err.response);
+          // console.log("시작실패");
+          // console.log(err.response);
         });
     }
   };
@@ -131,13 +131,13 @@ const Timer = () => {
     axios
       .post(`${SERVER_URL}/accounts/timer/pause/`, null, config)
       .then((res) => {
-        console.log("일시정지!");
-        console.log(res);
+        // console.log("일시정지!");
+        // console.log(res);
         setMystatus(4);
       })
       .catch((err) => {
-        console.log("일시정지 실패");
-        console.log(err.response);
+        // console.log("일시정지 실패");
+        // console.log(err.response);
       });
   };
 
@@ -145,13 +145,13 @@ const Timer = () => {
     axios
       .post(`${SERVER_URL}/accounts/timer/restart/`, null, config)
       .then((res) => {
-        console.log("다시 시작!");
-        console.log(res);
+        // console.log("다시 시작!");
+        // console.log(res);
         setMystatus(2);
       })
       .catch((err) => {
-        console.log("다시 시작 실패");
-        console.log(err.response);
+        // console.log("다시 시작 실패");
+        // console.log(err.response);
       });
   };
 
@@ -159,13 +159,13 @@ const Timer = () => {
     axios
       .post(`${SERVER_URL}/accounts/timer/stop/`, null, config)
       .then((res) => {
-        console.log("종료!");
-        console.log(res);
+        // console.log("종료!");
+        // console.log(res);
         setMystatus(1);
       })
       .catch((err) => {
-        console.log("종료 실패");
-        console.log(err.response);
+        // console.log("종료 실패");
+        // console.log(err.response);
       });
   }; // 완전정지
 
@@ -181,7 +181,7 @@ const Timer = () => {
         </Grid>
         <Grid item xs={12} md={3} container className="cycle-button" justify="center">
           <Grid item xs={12} className="Ctitle">
-            <Typography>휴식 설정</Typography>
+            <Typography className="PrimaryFont">휴식 설정</Typography>
           </Grid>
           <Grid item xs={12} className="mySwitch">
             <div className="theSwitch">
@@ -201,7 +201,7 @@ const Timer = () => {
         <Grid item xs={12} container spacing={2} className="">
           <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="Stopwatch-Hour-label">Hour</InputLabel>
+              <InputLabel id="Stopwatch-Hour-label" className="PrimaryFont">Hour</InputLabel>
               <Select
                 labelId="Stopwatch-Hour-label"
                 id="Stopwatch-Hour"
@@ -230,7 +230,7 @@ const Timer = () => {
           </Grid>
           <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="Stopwatch-Minute-label">Minute</InputLabel>
+              <InputLabel id="Stopwatch-Minute-label" className="PrimaryFont">Minute</InputLabel>
               <Select
                 labelId="Stopwatch-Minute-label"
                 id="Stopwatch-Minute"
@@ -259,7 +259,7 @@ const Timer = () => {
           </Grid>
           <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="Stopwatch-Worktime-label">Work</InputLabel>
+              <InputLabel id="Stopwatch-Worktime-label" className="PrimaryFont">Work</InputLabel>
               <Select
                 labelId="Stopwatch-Worktime-label"
                 id="Stopwatch-Worktime"
@@ -288,7 +288,7 @@ const Timer = () => {
           </Grid>
           <Grid item xs={6} lg={3}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel id="Stopwatch-Break-label">Break</InputLabel>
+              <InputLabel id="Stopwatch-Break-label" className="PrimaryFont">Break</InputLabel>
               <Select
                 labelId="Stopwatch-Break-label"
                 id="Stopwatch-Break"
@@ -323,7 +323,7 @@ const Timer = () => {
               size="large"
               variant="contained"
               color="primary"
-              className="start-button"
+              className="start-button PrimaryFont"
               onClick={() => {
                 start();
               }}
@@ -340,7 +340,7 @@ const Timer = () => {
                 size="large"
                 variant="contained"
                 color="primary"
-                className="stop-button"
+                className="stop-button PrimaryFont"
                 onClick={() => {
                   stop();
                 }}
@@ -351,7 +351,7 @@ const Timer = () => {
                 size="large"
                 variant="contained"
                 color="primary"
-                className="reset-button"
+                className="reset-button PrimaryFont"
                 onClick={() => {
                   reset();
                 }}
@@ -368,7 +368,7 @@ const Timer = () => {
                 size="large"
                 variant="contained"
                 color="primary"
-                className="reset-button"
+                className="reset-button PrimaryFont"
                 onClick={() => {
                   reset();
                 }}
@@ -386,7 +386,7 @@ const Timer = () => {
                 size="large"
                 variant="contained"
                 color="primary"
-                className="resume-button"
+                className="resume-button PrimaryFont"
                 onClick={() => {
                   resume();
                 }}
@@ -397,7 +397,7 @@ const Timer = () => {
                 size="large"
                 variant="contained"
                 color="primary"
-                className="reset-button"
+                className="reset-button PrimaryFont"
                 onClick={() => {
                   reset();
                 }}

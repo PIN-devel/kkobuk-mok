@@ -19,13 +19,13 @@ const Temperature = (props) => {
         </div>
         <Grid container className="words">
           <Grid item>
-            <Typography>0°C</Typography>
+            <Typography className="PrimaryFont">0°C</Typography>
           </Grid>
           <Grid item>
-            <Typography>{currentTemp}°C</Typography>
+            <Typography className="PrimaryFont">{currentTemp}°C</Typography>
           </Grid>
           <Grid item>
-            <Typography>50°C</Typography>
+            <Typography className="PrimaryFont">50°C</Typography>
           </Grid>
         </Grid>
         {/* <span>0°C</span>

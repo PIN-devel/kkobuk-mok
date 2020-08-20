@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 const AdminPage = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -75,10 +75,10 @@ const AdminPage = () => {
           justify="center"
           alignItems="center"
         >
-          <Grid item xs={2}></Grid>
-          <Grid item xs={8} className="InsidePart">
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10} className="InsidePart">
             <div className={classes.root}>
-              <AppBar position="static" color="default">
+              <AppBar position="static" color="blue">
                 <Tabs
                   value={value}
                   onChange={handleChange}
@@ -109,7 +109,7 @@ const AdminPage = () => {
               </SwipeableViews>
             </div>
           </Grid>
-          <Grid item xs={2}></Grid>
+          <Grid item xs={1}></Grid>
         </Grid>
       </Wrapper>
     </Layout>

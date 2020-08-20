@@ -90,9 +90,11 @@ export const Wrapper = styled.div`
     background-color: white;
     .myscore {
       margin-left: 40px;
-      margin-top: 60px;
+      margin-top: 50px;
       text-align: center center;
-      font-size: 50px;
+      font-size: 60px;
+      font-family: 'Nanum Gothic Coding', monospace;
+      font-family: 'Poor Story', cursive;
     }
   }
   @keyframes scaleIn {

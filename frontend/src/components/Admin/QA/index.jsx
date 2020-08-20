@@ -306,6 +306,18 @@ const QA = () => {
           >
             보내기
           </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            autoFocus
+            onClick={() => {
+              setMyTitle("");
+              setMyContent("");
+              handleClose();
+            }}
+          >
+            돌아가기
+          </Button>
         </DialogActions>
       </Dialog>
     </Wrapper>

@@ -177,13 +177,14 @@ const ChannelCard = (props) => {
         </DialogContent>
         <DialogActions>
           <Button
+            color="primary"
+            variant="contained"
             onClick={() => {
               handleSetPwdClose();
             }}
-            color="primary"
             autoFocus
           >
-            CLOSE
+            돌아가기
           </Button>
         </DialogActions>
       </Dialog>

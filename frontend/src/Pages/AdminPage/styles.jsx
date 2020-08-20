@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 70%;
   background-color: lightgray;
+  flex-grow: 1;
+  padding-bottom: 20vh;
   overflow: auto;
   .OuterField {
     padding-top: 5vh;
     width: 100%;
-    height: 100%;
+    flex-grow: 1;
     overflow: auto;
   }
 `;
