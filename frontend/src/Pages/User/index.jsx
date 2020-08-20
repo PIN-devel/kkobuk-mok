@@ -29,7 +29,9 @@ const User = () => {
       })
       .catch((err) => {});
   }, [afterChange]);
-
+  // if (me) {
+  //   console.log(me.posture);
+  // }
   if (!auth) {
     return <Redirect to="/" />;
   } else {
@@ -43,7 +45,7 @@ const User = () => {
                 image={me.image}
                 email={me.email}
                 friends={me.friends}
-                today={me.posture[0].score}
+                today={me.posture[7].score}
                 data={me.posture.slice(1, 8)}
               />
             </Wrapper>

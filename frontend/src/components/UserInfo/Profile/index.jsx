@@ -49,7 +49,7 @@ const Profile = (props) => {
     if (n == 0) {
       return 0;
     } else {
-      return (4 - n).toFixed(2);
+      return (4 - n).toFixed(1);
     }
   };
 
@@ -61,6 +61,8 @@ const Profile = (props) => {
     }
   };
 
+  console.log("투데이");
+  console.log(props.today);
   return (
     <Wrapper>
       <div>
@@ -142,7 +144,7 @@ const Profile = (props) => {
                         tabIcon: PersonIcon,
                         tabContent: (
                           <GridContainer justify="center">
-                            <GridItem xs={5}>
+                            <GridItem xs={4}>
                               <ChangeInfo />
                             </GridItem>
                           </GridContainer>
