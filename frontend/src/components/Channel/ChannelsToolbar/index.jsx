@@ -26,7 +26,7 @@ const ChannelsToolbar = (props) => {
 
   const [channelName, setChannelName] = useState("");
   const [channelGoal, setChannelGoal] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(null);
 
   const { channelIn, setChannelIn, SERVER_URL } = useContext(AuthContext);
 
