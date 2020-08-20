@@ -102,10 +102,26 @@ const Profile = (props) => {
                     alignCenter
                     color="primary"
                     tabs={[
+                      // {
+                      //   tabButton: "오늘 평균",
+                      //   // tabIcon: Camera,
+                      //   tabIcon: DataUsageIcon,
+                      //   tabContent: (
+                      //     <GridContainer justify="center">
+                      // <GridItem xs={4} className="Today">
+                      //   <CircleProgressBar
+                      //     numinside={changeScore(props.today)}
+                      //     percentage={findPercentage(props.today)}
+                      //     speed={10}
+                      //   />
+                      // </GridItem>
+                      //     </GridContainer>
+                      //   ),
+                      // },
                       {
-                        tabButton: "오늘 평균",
-                        // tabIcon: Camera,
-                        tabIcon: DataUsageIcon,
+                        tabButton: "통계",
+                        // tabIcon: Palette,
+                        tabIcon: InsertChartIcon,
                         tabContent: (
                           <GridContainer justify="center">
                             <GridItem xs={4} className="Today">
@@ -115,15 +131,6 @@ const Profile = (props) => {
                                 speed={10}
                               />
                             </GridItem>
-                          </GridContainer>
-                        ),
-                      },
-                      {
-                        tabButton: "통계",
-                        // tabIcon: Palette,
-                        tabIcon: InsertChartIcon,
-                        tabContent: (
-                          <GridContainer justify="center">
                             <GridItem xs={12} sm={12} md={12}>
                               <Graphs data={props.data} />
                             </GridItem>

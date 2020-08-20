@@ -18,7 +18,8 @@ const Graphs = (props) => {
     <Wrapper>
       <Grid container>
         <Grid item xs={12}>
-          <h1>최근 7일의 점수</h1>
+          <br></br>
+          <br></br>
         </Grid>
       </Grid>
       <Grid xs={12}>
