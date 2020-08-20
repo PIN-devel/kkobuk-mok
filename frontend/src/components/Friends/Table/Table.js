@@ -61,29 +61,29 @@ export default function CustomTable(props) {
   const addFriend = (id) => {
     Axios.post(`${SERVER_URL}/accounts/friend/${id}/`, { flag: true }, config)
       .then((res) => {
-        console.log(res.data);
-        console.log("요청 성공");
+        // console.log(res.data);
+        // console.log("요청 성공");
         alert("친구요청이 완료되었습니다");
         const newone = requestMade + 1;
         setRequestMade(newone);
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log("요청 실패");
+        // console.log(err.response);
+        // console.log("요청 실패");
       });
   };
 
   const deleteFriend = (F_id) => {
     Axios.delete(`${SERVER_URL}/accounts/friend/${F_id}/`, config)
       .then((res) => {
-        console.log(res.data);
-        console.log("요청 성공");
+        // console.log(res.data);
+        // console.log("요청 성공");
         const newList = tableData.filter((comp) => comp[0] !== F_id);
         setTableData(newList);
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log("요청 실패");
+        // console.log(err.response);
+        // console.log("요청 실패");
       });
   };
 
@@ -125,7 +125,7 @@ export default function CustomTable(props) {
               <TableRow key={key} className={classes.tableBodyRow}>
                 {prop.slice(1).map((prop, key) => {
                   return (
-                    <TableCell className={classes.tableCell} key={key}>
+                    <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
                       {prop}
                     </TableCell>
                   );
@@ -134,6 +134,7 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell} key={key}>
                     <Button
                       color="black"
+                      className="PrimaryFont"
                       onClick={() => {
                         deleteFriend(prop[0]);
                       }}
@@ -145,7 +146,7 @@ export default function CustomTable(props) {
                   ""
                 )}
                 {dataType === 2 ? (
-                  <TableCell className={classes.tableCell} key={key}>
+                  <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
                     {friendsId.length > 0 &&
                       (friendsId.find((id) => {
                         return id === prop[0];
@@ -154,6 +155,7 @@ export default function CustomTable(props) {
                       ) : (
                         <Button
                           color="primary"
+                          className="PrimaryFont"
                           onClick={() => {
                             addFriend(prop[0]);
                           }}
@@ -166,9 +168,10 @@ export default function CustomTable(props) {
                   ""
                 )}
                 {dataType === 3 ? (
-                  <TableCell className={classes.tableCell} key={key}>
+                  <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
                     <Button
                       color="primary"
+                      className="PrimaryFont"
                       onClick={() => {
                         cancelRequest(prop[0]);
                       }}

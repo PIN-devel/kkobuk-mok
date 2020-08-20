@@ -86,10 +86,10 @@ const Main = () => {
         setCurrentScore(res.data.data.posture_level);
         setCurrentScoreData(res.data.data.posture_avg);
         // console.log("데이터 받아오는 중");
-        console.log(res.data.data);
+        // console.log(res.data.data);
       })
       .catch((err) => {
-        console.log("정보 못받는중");
+        // console.log("정보 못받는중");
         // console.log(err.response);
       });
   };

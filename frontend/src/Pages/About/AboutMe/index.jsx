@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import CardContent from "@material-ui/core/CardContent";
+import KKobuk from "../../../assets/꼬북하드.png"
 
 import {
   createMuiTheme,
@@ -47,7 +48,7 @@ const AboutMe = () => {
             <Paper className={classes.control}>
               <img
                 className="img-fluid"
-                src="https://mdbootstrap.com/img/Photos/Others/screens-section.jpg"
+                src={KKobuk}
                 alt=""
               />
             </Paper>
