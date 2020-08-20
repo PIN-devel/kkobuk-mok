@@ -104,9 +104,10 @@ export default function SignUp() {
   // 실제 회원가입 axios
   const reqSignUp = (signUpData) => {
     const url = `${SERVER_URL}/rest-auth/signup/`;
-    const handleSetAuth = (auth, userId) => {
+    const handleSetAuth = (auth, userId, userName) => {
       setAuth(auth);
       Cookies.set("myUserId", userId);
+      Cookies.set("myuserName", userName);
     };
     axios
       .post(url, signUpData)
@@ -118,7 +119,7 @@ export default function SignUp() {
             Authorization: `Jwt ${token}`,
           },
         };
-        handleSetAuth(true, res.data.user.pk);
+        handleSetAuth(true, res.data.user.pk, res.data.user.username);
         const pkey = productKey1 + productKey2 + productKey3 + productKey4;
         const body = { product_key: pkey };
 

@@ -182,6 +182,8 @@ export default function Dashboard(props) {
         console.log(res);
         Cookies.remove("token");
         Cookies.remove("myUserId");
+        Cookies.remove("myuserName");
+
         exitChannel();
         setAuth(false);
         console.log("Logout success!!");
@@ -194,7 +196,7 @@ export default function Dashboard(props) {
 
   // 반응형
   // const isTablet = useMediaQuery("(max-width:960px)");
-
+  const userName = Cookies.get("myuserName");
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -229,6 +231,9 @@ export default function Dashboard(props) {
           >
             테스트
           </Button> */}
+          <div>
+            <Typography>{userName}</Typography>
+          </div>
 
           <IconButton
             variant="contained"

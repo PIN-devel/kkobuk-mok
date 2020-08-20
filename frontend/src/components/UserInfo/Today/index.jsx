@@ -6,7 +6,7 @@ import CircleProgressBarBase from "./CircleProgressBarBase";
 const CircleProgressBar = styled(CircleProgressBarBase)`
   max-width: 400px;
   height: 100px;
-  margin-top: -5%;
+  margin-top: 10%;
   vertical-align: middle;
   .chart-text {
     fill: ${(props) => props.textColor};

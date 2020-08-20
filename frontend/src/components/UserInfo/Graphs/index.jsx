@@ -11,14 +11,15 @@ import {
 } from "recharts";
 import { Wrapper } from "./styles";
 import { Grid } from "@material-ui/core";
-import { HorizontalBar } from 'react-chartjs-2';
+import { HorizontalBar } from "react-chartjs-2";
 
 const Graphs = (props) => {
   return (
     <Wrapper>
       <Grid container>
         <Grid item xs={12}>
-          <h1>최근 7일의 점수</h1>
+          <br></br>
+          <br></br>
         </Grid>
       </Grid>
       <Grid xs={12}>

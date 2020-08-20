@@ -57,13 +57,9 @@ const ChannelCard = (props) => {
     setChannelPwd(pwd);
   };
 
-  const PPP = 1234;
-
   const confirmPassword = (pwd) => {
-    console.log(typeof pwd);
-    console.log(typeof PPP);
-    const pp = Number(pwd);
-    if (pp === PPP) {
+    // const pp = Number(pwd);
+    if (pwd === props.channel.password) {
       entranceChannel();
     } else {
       alert("비밀번호가 틀렸습니다.");
@@ -95,10 +91,10 @@ const ChannelCard = (props) => {
       {...rest}
       className={clsx(classes.root, className)}
       onClick={() => {
-        PPP ? handleSetPwdOpen() : entranceChannel();
+        props.channel.password ? handleSetPwdOpen() : entranceChannel();
       }}
     >
-      {PPP && (
+      {props.channel.password && (
         <LockOutlinedIcon style={{ float: "right", margin: "20px 20px 0 0" }} />
       )}
       <CardContent className={classes.cardContent}>
@@ -181,13 +177,14 @@ const ChannelCard = (props) => {
         </DialogContent>
         <DialogActions>
           <Button
+            color="primary"
+            variant="contained"
             onClick={() => {
               handleSetPwdClose();
             }}
-            color="primary"
             autoFocus
           >
-            CLOSE
+            돌아가기
           </Button>
         </DialogActions>
       </Dialog>

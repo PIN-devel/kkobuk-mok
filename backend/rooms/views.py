@@ -10,7 +10,7 @@ from .models import Room
 from .serializers import RoomSerializer, RoomListSerializer
 
 from accounts.serializers import UserListSerializer
-from accounts.models import Sensing
+from accounts.models import Sensing, TimeSetting
 
 from django.db.models import Sum
 from datetime import date, timedelta, datetime, time, timezone
@@ -46,10 +46,11 @@ def detail_or_in_or_out(request, room_id):
         if request.user.room == room: # 참여 중인 방 정보만 가져올 수 있음
             members = room.members.all()
             res = {'members':[]}
-            now = datetime.now(timezone.utc)
+            now = datetime.now()
             for member in members:
                 posture = []
                 ls = []
+                total_work_time = 0
                 if member.sensing.all():
                     # 오늘 통계 (방 생성 후 조건도 포함)
                     today = date.today()
@@ -76,10 +77,14 @@ def detail_or_in_or_out(request, room_id):
                             avg = Sensing.objects.filter(user=member).filter(created_at__lte=st, created_at__gte=ed).aggregate(Sum('posture_level'))['posture_level__sum']/cnt
                             ls.append({"time": str(st)[11:16], "score": avg})
                         else:
-                            ls.append({"time": str(st)[11:16], "score": 0})               
+                            ls.append({"time": str(st)[11:16], "score": 0})
+
+                    # 방 생성 후 총 공부 시간
+                    if TimeSetting.objects.filter(user=member).filter(created_at__gte=room.created_at).exists():
+                        total_work_time = TimeSetting.objects.filter(user=member).filter(created_at__gte=room.created_at).aggregate(Sum('real_work_time'))['real_work_time__sum']
                 else:
                     posture = [0, 0]
-                res['members'].append({**UserListSerializer(member).data, "posture":posture, "time":ls})
+                res['members'].append({**UserListSerializer(member).data, "posture":posture, "time":ls, "total_work_time":total_work_time})
             return Response({"status": "OK", "data": {**serializer.data, **res}})
 
         else:
@@ -112,7 +117,7 @@ def check(request):
         serializer = RoomSerializer(room)
         members = room.members.all()
         res = {'members':[]}
-        now = datetime.now(timezone.utc)
+        now = datetime.now()
         for member in members:
             posture = []
             ls = []

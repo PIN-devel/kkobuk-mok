@@ -49,16 +49,16 @@ const HControl = () => {
     axios
       .put(`${SERVER_URL}/accounts/${userID}/`, { auto_setting: bool }, config)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (bool) {
-          console.log("자동 온!");
+          // console.log("자동 온!");
         } else {
-          console.log("자동 오프!");
+          // console.log("자동 오프!");
         }
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log("자동 변경 실패");
+        // console.log(err.response);
+        // console.log("자동 변경 실패");
       });
   };
 
@@ -67,16 +67,16 @@ const HControl = () => {
     axios
       .put(`${SERVER_URL}/accounts/${userID}/`, { silent_mode: bool }, config)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (bool) {
-          console.log("소리 오프!");
+          // console.log("소리 오프!");
         } else {
-          console.log("소리 온!");
+          // console.log("소리 온!");
         }
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log("소리 변경 실패");
+        // console.log(err.response);
+        // console.log("소리 변경 실패");
       });
   };
 
@@ -96,16 +96,16 @@ const HControl = () => {
         config
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (bool) {
-          console.log("가습기 온!");
+          // console.log("가습기 온!");
         } else {
-          console.log("가습기 오프!");
+          // console.log("가습기 오프!");
         }
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log("가습기 상태 변경 실패");
+        // console.log(err.response);
+        // console.log("가습기 상태 변경 실패");
       });
   };
 
@@ -119,12 +119,12 @@ const HControl = () => {
       )
       .then((res) => {
         alert("희망 습도가 설정되었습니다");
-        console.log(res);
-        console.log("습도 설정 성공");
+        // console.log(res);
+        // console.log("습도 설정 성공");
       })
       .catch((err) => {
-        console.log(err.response);
-        console.log("습도 설정 실패");
+        // console.log(err.response);
+        // console.log("습도 설정 실패");
       });
   };
 
@@ -132,13 +132,13 @@ const HControl = () => {
     axios
       .post(`${SERVER_URL}/accounts/theme/change/`, { theme: sel }, config)
       .then((res) => {
-        console.log("테마변경 성공");
-        console.log(sel);
-        console.log(res);
+        // console.log("테마변경 성공");
+        // console.log(sel);
+        // console.log(res);
       })
       .catch((err) => {
-        console.log("테마변경 실패");
-        console.log(err.response);
+        // console.log("테마변경 실패");
+        // console.log(err.response);
       });
   };
 
@@ -146,19 +146,12 @@ const HControl = () => {
     setMyDeHumid(DeHumid);
   }, []);
 
-  const FindOutT = (n) => {
-    if (n === 0) {
-      return SleepT;
-    }
-    return ReadyT;
-  };
-
   return (
     <Wrapper>
       <Grid container className="outerG">
         <Grid item xs={12} className="theFirst" container>
           <Grid item xs={4} className="TitleSpace FirstTS">
-            <Typography className="myTitleW">자동 가습</Typography>
+            <Typography className="myTitleW PrimaryFont">자동 가습</Typography>
           </Grid>
           <Grid item xs={8} className="switchBox">
             <div className="theSwitch">
@@ -178,7 +171,7 @@ const HControl = () => {
         </Grid>
         <Grid item xs={12} className="theSecond" container>
           <Grid item xs={4} className="TitleSpace">
-            <Typography className="myTitleW">가습기</Typography>
+            <Typography className="myTitleW PrimaryFont">가습기</Typography>
           </Grid>
           <Grid item xs={8} className="switchBox">
             <div className="theSwitch">
@@ -199,7 +192,7 @@ const HControl = () => {
         </Grid>
         <Grid item xs={12} className="theThird" container>
           <Grid item xs={4} className="TitleSpace">
-            <Typography className="myTitleW">알림</Typography>
+            <Typography className="myTitleW PrimaryFont">알림</Typography>
           </Grid>
           <Grid item xs={8} className="switchBox">
             <div className="theSwitch">
@@ -219,7 +212,7 @@ const HControl = () => {
         </Grid>
         <Grid item xs={12} className="theFourth" container>
           <Grid item xs={4} className="TitleSpace">
-            <Typography className="myTitleW">희망 습도</Typography>
+            <Typography className="myTitleW PrimaryFont">희망 습도</Typography>
           </Grid>
           <Grid item xs={8} className="switchBox" container>
           <Grid item xs={2} className="NumBox"></Grid>
@@ -252,7 +245,7 @@ const HControl = () => {
         </Grid>
         <Grid item xs={12} className="theFifth" container>
           <Grid item xs={4} className="TitleSpace LastTS">
-            <Typography className="myTitleW">알림 테마</Typography>
+            <Typography className="myTitleW PrimaryFont">알림 테마</Typography>
           </Grid>
           <Grid item xs={8} className="ThemeBox">
             <select

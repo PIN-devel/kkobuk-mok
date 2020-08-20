@@ -29,12 +29,12 @@ urlpatterns = [
     path('timer/restart/', views.timer_restart),
     path('timer/stop/', views.timer_stop),
 
-    # 제품키 등록
+    # 제품키 조회, 등록. 삭제
     path('productkey/', views.product_key),
 
     # 문의사항
     path('inquery/', views.inquery_list_create),
-    path('inquery/<int:inquery_id>/', views.inquery_solved),
+    path('inquery/<int:inquery_id>/', views.inquery_reply),
 
     path('', views.list),
     path('<int:user_id>/', views.detail_or_delete_or_update),

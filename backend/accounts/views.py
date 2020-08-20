@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.core.paginator import Paginator
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -9,13 +10,15 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from .models import FriendRequest, Product, TimeSetting, Sensing, Inquery
-from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer, FriendRequestReceiverListSerializer, InquerySerializer
+from .serializers import UserSerializer, UserListSerializer, FriendRequestSenderListSerializer, TimeSettingSerializer, FriendRequestReceiverListSerializer, InquerySerializer, ProductSerializer
 from .helper import email_auth_num
 
 from django.db.models import Sum
 from datetime import date, timedelta, datetime, time, timezone
 
 User = get_user_model()
+
+PER_PAGE = 10
 
 def user_state_check(ing, total, work, rest):
     if total != 0 and ing >= total:
@@ -50,7 +53,7 @@ def detail_or_delete_or_update(request, user_id):
         if user.sensing:
             startdate = date.today()
             posture = []
-            for i in range(0,8):
+            for i in range(8,-1,-1):
                 p = {}
                 day = startdate - timedelta(days=i)
                 cnt = Sensing.objects.filter(user=user).filter(created_at__contains=day).count()
@@ -460,25 +463,38 @@ def timer_stop(request):
     else:
         return Response({"status": "FAIL", "error_msg": "잘못된 요청입니다"}, status=status.HTTP_400_BAD_REQUEST)  
 
-@api_view(['POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def product_key(request):
     if request.user.is_superuser:
-        product_key = request.data.get('product_key')
-        if Product.objects.filter(product_key=product_key).exists():
-            return Response({"status": "FAIL", "error_msg": "이미 존재하는 제품키입니다"}, status=status.HTTP_400_BAD_REQUEST) 
-        Product.objects.create(product_key=product_key)
-        return Response({"status": "OK"})
+        if request.method == 'GET': # 조회
+            keyword = request.GET.get('keyword')
+            p = request.GET.get('_page', 1)
+            products = Paginator(Product.objects.filter(product_key__contains=keyword).order_by('-pk'), PER_PAGE)
+            serializer = ProductSerializer(products.page(p), many=True)
+            return Response({"status": "OK", "data": serializer.data})
+        elif request.method == 'POST': # 등록
+            product_key = request.data.get('product_key')
+            if Product.objects.filter(product_key=product_key).exists():
+                return Response({"status": "FAIL", "error_msg": "이미 존재하는 제품키입니다"}, status=status.HTTP_400_BAD_REQUEST) 
+            Product.objects.create(product_key=product_key)
+            return Response({"status": "OK"})
+        else: # 삭제
+            product_id = request.data.get('product_id')
+            product = get_object_or_404(Product, id=product_id)
+            product.delete()
+            return Response({"status": "OK"})
     else:
         return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN) 
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def inquery_list_create(request):
-    if request.method == 'GET': # 해결 안된 문의사항만
+    if request.method == 'GET':
         if request.user.is_superuser:
-            inquery = Inquery.objects.filter(solved=False)
-            serializer = InquerySerializer(inquery, many=True)
+            p = request.GET.get('_page', 1)
+            inquery = Paginator(Inquery.objects.order_by('-pk'), PER_PAGE)
+            serializer = InquerySerializer(inquery.page(p), many=True)
             return Response({"status": "OK", "data": serializer.data})
         return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN) 
     else:
@@ -489,10 +505,21 @@ def inquery_list_create(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def inquery_solved(request, inquery_id):
+def inquery_reply(request, inquery_id):
     if request.user.is_superuser:
         inquery = get_object_or_404(Inquery, id=inquery_id)
-        inquery.solved = not inquery.solved
-        inquery.save()
-        return Response({"status": "OK", "data": {"solved": inquery.solved}})
+        if not inquery.solved:
+            title = request.data.get('title')
+            content = request.data.get('content')
+            send_mail(
+                title,
+                content,
+                'kkobuk@gmail.com',
+                [inquery.email],
+                fail_silently=False
+            )
+            inquery.solved = not inquery.solved
+            inquery.save()
+            return Response({"status": "OK"})
+        return Response({"status": "FAIL", "msg": "이미 처리한 문의사항입니다."}, status=status.HTTP_409_CONFLICT)
     return Response({"status": "FAIL", "error_msg": "권한이 없습니다"}, status=status.HTTP_403_FORBIDDEN)

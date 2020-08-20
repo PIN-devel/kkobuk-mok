@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Card,
   CardContent,
@@ -11,12 +11,13 @@ import {
   CircularProgress,
   Box,
 } from "@material-ui/core";
-import Chip from '@material-ui/core/Chip';
-import FaceIcon from '@material-ui/icons/Face';
+import Chip from "@material-ui/core/Chip";
+import FaceIcon from "@material-ui/icons/Face";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import clsx from "clsx";
 import useStyles from "./styles";
 import ChannelChart from "../ChannelChart";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const CircularProgressWithLabel = (props) => {
   return (
@@ -45,6 +46,21 @@ const CircularProgressWithLabel = (props) => {
 const ChannelDetailCard = (props) => {
   const { member } = props;
   const classes = useStyles();
+  const { SERVER_URL } = useContext(AuthContext);
+
+  const possibleState = ["대기", "공부", "휴식", "외출"];
+
+  const [memberState, setMemberState] = useState("대기");
+
+  if (member.current_state === 1 && memberState !== possibleState[0]) {
+    setMemberState(possibleState[0]);
+  } else if (member.current_state === 2 && memberState !== possibleState[1]) {
+    setMemberState(possibleState[1]);
+  } else if (member.current_state === 3 && memberState !== possibleState[2]) {
+    setMemberState(possibleState[2]);
+  } else if (member.current_state === 4 && memberState !== possibleState[3]) {
+    setMemberState(possibleState[3]);
+  }
 
   return (
     <Card className={clsx(classes.root)}>
@@ -54,29 +70,31 @@ const ChannelDetailCard = (props) => {
             variant="outlined"
             size="small"
             icon={<FaceIcon />}
-            label="공부중"
+            label={memberState}
             color="primary"
             className={classes.memberChip}
           />
-          <Grid container
+          <Grid
+            container
             direction="row"
             justify="center"
             alignItems="center"
-            className={classes.memberProfile}>
-            {/* <div className={classes.imageContainer}>
-              <img
-                alt="channel"
-                className={classes.image}
-                // src={channelData.imageUrl}
-                // src={}
-              />
-            </div> */}
-            <Grid item lg={6}></Grid>
-            <Grid item lg={6}> 
-              <Avatar className={classes.large}>kkobuk</Avatar>
+            className={classes.memberProfile}
+          >
+            <Grid item xs={6}></Grid>
+            <Grid item xs={6}>
+              <div className={classes.imageContainer}>
+                <img
+                  alt="channel"
+                  className={classes.image}
+                  // src={channelData.imageUrl}
+                  src={`${SERVER_URL}${member.image}`}
+                />
+              </div>
+              {/* <Avatar className={classes.large}>kkobuk</Avatar> */}
               <Typography gutterBottom variant="body1">
                 <Box textAlign="center" m={1}>
-                {member.name}님
+                  {member.name}
                 </Box>
               </Typography>
             </Grid>

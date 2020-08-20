@@ -33,14 +33,14 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(10),
     height: theme.spacing(10),
-    backgroundColor: "#"
+    backgroundColor: "#",
   },
   memberProfile: {
     marginTop: "1rem",
   },
   memberChip: {
     margin: "1rem",
-  }
+  },
 }));
 
 export default useStyles;

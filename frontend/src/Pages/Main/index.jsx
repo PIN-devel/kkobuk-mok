@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Layout from "../../Layout/MyDash/Dashboard";
 import Wrapper from "./styles";
 import CurrentStatus from "../../components/Main/CurrentStatus";
@@ -107,61 +107,61 @@ const Main = () => {
   //   return <h1>Loading...</h1>;
   // }
 
-  // if (!auth) {
-  //   return <Redirect to="/" />;
-  // } else {
-  return (
-    <Layout>
-      {isLoaded && (
-        <MainContext.Provider
-          value={{
-            currentScore,
-            currentHu,
-            currentTemp,
-            currentScoreData,
-            spentTime,
-            currentStatus,
-            TotalTime,
-            WorkTime,
-            setWorkTime,
-            BreakTime,
-            setBreakTime,
-            DeHumid,
-            setDeHumid,
-            isAuto,
-            setIsAuto,
-            isSilent,
-            setIsSilent,
-            isHumidiOn,
-            setIsHumidiOn,
-            haveCycle,
-            setHaveCycle,
-            TotalHour,
-            setTotalHour,
-            TotalMin,
-            setTotalMin,
-            initialTheme,
-          }}
-        >
-          <Wrapper>
-            <Grid container spacing={1}>
-              <Grid item xs={1}></Grid>
-              <Grid item xs={10} className="CurS">
-                <CurrentStatus />
+  if (!auth) {
+    return <Redirect to="/" />;
+  } else {
+    return (
+      <Layout>
+        {isLoaded && (
+          <MainContext.Provider
+            value={{
+              currentScore,
+              currentHu,
+              currentTemp,
+              currentScoreData,
+              spentTime,
+              currentStatus,
+              TotalTime,
+              WorkTime,
+              setWorkTime,
+              BreakTime,
+              setBreakTime,
+              DeHumid,
+              setDeHumid,
+              isAuto,
+              setIsAuto,
+              isSilent,
+              setIsSilent,
+              isHumidiOn,
+              setIsHumidiOn,
+              haveCycle,
+              setHaveCycle,
+              TotalHour,
+              setTotalHour,
+              TotalMin,
+              setTotalMin,
+              initialTheme,
+            }}
+          >
+            <Wrapper>
+              <Grid container spacing={1}>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={10} className="CurS">
+                  <CurrentStatus />
+                </Grid>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={10} className="ConP">
+                  <ControlPanel />
+                </Grid>
+                <Grid item xs={1}></Grid>
               </Grid>
-              <Grid item xs={1}></Grid>
-              <Grid item xs={1}></Grid>
-              <Grid item xs={10} className="ConP">
-                <ControlPanel />
-              </Grid>
-              <Grid item xs={1}></Grid>
-            </Grid>
-          </Wrapper>
-        </MainContext.Provider>
-      )}
-    </Layout>
-  );
+            </Wrapper>
+          </MainContext.Provider>
+        )}
+      </Layout>
+    );
+  }
 };
-// };
 
 export default Main;

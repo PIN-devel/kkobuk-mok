@@ -112,9 +112,10 @@ export default function SignIn() {
   };
   const login = (loginData) => {
     const url = `${SERVER_URL}/rest-auth/login/`;
-    const handleSetAuth = (auth, userId) => {
+    const handleSetAuth = (auth, userId, userName) => {
       setAuth(auth);
       Cookies.set("myUserId", userId);
+      Cookies.set("myuserName", userName);
     };
     axios
       .post(url, loginData)
@@ -126,7 +127,8 @@ export default function SignIn() {
         //setAuth가 푸쉬보다 앞에 있으면 auth가 바뀌면서 다시 렌더됨
         // 즉 저기 밑에 렌더가 먼저임
         // 이건 비동기 요청이므로 뒤에 나오는 콘솔들이 실행되기는함
-        handleSetAuth(true, res.data.user.pk);
+        console.log(res.data.user);
+        handleSetAuth(true, res.data.user.pk, res.data.user.username);
       })
       .catch((err) => {
         // console.log("로그인 에러!!");
