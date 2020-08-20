@@ -27,6 +27,7 @@ export default function ResponsiveDialog(props) {
 
   const findPerson = (name) => {
     const token = Cookies.get("token");
+    const myUserId = Cookies.get("myUserId");
     const config = {
       headers: {
         Authorization: `Jwt ${token}`,
@@ -40,14 +41,20 @@ export default function ResponsiveDialog(props) {
         )
         .then((res) => {
           // console.log("사람 찾기 성공");
-
-          const pplList = res.data.data.map((person) => {
-            return [person.id, person.name, person.email];
+          const fIdList = friends.map((f) => {
+            return (f[0])
+          })
+          const pplList = [];
+          res.data.data.map((person) => {
+            if (person.id !== Number(myUserId)) {
+              if (fIdList.includes(person.id)) {
+                pplList.push([-1, person.name, person.email])
+              } else {
+                pplList.push([person.id, person.name, person.email])
+              }
+            }
           });
-
           setFoundList(pplList);
-
-          console.log(foundList);
         })
         .catch((err) => {
           // console.log("사람 찾기 실패");
@@ -117,7 +124,7 @@ export default function ResponsiveDialog(props) {
             color="primary"
             autoFocus
           >
-            CLOSE
+            돌아가기
           </Button>
         </DialogActions>
       </Dialog>
