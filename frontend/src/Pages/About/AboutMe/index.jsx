@@ -47,7 +47,7 @@ const AboutMe = () => {
           <Grid item xs={12} md={5}>
             <Paper className={classes.control}>
               <img
-                className="img-fluid"
+                className={classes.KkobuKYi}
                 src={KKobuk}
                 alt=""
               />

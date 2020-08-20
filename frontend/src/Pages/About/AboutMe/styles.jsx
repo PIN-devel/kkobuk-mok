@@ -30,6 +30,10 @@ const styles = {
     paddingRight: 50,
     textAlign: "left",
   },
+  KkobuKYi: {
+    width: "100%",
+    height: "100%",
+  },
 
   head: {
     color: "white",

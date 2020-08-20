@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { checkPropTypes } from "prop-types";
 import clsx from "clsx";
 import {
   Card,
@@ -25,6 +25,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { ThemeProvider } from "styled-components";
 import localStorage from "local-storage";
+import { MemoryRouter } from "react-router";
 
 const ChannelCard = (props) => {
   const { className, channel, ...rest } = props;
@@ -85,13 +86,22 @@ const ChannelCard = (props) => {
       });
   };
 
+  const handleClick = () => {
+    if (props.channel.password) {
+      handleSetPwdOpen()
+    } else {
+      entranceChannel()
+    }
+  };
+
   return (
+    <div>
     <Card
       style={{ cursor: "pointer" }}
       {...rest}
       className={clsx(classes.root, className)}
       onClick={() => {
-        props.channel.password ? handleSetPwdOpen() : entranceChannel();
+        handleClick();
       }}
     >
       {props.channel.password && (
@@ -141,54 +151,57 @@ const ChannelCard = (props) => {
           </Grid>
         </Grid>
       </CardActions>
-      <Dialog
-        maxWidth="sm"
-        fullWidth="True"
-        open={pwdOpen}
-        onClose={() => {
-          handleSetPwdClose();
-        }}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogContent>
-          <h4>채널 비밀번호</h4>
-          <TextField
-            variant="outlined"
-            fullWidth
-            id="channelPwd"
-            type="password"
-            name="channelPwd"
-            autoComplete="channelPwd"
-            value={channelPwd}
-            onChange={(e) => {
-              handleSetChannelPwd(e.target.value);
-            }}
-          />
-          <Button
-            className={classes.margin}
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              confirmPassword(channelPwd);
-            }}
-          >
-            입장하기
-          </Button>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-              handleSetPwdClose();
-            }}
-            autoFocus
-          >
-            돌아가기
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Card>
+    <Dialog
+    maxWidth="sm"
+    fullWidth="True"
+    open={pwdOpen}
+    onClose={() => {
+      handleSetPwdClose();
+      console.log(pwdOpen);
+    }}
+    aria-labelledby="responsive-dialog-title"
+  >
+    <DialogContent>
+      <h4>채널 비밀번호</h4>
+      <TextField
+        variant="outlined"
+        fullWidth
+        id="channelPwd"
+        type="password"
+        name="channelPwd"
+        autoComplete="channelPwd"
+        value={channelPwd}
+        onChange={(e) => {
+          handleSetChannelPwd(e.target.value);
+        }}
+      />
+      <Button
+        className={classes.margin}
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          confirmPassword(channelPwd);
+        }}
+      >
+        입장하기
+      </Button>
+    </DialogContent>
+    <DialogActions>
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={() => {
+          handleSetPwdClose();
+          console.log(pwdOpen);
+        }}
+        autoFocus
+      >
+        돌아가기
+      </Button>
+    </DialogActions>
+  </Dialog>
+  </div>
   );
 };
 
