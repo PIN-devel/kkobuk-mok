@@ -1,34 +1,35 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import clsx from "clsx";
-
 import {
+  Badge,
+  Button,
+  Divider,
+  Toolbar,
+  AppBar,
+  Drawer,
+  CssBaseline,
+  Typography,
   ClickAwayListener,
   Grow,
   Paper,
   Popper,
-  MenuList,
-  Grid,
-  CssBaseline,
-  Drawer,
-  AppBar,
-  Toolbar,
-  Typography,
-  Divider,
-  Button,
-  IconButton,
-  Badge,
   Menu,
   MenuItem,
+  MenuList,
+  Grid,
 } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+
 import { AuthContext } from "../../contexts/AuthContext";
 import NestedList from "../MyDash/listItems";
 import Footer from "../Footer";
 import useStyles from "./styles";
+
 import { Link, Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
