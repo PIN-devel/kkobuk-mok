@@ -28,13 +28,16 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: "2px solid white",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    padding: theme.spacing(2, 4, 1),
   },
   PButton: {
     display: "flex",
     justifyContent: "center",
+  },
+  TextField: {
+    padding: "0",
   },
 }));
 
@@ -164,13 +167,13 @@ const ChangeInfo = (props) => {
       )
       .then((res) => {
         console.log(res);
-        alert("제품키 변경 성공");
+        alert("제품키가 변경 되었습니다. ");
         setAfterChange(!afterChange);
         // handleClose();
       })
       .catch((err) => {
-        console.log("제품키 변경 실패");
-        console.log(err.reponse);
+        // console.log("제품키 변경이 실패");
+        // console.log(err.reponse);
       });
   };
 
@@ -231,8 +234,8 @@ const ChangeInfo = (props) => {
   //   var wantDelete = false;
   // };
 
-  console.log("이미지");
-  console.log(newImage);
+  // console.log("이미지");
+  // console.log(newImage);
 
   const EditForm = (
     <Wrapper>

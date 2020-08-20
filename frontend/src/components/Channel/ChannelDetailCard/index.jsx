@@ -49,9 +49,9 @@ const ChannelDetailCard = (props) => {
   const { SERVER_URL } = useContext(AuthContext);
 
   const possibleState = ["대기", "공부", "휴식", "외출"];
+
   const [memberState, setMemberState] = useState("대기");
-  console.log("여기");
-  console.log(member);
+
   if (member.current_state === 1 && memberState !== possibleState[0]) {
     setMemberState(possibleState[0]);
   } else if (member.current_state === 2 && memberState !== possibleState[1]) {
