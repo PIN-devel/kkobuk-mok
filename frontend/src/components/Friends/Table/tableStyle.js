@@ -46,6 +46,8 @@ const tableStyle = (theme) => ({
     "&, &$tableCell": {
       fontSize: "1.2em",
       fontFamily: "Nanum Gothic",
+      // color: "black",
+      fontWeight: "bold",
     },
   },
   tableCell: {
@@ -65,6 +67,7 @@ const tableStyle = (theme) => ({
   tableHeadRow: {
     height: "56px",
     color: "inherit",
+    color: "black",
     display: "table-row",
     outline: "none",
     verticalAlign: "middle",

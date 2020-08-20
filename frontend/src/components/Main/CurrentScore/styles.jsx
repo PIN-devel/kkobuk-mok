@@ -74,7 +74,7 @@ export const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: #7FFFD4;
+    background-color: #7fffd4;
     width: 150px;
     height: 150px;
     position: absolute;
@@ -89,12 +89,12 @@ export const Wrapper = styled.div`
     border-radius: 50%;
     background-color: white;
     .myscore {
-      margin-left: 40px;
+      margin-left: 30px;
       margin-top: 50px;
       text-align: center center;
       font-size: 60px;
-      font-family: 'Nanum Gothic Coding', monospace;
-      font-family: 'Poor Story', cursive;
+      font-family: "Nanum Gothic Coding", monospace;
+      // font-family: "Poor Story", cursive;
     }
   }
   @keyframes scaleIn {
