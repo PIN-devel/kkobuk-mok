@@ -104,7 +104,7 @@ export default function CustomTable(props) {
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
         {tableHead !== undefined ? (
-          <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
+          <TableHead className={classes[tableHeaderColor + "TableHeader"]} align="center">
             <TableRow className={classes.tableHeadRow}>
               {tableHead.map((prop, key) => {
                 return (
@@ -125,15 +125,16 @@ export default function CustomTable(props) {
               <TableRow key={key} className={classes.tableBodyRow}>
                 {prop.slice(1).map((prop, key) => {
                   return (
-                    <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
+                    <TableCell className={classes.tableCell} key={key} className="PrimaryFont" align="center">
                       {prop}
                     </TableCell>
                   );
                 })}
                 {dataType === 1 ? (
-                  <TableCell className={classes.tableCell} key={key}>
+                  <TableCell className={classes.tableCell} key={key} align="center">
                     <Button
-                      color="black"
+                      color="primary"
+                      variant="contained"
                       className="PrimaryFont"
                       onClick={() => {
                         deleteFriend(prop[0]);
@@ -146,31 +147,24 @@ export default function CustomTable(props) {
                   ""
                 )}
                 {dataType === 2 ? (
-                  <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
-                    {friendsId.length > 0 &&
-                      (friendsId.find((id) => {
-                        return id === prop[0];
-                      }) ? (
-                        "친구입니다"
-                      ) : (
-                        <Button
-                          color="primary"
-                          className="PrimaryFont"
-                          onClick={() => {
-                            addFriend(prop[0]);
-                          }}
-                        >
-                          친구 요청
-                        </Button>
-                      ))}
-                  </TableCell>
-                ) : (
-                  ""
-                )}
-                {dataType === 3 ? (
-                  <TableCell className={classes.tableCell} key={key} className="PrimaryFont">
+                  <TableCell className={classes.tableCell} key={key} className="PrimaryFont" align="center">
                     <Button
                       color="primary"
+                      variant="contained"
+                      className="PrimaryFont"
+                      onClick={() => {
+                        addFriend(prop[0]);
+                      }}
+                    >
+                      친구 요청
+                    </Button>
+                    </TableCell>
+                      ) : ""}
+                {dataType === 3 ? (
+                  <TableCell className={classes.tableCell} key={key} className="PrimaryFont" align="center">
+                    <Button
+                      color="primary"
+                      variant="contained"
                       className="PrimaryFont"
                       onClick={() => {
                         cancelRequest(prop[0]);
