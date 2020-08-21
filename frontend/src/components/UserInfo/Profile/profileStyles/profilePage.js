@@ -38,9 +38,10 @@ const profilePageStyle = {
     ...title,
     display: "inline-block",
     position: "relative",
-    marginTop: "30px",
+    marginTop: "50px",
     minHeight: "32px",
     textDecoration: "none",
+    fontFamily: "'Nanum Gothic', 'sans-serif', 'Helvetica', 'Arial'",
   },
   socials: {
     marginTop: "0",
