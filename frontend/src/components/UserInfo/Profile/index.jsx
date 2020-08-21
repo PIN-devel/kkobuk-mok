@@ -61,8 +61,8 @@ const Profile = (props) => {
     }
   };
 
-  console.log("투데이");
-  console.log(props.today);
+  // console.log("투데이");
+  // console.log(props.today);
   return (
     <Wrapper>
       <div>
