@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme) => ({
   },
   friendHeaderText: {
     padding: "50px 0px 10px 0px",
-    fontSize: "32px",
+    fontSize: "2rem",
     textAlign: "center",
-    fontWeight: "1000",
-    fontFamily: "'Nanum Gothic', 'sans-serif', 'Helvetica', 'Arial'",
+    fontWeight: "bold",
+    // fontFamily: "'Nanum Gothic', 'sans-serif', 'Helvetica', 'Arial'",
     textDecoration: "none",
   },
 }));

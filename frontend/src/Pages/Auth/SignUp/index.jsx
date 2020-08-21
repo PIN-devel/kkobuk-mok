@@ -242,7 +242,7 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={1}>
-                <Grid item xs>
+                <Grid item xs={3}>
                   <TextField
                     variant="outlined"
                     required
@@ -259,7 +259,7 @@ export default function SignUp() {
                     -
                   </TextField>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs={3}>
                   <TextField
                     variant="outlined"
                     required
@@ -276,7 +276,7 @@ export default function SignUp() {
                     -
                   </TextField>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs={3}>
                   <TextField
                     variant="outlined"
                     required
@@ -293,7 +293,7 @@ export default function SignUp() {
                     -
                   </TextField>
                 </Grid>
-                <Grid item xs>
+                <Grid item xs={3}>
                   <TextField
                     variant="outlined"
                     required
@@ -310,8 +310,14 @@ export default function SignUp() {
                     -
                   </TextField>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} container>
+                  <Grid item xs={4}>
+
+                  </Grid>
+                  <Grid item xs={4}>
                   <Button
+                  variant="contained"
+                  color="primary"
                     disabled={confirmedPKey ? true : false}
                     onClick={() => {
                       handleSetConfirmedPkey();
@@ -319,6 +325,10 @@ export default function SignUp() {
                   >
                     제품키 인증
                   </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>

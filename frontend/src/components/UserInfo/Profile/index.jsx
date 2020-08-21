@@ -90,9 +90,9 @@ const Profile = (props) => {
                   </div>
                 </GridItem>
               </GridContainer>
-              <div className={classes.description}>
+              {/* <div className={classes.description}>
                 <p>여기 뭐 넣을래</p>
-              </div>
+              </div> */}
               <GridContainer justify="center">
                 <GridItem
                   xs={12}

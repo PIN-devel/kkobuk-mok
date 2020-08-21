@@ -232,7 +232,7 @@ export default function Dashboard(props) {
             테스트
           </Button> */}
           <div>
-            <Typography>{userName}</Typography>
+            <Typography>{userName}님</Typography>
           </div>
 
           <IconButton
