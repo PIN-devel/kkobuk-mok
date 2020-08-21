@@ -176,6 +176,8 @@ const ChannelCard = (props) => {
           handleSetChannelPwd(e.target.value);
         }}
       />
+    </DialogContent>
+    <DialogActions>
       <Button
         className={classes.margin}
         variant="contained"
@@ -186,8 +188,6 @@ const ChannelCard = (props) => {
       >
         입장하기
       </Button>
-    </DialogContent>
-    <DialogActions>
       <Button
         color="primary"
         variant="contained"

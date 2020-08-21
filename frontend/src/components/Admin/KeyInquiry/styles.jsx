@@ -11,7 +11,7 @@ font-family: 'Poor Story', cursive;
     width: 100%;
   }
   .tTitle {
-    background-color: black;
+    background-color: #adb5bd;
     color: white;
   }
 `;
