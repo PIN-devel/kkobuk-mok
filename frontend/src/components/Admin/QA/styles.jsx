@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     width: 100%;
   }
   .tTitle {
-    background-color: black;
+    background-color: #adb5bd;
     color: white;
   }
 `;
