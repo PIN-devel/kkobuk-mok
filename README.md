@@ -13,33 +13,29 @@ Release 1.9 사용 가능합니다.
 
 
 
-## Deployment
-```
-https://i3b109.p.ssafy.io
-https://kkobuk.tk
-```
+## 미리보기
+
 
 ![image-20200820223216187](README.assets/image-20200820223216187.png)
 
 
 
-## Description
+## 기술 스택
 
 - IoT/
-  - Django
-  - Gunicorn
-  - Supervisor
   - Rasberry Pi
   - Arduino
 - backend/
   - Django-rest-framework
+  - MariaDB
 - frontend/
   - React
-- Web Server
+  - MUI
+- Deploy
   - AWS EC2 (Ubuntu 18.04)
   - Nginx
   - Gunicorn
-  - MariaDB
+  - Supervisor
 
 
 
@@ -61,7 +57,7 @@ https://kkobuk.tk
 
 
 
-### IoT Data Flow
+### Flow
 
 ![image-20200821013948502](README.assets/image-20200821013948502.png)
 
